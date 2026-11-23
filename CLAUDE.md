@@ -39,3 +39,5 @@ One JSON object per line, with these fields:
 | `source` | no | `hook` for entries written automatically; omitted for entries written by hand. |
 
 Keep the file valid JSONL: check every line with `jq -c . docs/process-log.jsonl > /dev/null` after appending.
+
+Every commit includes `docs/process-log.jsonl`. Before committing, append the entries for the work being committed (including the commit itself) and stage the log along with the other files. Never create commits that only contain log entries.
