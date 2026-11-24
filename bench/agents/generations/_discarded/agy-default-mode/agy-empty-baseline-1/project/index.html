@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajustes — Tono de llamada</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Ir al contenido principal</a>
+
+  <div class="page-shell">
+    <header class="page-header">
+      <div class="header-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Ajustes</h1>
+        <p class="header-subtitle">Personaliza el sonido de las llamadas entrantes</p>
+      </div>
+    </header>
+
+    <main id="contenido-principal">
+      <section class="settings-card" aria-labelledby="seccion-sonido-titulo">
+        <div class="card-header">
+          <div>
+            <h2 id="seccion-sonido-titulo">Tono de llamada</h2>
+            <p class="card-description">Elige la melodía que sonará cuando recibas una llamada.</p>
+          </div>
+          <p class="current-pill">
+            <span class="pill-dot" aria-hidden="true"></span>
+            <span class="sr-only">Tono seleccionado actualmente: </span>
+            <span id="current-ringtone-label">Calisto</span>
+          </p>
+        </div>
+
+        <form id="ringtone-form" class="ringtone-form">
+          <fieldset class="ringtone-fieldset">
+            <legend class="ringtone-legend">Opciones de tono de llamada</legend>
+
+            <ul class="ringtone-list">
+              <li class="ringtone-item" data-tone="calisto">
+                <div class="ringtone-choice">
+                  <input
+                    class="ringtone-radio"
+                    type="radio"
+                    name="ringtone"
+                    id="ringtone-calisto"
+                    value="calisto"
+                    aria-describedby="desc-calisto"
+                    checked
+                  >
+                  <div class="ringtone-text">
+                    <label class="ringtone-label" for="ringtone-calisto">Calisto</label>
+                    <p class="ringtone-desc" id="desc-calisto">Notas suaves y cristalinas en cadencia ascendente</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="preview-btn"
+                  data-preview="calisto"
+                  aria-label="Escuchar vista previa de Calisto"
+                  aria-pressed="false"
+                >
+                  <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="M8 5.14v14l11-7-11-7z"/>
+                  </svg>
+                  <svg class="icon-stop" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  </svg>
+                  <span class="preview-btn-text">Escuchar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item" data-tone="ganimedes">
+                <div class="ringtone-choice">
+                  <input
+                    class="ringtone-radio"
+                    type="radio"
+                    name="ringtone"
+                    id="ringtone-ganimedes"
+                    value="ganimedes"
+                    aria-describedby="desc-ganimedes"
+                  >
+                  <div class="ringtone-text">
+                    <label class="ringtone-label" for="ringtone-ganimedes">Ganímedes</label>
+                    <p class="ringtone-desc" id="desc-ganimedes">Acorde cálido y resonante con pulso pausado</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="preview-btn"
+                  data-preview="ganimedes"
+                  aria-label="Escuchar vista previa de Ganímedes"
+                  aria-pressed="false"
+                >
+                  <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="M8 5.14v14l11-7-11-7z"/>
+                  </svg>
+                  <svg class="icon-stop" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  </svg>
+                  <span class="preview-btn-text">Escuchar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item" data-tone="luna">
+                <div class="ringtone-choice">
+                  <input
+                    class="ringtone-radio"
+                    type="radio"
+                    name="ringtone"
+                    id="ringtone-luna"
+                    value="luna"
+                    aria-describedby="desc-luna"
+                  >
+                  <div class="ringtone-text">
+                    <label class="ringtone-label" for="ringtone-luna">Luna</label>
+                    <p class="ringtone-desc" id="desc-luna">Campanillas minimalistas con eco delicado</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="preview-btn"
+                  data-preview="luna"
+                  aria-label="Escuchar vista previa de Luna"
+                  aria-pressed="false"
+                >
+                  <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="M8 5.14v14l11-7-11-7z"/>
+                  </svg>
+                  <svg class="icon-stop" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  </svg>
+                  <span class="preview-btn-text">Escuchar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item" data-tone="europa">
+                <div class="ringtone-choice">
+                  <input
+                    class="ringtone-radio"
+                    type="radio"
+                    name="ringtone"
+                    id="ringtone-europa"
+                    value="europa"
+                    aria-describedby="desc-europa"
+                  >
+                  <div class="ringtone-text">
+                    <label class="ringtone-label" for="ringtone-europa">Europa</label>
+                    <p class="ringtone-desc" id="desc-europa">Arpegio brillante y rítmico de tono moderno</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="preview-btn"
+                  data-preview="europa"
+                  aria-label="Escuchar vista previa de Europa"
+                  aria-pressed="false"
+                >
+                  <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="M8 5.14v14l11-7-11-7z"/>
+                  </svg>
+                  <svg class="icon-stop" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  </svg>
+                  <span class="preview-btn-text">Escuchar</span>
+                </button>
+              </li>
+            </ul>
+          </fieldset>
+
+          <div class="volume-control">
+            <div class="volume-header">
+              <label for="ringtone-volume" class="volume-label">Volumen de vista previa</label>
+              <output id="volume-output" for="ringtone-volume" class="volume-value">70 %</output>
+            </div>
+            <input
+              type="range"
+              id="ringtone-volume"
+              name="volume"
+              min="0"
+              max="100"
+              value="70"
+              step="5"
+              aria-valuetext="70 por ciento"
+            >
+          </div>
+        </form>
+
+        <div class="status-bar" role="status" aria-live="polite" aria-atomic="true" id="status-message">
+          Tono de llamada actual: Calisto. Los cambios se guardan automáticamente.
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

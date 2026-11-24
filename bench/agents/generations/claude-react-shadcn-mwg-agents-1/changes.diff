@@ -1,0 +1,151 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..e7e1b6b 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
+ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+ import { Input } from '@/components/ui/input'
+ import { Label } from '@/components/ui/label'
++import { SettingsPage } from '@/components/settings-page'
+ 
+ export default function App() {
+   return (
+@@ -12,9 +13,12 @@ export default function App() {
+           <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+             Perfil
+           </a>
++          <a href="#ajustes" className="text-sm text-muted-foreground hover:text-foreground">
++            Ajustes
++          </a>
+         </nav>
+       </header>
+-      <main className="mx-auto max-w-3xl p-4">
++      <main className="mx-auto grid max-w-3xl gap-6 p-4">
+         <Card id="perfil">
+           <CardHeader>
+             <CardTitle>Perfil</CardTitle>
+@@ -34,6 +38,7 @@ export default function App() {
+             <Button>Guardar</Button>
+           </CardFooter>
+         </Card>
++        <SettingsPage />
+       </main>
+     </div>
+   )
+diff --git a/src/components/settings-page.tsx b/src/components/settings-page.tsx
+new file mode 100644
+index 0000000..a3ccf40
+--- /dev/null
++++ b/src/components/settings-page.tsx
+@@ -0,0 +1,67 @@
++import { useId, useState, type FormEvent } from 'react'
++import { Button } from '@/components/ui/button'
++import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card'
++
++const RINGTONES = ['Calisto', 'Ganímedes', 'Luna', 'Europa'] as const
++type Ringtone = (typeof RINGTONES)[number]
++const DEFAULT_RINGTONE: Ringtone = 'Calisto'
++
++export function SettingsPage() {
++  const id = useId()
++  const headingId = `${id}-heading`
++  const [status, setStatus] = useState('')
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    const ringtone = new FormData(event.currentTarget).get('ringtone') as Ringtone
++    setStatus(`Tono de llamada guardado: ${ringtone}.`)
++  }
++
++  return (
++    <Card id="ajustes">
++      <form
++        method="post"
++        action="/ajustes"
++        aria-labelledby={headingId}
++        onSubmit={handleSubmit}
++        className="flex flex-col gap-(--card-spacing)"
++      >
++        <CardHeader>
++          <h2 id={headingId} className="font-heading text-base leading-snug font-medium">
++            Ajustes
++          </h2>
++          <CardDescription>Personaliza cómo te avisamos de las llamadas.</CardDescription>
++        </CardHeader>
++        <CardContent>
++          <fieldset className="grid gap-1">
++            <legend className="mb-2 text-sm font-medium">Tono de llamada</legend>
++            {RINGTONES.map((ringtone) => {
++              const inputId = `${id}-ringtone-${ringtone}`
++              return (
++                <div key={ringtone} className="flex items-center gap-3">
++                  <input
++                    type="radio"
++                    id={inputId}
++                    name="ringtone"
++                    value={ringtone}
++                    defaultChecked={ringtone === DEFAULT_RINGTONE}
++                    className="ringtone-radio size-4 shrink-0 accent-primary"
++                  />
++                  <label htmlFor={inputId} className="flex-1 cursor-pointer py-3 text-sm">
++                    {ringtone}
++                  </label>
++                </div>
++              )
++            })}
++          </fieldset>
++        </CardContent>
++        <CardFooter className="gap-4">
++          <Button type="submit">Guardar cambios</Button>
++          <p role="status" className="text-sm text-muted-foreground">
++            {status}
++          </p>
++        </CardFooter>
++      </form>
++    </Card>
++  )
++}
+diff --git a/src/index.css b/src/index.css
+index fb3c7e9..330247b 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -127,4 +127,37 @@
+   html {
+     @apply font-sans;
+     }
+-}
+\ No newline at end of file
++}
++/* Fallback de marca para radios cuando accent-color no está soportado */
++@supports not (accent-color: auto) {
++  .ringtone-radio {
++    appearance: none;
++    display: inline-grid;
++    place-content: center;
++    border: 2px solid var(--muted-foreground);
++    border-radius: 50%;
++    background: var(--background);
++  }
++
++  .ringtone-radio::before {
++    content: "";
++    width: 0.5rem;
++    height: 0.5rem;
++    border-radius: 50%;
++    background: var(--primary);
++    transform: scale(0);
++  }
++
++  .ringtone-radio:checked {
++    border-color: var(--primary);
++  }
++
++  .ringtone-radio:checked::before {
++    transform: scale(1);
++  }
++
++  .ringtone-radio:focus-visible {
++    outline: 2px solid var(--ring);
++    outline-offset: 2px;
++  }
++}

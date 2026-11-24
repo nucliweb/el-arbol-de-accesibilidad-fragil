@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajustes · Sonido</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --brand: #0b57d0;
+      --surface: light-dark(#ffffff, #1e1f22);
+      --bg: light-dark(#f3f4f6, #121316);
+      --text: light-dark(#1b1b1f, #e6e6ea);
+      --muted: light-dark(#4b4f58, #b3b6bd);
+      --border: light-dark(#767676, #8d9098);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --brand: #a8c7fa; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      accent-color: var(--brand);
+    }
+
+    main {
+      max-width: 36rem;
+      margin-inline: auto;
+      padding: 2rem 1rem;
+    }
+
+    h1 { margin-block: 0 1.5rem; font-size: 1.75rem; }
+
+    form {
+      background: var(--surface);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    fieldset {
+      border: 0;
+      margin: 0 0 1.5rem;
+      padding: 0;
+    }
+
+    legend {
+      padding: 0;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .hint {
+      margin: 0.25rem 0 0.75rem;
+      color: var(--muted);
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 48px;
+    }
+
+    .option input {
+      inline-size: 1.25rem;
+      block-size: 1.25rem;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .option label {
+      flex: 1;
+      padding-block: 0.75rem;
+      cursor: pointer;
+    }
+
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    button {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      min-height: 48px;
+      padding: 0.75rem 1.5rem;
+      border: 0;
+      border-radius: 999px;
+      background: var(--brand);
+      color: light-dark(#ffffff, #062e6f);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #status {
+      margin: 1rem 0 0;
+      min-height: 1.5em;
+    }
+
+    /* Fallback para navegadores sin accent-color */
+    @supports not (accent-color: auto) {
+      .option input[type="radio"] {
+        appearance: none;
+        border: 2px solid var(--border);
+        border-radius: 50%;
+        background: var(--surface);
+        display: grid;
+        place-content: center;
+      }
+      .option input[type="radio"]::before {
+        content: "";
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+        border-radius: 50%;
+        background: var(--brand);
+        transform: scale(0);
+      }
+      .option input[type="radio"]:checked { border-color: var(--brand); }
+      .option input[type="radio"]:checked::before { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Ajustes</h1>
+
+    <form id="settings" action="/ajustes" method="POST">
+      <fieldset aria-describedby="ringtone-hint">
+        <legend>Tono de llamada</legend>
+        <p id="ringtone-hint" class="hint">Elige el sonido que se reproducirá al recibir una llamada.</p>
+
+        <div class="option">
+          <input type="radio" id="ringtone-calisto" name="ringtone" value="calisto" checked>
+          <label for="ringtone-calisto">Calisto</label>
+        </div>
+        <div class="option">
+          <input type="radio" id="ringtone-ganimedes" name="ringtone" value="ganimedes">
+          <label for="ringtone-ganimedes">Ganímedes</label>
+        </div>
+        <div class="option">
+          <input type="radio" id="ringtone-luna" name="ringtone" value="luna">
+          <label for="ringtone-luna">Luna</label>
+        </div>
+        <div class="option">
+          <input type="radio" id="ringtone-europa" name="ringtone" value="europa">
+          <label for="ringtone-europa">Europa</label>
+        </div>
+      </fieldset>
+
+      <button type="submit">Guardar cambios</button>
+      <p id="status" role="status"></p>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('settings');
+    const status = document.getElementById('status');
+    const STORAGE_KEY = 'ringtone';
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const input = form.querySelector(`input[name="ringtone"][value="${CSS.escape(saved)}"]`);
+      if (input) input.checked = true;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = new FormData(form).get('ringtone');
+      localStorage.setItem(STORAGE_KEY, value);
+      const label = form.querySelector(`label[for="ringtone-${value}"]`).textContent;
+      status.textContent = `Tono de llamada guardado: ${label}.`;
+    });
+
+    form.addEventListener('change', () => { status.textContent = ''; });
+  </script>
+</body>
+</html>

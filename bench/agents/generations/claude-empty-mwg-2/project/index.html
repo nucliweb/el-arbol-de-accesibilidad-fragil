@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ajustes · Tono de llamada</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --brand-color: #5b2bd6;
+      --bg: #f6f5fa;
+      --surface: #ffffff;
+      --text: #1b1a22;
+      --muted: #55525f;
+      --border: #767676;
+      --focus: #0b57d0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --brand-color: #c4adff;
+        --bg: #131218;
+        --surface: #1e1c26;
+        --text: #f1eff7;
+        --muted: #b9b5c6;
+        --border: #8d8a99;
+        --focus: #8ab4f8;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      accent-color: var(--brand-color);
+    }
+
+    main {
+      max-width: 36rem;
+      margin-inline: auto;
+      padding: 2rem 1rem;
+    }
+
+    h1 { margin-block: 0 1.5rem; font-size: 1.75rem; }
+
+    fieldset {
+      margin: 0 0 1.5rem;
+      padding: 0;
+      border: 0;
+    }
+
+    legend {
+      padding: 0;
+      margin-block-end: 0.25rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .hint {
+      margin: 0 0 1rem;
+      color: var(--muted);
+    }
+
+    .options {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .options li + li { border-block-start: 1px solid var(--border); }
+
+    /* Toda la fila es el área táctil (≥ 48px) */
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 3.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .options input[type="radio"] {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      flex: none;
+    }
+
+    .options label:has(:focus-visible) {
+      outline: 3px solid var(--focus);
+      outline-offset: -3px;
+    }
+
+    .options input:focus-visible { outline: none; } /* el anillo se muestra en la fila */
+
+    .options label:has(:checked) { font-weight: 600; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    button {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      min-height: 48px;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 2px solid var(--brand-color);
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .primary {
+      background: var(--brand-color);
+      color: var(--surface);
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--text);
+    }
+
+    #status {
+      min-height: 1.5em;
+      margin-block-start: 1rem;
+    }
+
+    /* Fallback para navegadores sin accent-color */
+    @supports not (accent-color: auto) {
+      .options input[type="radio"].visually-hidden {
+        position: absolute !important;
+        clip-path: inset(50%) !important;
+        overflow: hidden !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      .options input[type="radio"] + span::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-inline-end: 0.75rem;
+        border: 2px solid var(--border);
+        border-radius: 50%;
+        background: var(--surface);
+      }
+
+      .options input[type="radio"]:checked + span::before {
+        border-color: var(--brand-color);
+        background: radial-gradient(var(--brand-color) 45%, transparent 50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Ajustes</h1>
+
+    <form id="settings" action="/ajustes" method="POST">
+      <fieldset aria-describedby="ringtone-hint">
+        <legend>Tono de llamada</legend>
+        <p id="ringtone-hint" class="hint">Elige el sonido que se reproducirá al recibir una llamada.</p>
+
+        <ul class="options">
+          <li>
+            <label for="tone-calisto">
+              <input class="visually-hidden" type="radio" id="tone-calisto" name="ringtone" value="calisto" checked>
+              <span>Calisto</span>
+            </label>
+          </li>
+          <li>
+            <label for="tone-ganimedes">
+              <input class="visually-hidden" type="radio" id="tone-ganimedes" name="ringtone" value="ganimedes">
+              <span>Ganímedes</span>
+            </label>
+          </li>
+          <li>
+            <label for="tone-luna">
+              <input class="visually-hidden" type="radio" id="tone-luna" name="ringtone" value="luna">
+              <span>Luna</span>
+            </label>
+          </li>
+          <li>
+            <label for="tone-europa">
+              <input class="visually-hidden" type="radio" id="tone-europa" name="ringtone" value="europa">
+              <span>Europa</span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" class="secondary" id="preview">Escuchar tono</button>
+        <button type="submit" class="primary">Guardar cambios</button>
+      </div>
+
+      <p id="status" role="status"></p>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('settings');
+    const status = document.getElementById('status');
+    const STORAGE_KEY = 'ringtone';
+
+    // Etiqueta visible de cada opción (para anunciarla tal cual)
+    const labelFor = (value) =>
+      form.querySelector(`input[name="ringtone"][value="${value}"] + span`).textContent;
+
+    // Restaurar la preferencia guardada
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const savedInput = saved && form.querySelector(`input[name="ringtone"][value="${saved}"]`);
+    if (savedInput) savedInput.checked = true;
+
+    // Vista previa sintetizada: una melodía corta distinta por tono
+    const melodies = {
+      calisto:   [523.25, 659.25, 783.99],
+      ganimedes: [392.00, 493.88, 587.33, 783.99],
+      luna:      [880.00, 698.46, 880.00, 698.46],
+      europa:    [659.25, 587.33, 523.25, 440.00],
+    };
+    let audioCtx;
+
+    document.getElementById('preview').addEventListener('click', () => {
+      const value = form.elements.ringtone.value;
+      audioCtx ??= new AudioContext();
+      const start = audioCtx.currentTime;
+      melodies[value].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const t = start + i * 0.18;
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.17);
+      });
+      status.textContent = `Reproduciendo: ${labelFor(value)}.`;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = new FormData(form).get('ringtone');
+      localStorage.setItem(STORAGE_KEY, value);
+      // fetch(form.action, { method: 'POST', body: new FormData(form) });
+      status.textContent = `Cambios guardados. Tono de llamada: ${labelFor(value)}.`;
+    });
+  </script>
+</body>
+</html>

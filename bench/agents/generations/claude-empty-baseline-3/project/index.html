@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajustes · Tono de llamada</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --muted: #555;
+      --border: #c7c7cc;
+      --accent: #0057b8;
+      --focus: #0057b8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121214;
+        --surface: #1e1e21;
+        --text: #f2f2f7;
+        --muted: #b0b0b8;
+        --border: #48484a;
+        --accent: #6cb4ff;
+        --focus: #6cb4ff;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    h1 { font-size: 1.75rem; margin: 0 0 1.5rem; }
+    fieldset {
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    legend {
+      font-size: 1.125rem;
+      font-weight: 600;
+      float: left;           /* coloca la leyenda dentro de la tarjeta */
+      width: 100%;
+      padding: 1rem 1rem 0.25rem;
+    }
+    .hint {
+      clear: both;
+      margin: 0;
+      padding: 0 1rem 0.75rem;
+      color: var(--muted);
+      font-size: 0.9375rem;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 3rem;
+      padding: 0.5rem 1rem;
+      border-top: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .option input {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+    .option input:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .option:has(input:checked) { font-weight: 600; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    button {
+      font: inherit;
+      min-height: 2.75rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      border: 2px solid var(--accent);
+      cursor: pointer;
+    }
+    button.primary { background: var(--accent); color: var(--surface); }
+    button.secondary { background: transparent; color: var(--accent); }
+    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    #status { margin-top: 1rem; min-height: 1.5em; }
+    @media (prefers-reduced-motion: no-preference) {
+      button { transition: opacity .15s; }
+      button:hover { opacity: .85; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Ajustes</h1>
+
+    <form id="settings-form">
+      <fieldset aria-describedby="ringtone-hint">
+        <legend>Tono de llamada</legend>
+        <p id="ringtone-hint" class="hint">Elige el sonido que se reproducirá al recibir una llamada.</p>
+
+        <label class="option">
+          <input type="radio" name="ringtone" value="calisto" checked>
+          Calisto
+        </label>
+        <label class="option">
+          <input type="radio" name="ringtone" value="ganimedes">
+          Ganímedes
+        </label>
+        <label class="option">
+          <input type="radio" name="ringtone" value="luna">
+          Luna
+        </label>
+        <label class="option">
+          <input type="radio" name="ringtone" value="europa">
+          Europa
+        </label>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" class="secondary" id="preview">Escuchar tono</button>
+        <button type="submit" class="primary">Guardar</button>
+      </div>
+
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'ajustes.tonoLlamada';
+    const form = document.getElementById('settings-form');
+    const status = document.getElementById('status');
+    const radios = form.elements.ringtone;
+
+    // Melodías sencillas generadas con Web Audio (frecuencias en Hz)
+    const TONES = {
+      calisto:   [660, 880, 660, 880],
+      ganimedes: [523, 659, 784, 1047],
+      luna:      [440, 554, 440, 330],
+      europa:    [784, 698, 587, 523],
+    };
+
+    const labelFor = (value) =>
+      [...radios].find((r) => r.value === value)?.parentElement.textContent.trim();
+
+    // Restaurar selección guardada
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && TONES[saved]) radios.value = saved;
+
+    let audioCtx;
+    function play(value) {
+      audioCtx ??= new AudioContext();
+      const now = audioCtx.currentTime;
+      TONES[value].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const start = now + i * 0.2;
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.2, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.18);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(start);
+        osc.stop(start + 0.2);
+      });
+    }
+
+    document.getElementById('preview').addEventListener('click', () => {
+      play(radios.value);
+      status.textContent = `Reproduciendo: ${labelFor(radios.value)}.`;
+    });
+
+    form.addEventListener('change', () => { status.textContent = ''; });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      localStorage.setItem(STORAGE_KEY, radios.value);
+      status.textContent = `Tono de llamada guardado: ${labelFor(radios.value)}.`;
+    });
+  </script>
+</body>
+</html>

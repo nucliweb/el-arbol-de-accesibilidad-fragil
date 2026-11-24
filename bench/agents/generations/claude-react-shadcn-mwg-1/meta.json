@@ -1,0 +1,12 @@
+{
+  "agent": "claude",
+  "scenario": "react-shadcn",
+  "condition": "mwg",
+  "rep": 1,
+  "prompt": "Crea una página de ajustes con un selector de tono de llamada. Las opciones son: Calisto, Ganímedes, Luna y Europa.",
+  "cliVersion": "2.1.331 (Claude Code)",
+  "startedAt": "2026-11-23T23:25:05.014Z",
+  "exitCode": 0,
+  "timedOut": false,
+  "durationMs": 43454
+}

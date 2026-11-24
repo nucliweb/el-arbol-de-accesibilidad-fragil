@@ -1,0 +1,979 @@
+diff --git a/index.html b/index.html
+index 6d61415..cba0f77 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes | Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..584eca2 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,39 +1,79 @@
+-import { Button } from '@/components/ui/button'
+-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+-import { Input } from '@/components/ui/input'
+-import { Label } from '@/components/ui/label'
++import { useEffect, useRef, useState } from 'react'
++import { ProfilePage } from '@/components/ProfilePage'
++import { SettingsPage } from '@/components/SettingsPage'
++
++type Page = 'ajustes' | 'perfil'
++
++function getPageFromHash(): Page {
++  if (typeof window === 'undefined') return 'ajustes'
++  return window.location.hash === '#perfil' ? 'perfil' : 'ajustes'
++}
+ 
+ export default function App() {
++  const [page, setPage] = useState<Page>(() => getPageFromHash())
++  const shouldMoveFocusRef = useRef(false)
++  const pageHeadingRef = useRef<HTMLHeadingElement>(null)
++
++  useEffect(() => {
++    const handleHashChange = () => {
++      setPage(getPageFromHash())
++    }
++    window.addEventListener('hashchange', handleHashChange)
++    return () => window.removeEventListener('hashchange', handleHashChange)
++  }, [])
++
++  useEffect(() => {
++    document.title = page === 'ajustes' ? 'Ajustes | Mi cuenta' : 'Perfil | Mi cuenta'
++    if (shouldMoveFocusRef.current) {
++      shouldMoveFocusRef.current = false
++      pageHeadingRef.current?.focus()
++    }
++  }, [page])
++
++  function navigateTo(nextPage: Page) {
++    if (nextPage === page) return
++    shouldMoveFocusRef.current = true
++    setPage(nextPage)
++  }
++
+   return (
+     <div className="min-h-screen bg-background text-foreground">
+-      <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
+-          <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+-            Perfil
+-          </a>
+-        </nav>
++      <header className="border-b border-border">
++        <div className="mx-auto flex max-w-3xl items-center justify-between gap-6 px-4 py-3">
++          <span className="font-semibold text-foreground">Mi cuenta</span>
++          <nav aria-label="Principal">
++            <ul className="flex items-center gap-2">
++              <li>
++                <a
++                  href="#ajustes"
++                  aria-current={page === 'ajustes' ? 'page' : undefined}
++                  onClick={() => navigateTo('ajustes')}
++                  className="nav-link"
++                >
++                  Ajustes
++                </a>
++              </li>
++              <li>
++                <a
++                  href="#perfil"
++                  aria-current={page === 'perfil' ? 'page' : undefined}
++                  onClick={() => navigateTo('perfil')}
++                  className="nav-link"
++                >
++                  Perfil
++                </a>
++              </li>
++            </ul>
++          </nav>
++        </div>
+       </header>
+-      <main className="mx-auto max-w-3xl p-4">
+-        <Card id="perfil">
+-          <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
+-            <CardDescription>Datos visibles para tus contactos.</CardDescription>
+-          </CardHeader>
+-          <CardContent className="grid gap-4">
+-            <div className="grid gap-2">
+-              <Label htmlFor="nombre">Nombre</Label>
+-              <Input id="nombre" defaultValue="Ada Lovelace" />
+-            </div>
+-            <div className="grid gap-2">
+-              <Label htmlFor="email">Correo electrónico</Label>
+-              <Input id="email" type="email" defaultValue="ada@example.com" />
+-            </div>
+-          </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
+-          </CardFooter>
+-        </Card>
++
++      <main className="mx-auto max-w-3xl px-4 py-6">
++        {page === 'ajustes' ? (
++          <SettingsPage headingRef={pageHeadingRef} />
++        ) : (
++          <ProfilePage headingRef={pageHeadingRef} />
++        )}
+       </main>
+     </div>
+   )
+diff --git a/src/components/ProfilePage.tsx b/src/components/ProfilePage.tsx
+new file mode 100644
+index 0000000..9bf109c
+--- /dev/null
++++ b/src/components/ProfilePage.tsx
+@@ -0,0 +1,116 @@
++import { useId, useState } from 'react'
++import { Check } from 'lucide-react'
++import { Button } from '@/components/ui/button'
++import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import { Input } from '@/components/ui/input'
++import { Label } from '@/components/ui/label'
++
++interface ProfilePageProps {
++  headingRef?: React.RefObject<HTMLHeadingElement | null>
++}
++
++export function ProfilePage({ headingRef }: ProfilePageProps) {
++  const [name, setName] = useState('Ada Lovelace')
++  const [email, setEmail] = useState('ada@example.com')
++  const [statusMessage, setStatusMessage] = useState('')
++
++  const idPrefix = useId()
++  const formHeadingId = `${idPrefix}-profile-heading`
++  const nameId = `${idPrefix}-nombre`
++  const emailId = `${idPrefix}-email`
++
++  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setStatusMessage('Perfil guardado correctamente.')
++  }
++
++  return (
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1
++          ref={headingRef}
++          tabIndex={-1}
++          className="text-2xl font-semibold tracking-tight text-foreground outline-none"
++        >
++          Perfil
++        </h1>
++        <p className="text-sm text-muted-foreground">
++          Datos visibles para tus contactos.
++        </p>
++      </div>
++
++      <Card>
++        <CardHeader>
++          <CardTitle as="h2" id={formHeadingId}>
++            Información personal
++          </CardTitle>
++          <CardDescription>Actualiza tu nombre y correo electrónico.</CardDescription>
++        </CardHeader>
++
++        <form aria-labelledby={formHeadingId} onSubmit={handleSubmit}>
++          <CardContent className="grid gap-5 pb-6">
++            <div className="grid gap-1.5">
++              <Label htmlFor={nameId}>Nombre</Label>
++              <Input
++                id={nameId}
++                name="name"
++                type="text"
++                autoComplete="name"
++                enterKeyHint="next"
++                required
++                value={name}
++                onChange={(event) => {
++                  setName(event.target.value)
++                  if (statusMessage) setStatusMessage('')
++                }}
++                className="min-h-12 text-base"
++              />
++            </div>
++
++            <div className="grid gap-1.5">
++              <Label htmlFor={emailId}>Correo electrónico</Label>
++              <Input
++                id={emailId}
++                name="email"
++                type="email"
++                inputMode="email"
++                autoComplete="email"
++                autoCorrect="off"
++                autoCapitalize="none"
++                spellCheck={false}
++                enterKeyHint="done"
++                required
++                value={email}
++                onChange={(event) => {
++                  setEmail(event.target.value)
++                  if (statusMessage) setStatusMessage('')
++                }}
++                className="min-h-12 text-base"
++              />
++            </div>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <Button type="submit" size="lg" className="min-h-12 px-4 text-base md:text-sm">
++              Guardar cambios
++            </Button>
++
++            <p
++              role="status"
++              aria-live="polite"
++              aria-atomic="true"
++              className="flex items-center gap-1.5 text-sm font-medium text-foreground empty:hidden"
++            >
++              {statusMessage && (
++                <>
++                  <Check aria-hidden="true" className="size-4 shrink-0" />
++                  <span>{statusMessage}</span>
++                </>
++              )}
++            </p>
++          </CardFooter>
++        </form>
++      </Card>
++    </div>
++  )
++}
+diff --git a/src/components/SettingsPage.tsx b/src/components/SettingsPage.tsx
+new file mode 100644
+index 0000000..5f88779
+--- /dev/null
++++ b/src/components/SettingsPage.tsx
+@@ -0,0 +1,204 @@
++import { useEffect, useId, useRef, useState } from 'react'
++import { Check, Square, Volume2 } from 'lucide-react'
++import { Button } from '@/components/ui/button'
++import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import {
++  RINGTONES,
++  getRingtoneById,
++  loadSavedRingtone,
++  playRingtonePreview,
++  saveRingtone,
++  type RingtoneId,
++  type RingtonePlaybackHandle,
++} from '@/lib/ringtones'
++
++interface SettingsPageProps {
++  headingRef?: React.RefObject<HTMLHeadingElement | null>
++}
++
++export function SettingsPage({ headingRef }: SettingsPageProps) {
++  const [savedRingtone, setSavedRingtone] = useState<RingtoneId>(() => loadSavedRingtone())
++  const [selectedRingtone, setSelectedRingtone] = useState<RingtoneId>(() => loadSavedRingtone())
++  const [playingRingtone, setPlayingRingtone] = useState<RingtoneId | null>(null)
++  const [statusMessage, setStatusMessage] = useState('')
++
++  const playbackRef = useRef<RingtonePlaybackHandle | null>(null)
++  const idPrefix = useId()
++  const formHeadingId = `${idPrefix}-calls-heading`
++  const radioGroupName = `${idPrefix}-ringtone`
++
++  useEffect(() => {
++    return () => {
++      playbackRef.current?.stop()
++      playbackRef.current = null
++    }
++  }, [])
++
++  function stopPreview() {
++    playbackRef.current?.stop()
++    playbackRef.current = null
++    setPlayingRingtone(null)
++  }
++
++  function handleTogglePreview(id: RingtoneId) {
++    if (playingRingtone === id) {
++      stopPreview()
++      return
++    }
++
++    stopPreview()
++    setPlayingRingtone(id)
++    playbackRef.current = playRingtonePreview(id, () => {
++      playbackRef.current = null
++      setPlayingRingtone((current) => (current === id ? null : current))
++    })
++  }
++
++  function handleSelectRingtone(id: RingtoneId) {
++    setSelectedRingtone(id)
++    if (statusMessage) {
++      setStatusMessage('')
++    }
++  }
++
++  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    saveRingtone(selectedRingtone)
++    setSavedRingtone(selectedRingtone)
++    const savedOption = getRingtoneById(selectedRingtone)
++    setStatusMessage(`Tono de llamada guardado: ${savedOption.name}.`)
++  }
++
++  const savedOption = getRingtoneById(savedRingtone)
++  const hasUnsavedChanges = selectedRingtone !== savedRingtone
++
++  return (
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1
++          ref={headingRef}
++          tabIndex={-1}
++          className="text-2xl font-semibold tracking-tight text-foreground outline-none"
++        >
++          Ajustes
++        </h1>
++        <p className="text-sm text-muted-foreground">
++          Personaliza las preferencias de sonido para tus llamadas entrantes.
++        </p>
++      </div>
++
++      <Card>
++        <CardHeader>
++          <CardTitle as="h2" id={formHeadingId}>
++            Llamadas
++          </CardTitle>
++          <CardDescription>
++            Tono actual: <strong className="font-medium text-foreground">{savedOption.name}</strong>
++          </CardDescription>
++        </CardHeader>
++
++        <form aria-labelledby={formHeadingId} onSubmit={handleSubmit}>
++          <CardContent className="pb-6">
++            <fieldset className="ringtone-fieldset">
++              <legend className="ringtone-legend">Tono de llamada</legend>
++
++              <div className="ringtone-options">
++                {RINGTONES.map((ringtone) => {
++                  const inputId = `${idPrefix}-ringtone-${ringtone.id}`
++                  const isSelected = selectedRingtone === ringtone.id
++                  const isSaved = savedRingtone === ringtone.id
++                  const isPlaying = playingRingtone === ringtone.id
++
++                  return (
++                    <div
++                      key={ringtone.id}
++                      className="ringtone-option"
++                      data-selected={isSelected ? 'true' : undefined}
++                    >
++                      <div className="ringtone-choice">
++                        <input
++                          type="radio"
++                          id={inputId}
++                          name={radioGroupName}
++                          value={ringtone.id}
++                          checked={isSelected}
++                          onChange={() => handleSelectRingtone(ringtone.id)}
++                          className="ringtone-radio"
++                        />
++                        <label htmlFor={inputId} className="ringtone-label">
++                          <span className="ringtone-label-text">{ringtone.name}</span>
++                        </label>
++                      </div>
++
++                      <div className="flex items-center gap-2">
++                        {isSaved && (
++                          <span className="ringtone-badge">Actual</span>
++                        )}
++                        <Button
++                          type="button"
++                          variant="outline"
++                          size="sm"
++                          onClick={() => handleTogglePreview(ringtone.id)}
++                          className="ringtone-preview-btn"
++                        >
++                          {isPlaying ? (
++                            <>
++                              <Square aria-hidden="true" />
++                              <span>
++                                Detener{' '}
++                                <span className="visually-hidden">
++                                  tono {ringtone.name}
++                                </span>
++                              </span>
++                            </>
++                          ) : (
++                            <>
++                              <Volume2 aria-hidden="true" />
++                              <span>
++                                Escuchar{' '}
++                                <span className="visually-hidden">
++                                  tono {ringtone.name}
++                                </span>
++                              </span>
++                            </>
++                          )}
++                        </Button>
++                      </div>
++                    </div>
++                  )
++                })}
++              </div>
++            </fieldset>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <div className="flex flex-wrap items-center gap-3">
++              <Button type="submit" size="lg" className="min-h-12 px-4 text-base md:text-sm">
++                Guardar cambios
++              </Button>
++              {hasUnsavedChanges && (
++                <span className="text-sm text-muted-foreground">
++                  Cambios sin guardar
++                </span>
++              )}
++            </div>
++
++            <p
++              role="status"
++              aria-live="polite"
++              aria-atomic="true"
++              className="flex items-center gap-1.5 text-sm font-medium text-foreground empty:hidden"
++            >
++              {statusMessage && (
++                <>
++                  <Check aria-hidden="true" className="size-4 shrink-0" />
++                  <span>{statusMessage}</span>
++                </>
++              )}
++            </p>
++          </CardFooter>
++        </form>
++      </Card>
++    </div>
++  )
++}
+diff --git a/src/components/ui/card.tsx b/src/components/ui/card.tsx
+index cf02f48..a62e181 100644
+--- a/src/components/ui/card.tsx
++++ b/src/components/ui/card.tsx
+@@ -32,9 +32,15 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+   )
+ }
+ 
+-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
++function CardTitle({
++  as: Comp = "h2",
++  className,
++  ...props
++}: React.ComponentProps<"h2"> & {
++  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div"
++}) {
+   return (
+-    <div
++    <Comp
+       data-slot="card-title"
+       className={cn(
+         "font-heading text-base leading-snug font-medium group-data-[size=sm]/card:text-sm",
+diff --git a/src/index.css b/src/index.css
+index fb3c7e9..3d2d5a5 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -49,6 +49,7 @@
+ }
+ 
+ :root {
++    color-scheme: light dark;
+     --background: oklch(1 0 0);
+     --foreground: oklch(0.145 0 0);
+     --card: oklch(1 0 0);
+@@ -60,13 +61,13 @@
+     --secondary: oklch(0.97 0 0);
+     --secondary-foreground: oklch(0.205 0 0);
+     --muted: oklch(0.97 0 0);
+-    --muted-foreground: oklch(0.556 0 0);
++    --muted-foreground: oklch(0.51 0 0);
+     --accent: oklch(0.97 0 0);
+     --accent-foreground: oklch(0.205 0 0);
+     --destructive: oklch(0.577 0.245 27.325);
+-    --border: oklch(0.922 0 0);
+-    --input: oklch(0.922 0 0);
+-    --ring: oklch(0.708 0 0);
++    --border: oklch(0.86 0 0);
++    --input: oklch(0.556 0 0);
++    --ring: oklch(0.45 0 0);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -83,6 +84,37 @@
+     --sidebar-ring: oklch(0.708 0 0);
+ }
+ 
++@media (prefers-color-scheme: dark) {
++    :root:not(.light) {
++        --background: oklch(0.145 0 0);
++        --foreground: oklch(0.985 0 0);
++        --card: oklch(0.205 0 0);
++        --card-foreground: oklch(0.985 0 0);
++        --popover: oklch(0.205 0 0);
++        --popover-foreground: oklch(0.985 0 0);
++        --primary: oklch(0.922 0 0);
++        --primary-foreground: oklch(0.205 0 0);
++        --secondary: oklch(0.269 0 0);
++        --secondary-foreground: oklch(0.985 0 0);
++        --muted: oklch(0.269 0 0);
++        --muted-foreground: oklch(0.74 0 0);
++        --accent: oklch(0.269 0 0);
++        --accent-foreground: oklch(0.985 0 0);
++        --destructive: oklch(0.704 0.191 22.216);
++        --border: oklch(1 0 0 / 16%);
++        --input: oklch(0.65 0 0);
++        --ring: oklch(0.72 0 0);
++        --sidebar: oklch(0.205 0 0);
++        --sidebar-foreground: oklch(0.985 0 0);
++        --sidebar-primary: oklch(0.488 0.243 264.376);
++        --sidebar-primary-foreground: oklch(0.985 0 0);
++        --sidebar-accent: oklch(0.269 0 0);
++        --sidebar-accent-foreground: oklch(0.985 0 0);
++        --sidebar-border: oklch(1 0 0 / 10%);
++        --sidebar-ring: oklch(0.556 0 0);
++    }
++}
++
+ .dark {
+     --background: oklch(0.145 0 0);
+     --foreground: oklch(0.985 0 0);
+@@ -95,13 +127,13 @@
+     --secondary: oklch(0.269 0 0);
+     --secondary-foreground: oklch(0.985 0 0);
+     --muted: oklch(0.269 0 0);
+-    --muted-foreground: oklch(0.708 0 0);
++    --muted-foreground: oklch(0.74 0 0);
+     --accent: oklch(0.269 0 0);
+     --accent-foreground: oklch(0.985 0 0);
+     --destructive: oklch(0.704 0.191 22.216);
+-    --border: oklch(1 0 0 / 10%);
+-    --input: oklch(1 0 0 / 15%);
+-    --ring: oklch(0.556 0 0);
++    --border: oklch(1 0 0 / 16%);
++    --input: oklch(0.65 0 0);
++    --ring: oklch(0.72 0 0);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -120,11 +152,248 @@
+ @layer base {
+   * {
+     @apply border-border outline-ring/50;
+-    }
++  }
+   body {
+     @apply bg-background text-foreground;
+-    }
++    accent-color: var(--primary);
++  }
+   html {
+     @apply font-sans;
+-    }
+-}
+\ No newline at end of file
++  }
++}
++
++/* Visually hidden utility keeping content available to assistive technologies */
++.visually-hidden:where(:not(:focus-within, :active)) {
++  position: absolute !important;
++  clip-path: inset(50%) !important;
++  overflow: hidden !important;
++  width: 1px !important;
++  height: 1px !important;
++  margin: -1px !important;
++  padding: 0 !important;
++  border: 0 !important;
++  white-space: nowrap !important;
++}
++
++/* Primary navigation links */
++.nav-link {
++  display: inline-flex;
++  align-items: center;
++  min-block-size: 2.75rem;
++  padding-inline: 0.75rem;
++  border-radius: var(--radius-md);
++  font-size: 0.9375rem;
++  color: var(--muted-foreground);
++  text-decoration: none;
++  transition: color 0.15s ease, background-color 0.15s ease;
++}
++
++.nav-link:hover {
++  color: var(--foreground);
++  background-color: var(--muted);
++}
++
++.nav-link[aria-current="page"] {
++  color: var(--foreground);
++  font-weight: 600;
++  text-decoration: underline;
++  text-underline-offset: 0.35rem;
++  text-decoration-thickness: 2px;
++}
++
++.nav-link:focus-visible {
++  outline: 2px solid var(--foreground);
++  outline-offset: 2px;
++}
++
++/* Ringtone selector fieldset & native radio controls */
++.ringtone-fieldset {
++  border: 0;
++  margin: 0;
++  padding: 0;
++}
++
++.ringtone-legend {
++  display: block;
++  margin-block-end: 0.75rem;
++  font-size: 0.9375rem;
++  font-weight: 500;
++  color: var(--foreground);
++}
++
++.ringtone-options {
++  display: grid;
++  gap: 0.625rem;
++}
++
++.ringtone-option {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.75rem;
++  min-block-size: 3rem;
++  padding-inline: 0.875rem;
++  padding-block: 0.375rem;
++  border: 1px solid var(--input);
++  border-radius: var(--radius-lg);
++  background-color: var(--card);
++  transition: border-color 0.15s ease, background-color 0.15s ease;
++}
++
++.ringtone-option[data-selected="true"] {
++  border-color: var(--primary);
++  box-shadow: inset 0 0 0 1px var(--primary);
++  background-color: var(--muted);
++}
++
++.ringtone-choice {
++  position: relative;
++  display: flex;
++  flex: 1 1 12rem;
++  align-items: center;
++  gap: 0.75rem;
++  min-block-size: 3rem;
++}
++
++.ringtone-radio {
++  flex-shrink: 0;
++  inline-size: 1.25rem;
++  block-size: 1.25rem;
++  margin: 0;
++  accent-color: var(--primary);
++  cursor: pointer;
++}
++
++.ringtone-radio:focus-visible {
++  outline: 2px solid var(--foreground);
++  outline-offset: 3px;
++}
++
++.ringtone-label {
++  display: flex;
++  flex: 1;
++  flex-wrap: wrap;
++  align-items: center;
++  gap: 0.5rem;
++  min-block-size: 3rem;
++  padding-block: 0.5rem;
++  font: inherit;
++  font-size: max(1rem, 1em);
++  line-height: 1.4;
++  color: var(--foreground);
++  cursor: pointer;
++}
++
++.ringtone-label-text {
++  font-weight: 500;
++}
++
++.ringtone-badge {
++  display: inline-flex;
++  align-items: center;
++  padding-inline: 0.5rem;
++  padding-block: 0.125rem;
++  border: 1px solid var(--input);
++  border-radius: 9999px;
++  font-size: 0.75rem;
++  font-weight: 500;
++  line-height: 1.25;
++  color: var(--foreground);
++  background-color: var(--background);
++}
++
++.ringtone-preview-btn {
++  min-block-size: 2.75rem;
++  padding-inline: 0.75rem;
++  border-color: var(--input);
++}
++
++@media (pointer: coarse) {
++  .ringtone-option,
++  .ringtone-choice,
++  .ringtone-label,
++  .ringtone-preview-btn {
++    min-block-size: 3.25rem;
++  }
++}
++
++/* Fallback for older browsers without accent-color support */
++@supports not (accent-color: auto) {
++  .ringtone-radio {
++    position: absolute !important;
++    clip-path: inset(50%) !important;
++    overflow: hidden !important;
++    width: 1px !important;
++    height: 1px !important;
++    margin: -1px !important;
++    padding: 0 !important;
++    border: 0 !important;
++    white-space: nowrap !important;
++  }
++
++  .ringtone-label {
++    position: relative;
++    padding-inline-start: 2rem;
++  }
++
++  .ringtone-radio + .ringtone-label::before {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 1.25rem;
++    block-size: 1.25rem;
++    border: 2px solid var(--input);
++    border-radius: 9999px;
++    background-color: var(--background);
++    box-sizing: border-box;
++  }
++
++  .ringtone-radio:checked + .ringtone-label::before {
++    border-color: var(--primary);
++  }
++
++  .ringtone-radio:checked + .ringtone-label::after {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0.3125rem;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 0.625rem;
++    block-size: 0.625rem;
++    border-radius: 9999px;
++    background-color: var(--primary);
++  }
++
++  .ringtone-radio:focus-visible + .ringtone-label::before {
++    outline: 2px solid var(--foreground);
++    outline-offset: 2px;
++  }
++}
++
++/* Forced Colors Mode (Windows High Contrast) support */
++@media (forced-colors: active) {
++  [data-slot="card"] {
++    border: 1px solid CanvasText;
++  }
++
++  .ringtone-option {
++    border: 1px solid CanvasText;
++  }
++
++  .ringtone-option[data-selected="true"] {
++    border: 2px solid Highlight;
++    box-shadow: none;
++  }
++
++  .ringtone-badge {
++    border-color: CanvasText;
++  }
++
++  :is(a, button, input):focus-visible {
++    outline: 2px solid Highlight !important;
++    outline-offset: 2px !important;
++  }
++}
+diff --git a/src/lib/ringtones.ts b/src/lib/ringtones.ts
+new file mode 100644
+index 0000000..60b3614
+--- /dev/null
++++ b/src/lib/ringtones.ts
+@@ -0,0 +1,151 @@
++export type RingtoneId = 'calisto' | 'ganimedes' | 'luna' | 'europa'
++
++export interface RingtoneOption {
++  id: RingtoneId
++  name: string
++  /** Frequencies (Hz) and durations (s) for optional Web Audio preview */
++  notes: ReadonlyArray<{ frequency: number; duration: number; delay: number }>
++}
++
++export const RINGTONES: readonly RingtoneOption[] = [
++  {
++    id: 'calisto',
++    name: 'Calisto',
++    notes: [
++      { frequency: 523.25, duration: 0.24, delay: 0 },
++      { frequency: 659.25, duration: 0.24, delay: 0.22 },
++      { frequency: 783.99, duration: 0.42, delay: 0.44 },
++    ],
++  },
++  {
++    id: 'ganimedes',
++    name: 'Ganímedes',
++    notes: [
++      { frequency: 440, duration: 0.22, delay: 0 },
++      { frequency: 554.37, duration: 0.22, delay: 0.2 },
++      { frequency: 659.25, duration: 0.22, delay: 0.4 },
++      { frequency: 880, duration: 0.4, delay: 0.6 },
++    ],
++  },
++  {
++    id: 'luna',
++    name: 'Luna',
++    notes: [
++      { frequency: 587.33, duration: 0.3, delay: 0 },
++      { frequency: 493.88, duration: 0.3, delay: 0.28 },
++      { frequency: 659.25, duration: 0.48, delay: 0.56 },
++    ],
++  },
++  {
++    id: 'europa',
++    name: 'Europa',
++    notes: [
++      { frequency: 659.25, duration: 0.2, delay: 0 },
++      { frequency: 783.99, duration: 0.2, delay: 0.18 },
++      { frequency: 987.77, duration: 0.22, delay: 0.36 },
++      { frequency: 783.99, duration: 0.4, delay: 0.56 },
++    ],
++  },
++] as const
++
++export const DEFAULT_RINGTONE: RingtoneId = 'calisto'
++
++const STORAGE_KEY = 'mi-cuenta.ringtone'
++
++export function isRingtoneId(value: string | null): value is RingtoneId {
++  return RINGTONES.some((ringtone) => ringtone.id === value)
++}
++
++export function loadSavedRingtone(): RingtoneId {
++  if (typeof window === 'undefined') return DEFAULT_RINGTONE
++  try {
++    const stored = window.localStorage.getItem(STORAGE_KEY)
++    return isRingtoneId(stored) ? stored : DEFAULT_RINGTONE
++  } catch {
++    return DEFAULT_RINGTONE
++  }
++}
++
++export function saveRingtone(id: RingtoneId): void {
++  if (typeof window === 'undefined') return
++  try {
++    window.localStorage.setItem(STORAGE_KEY, id)
++  } catch {
++    // Ignore storage errors in restricted environments
++  }
++}
++
++export function getRingtoneById(id: RingtoneId): RingtoneOption {
++  return RINGTONES.find((ringtone) => ringtone.id === id) ?? RINGTONES[0]
++}
++
++export interface RingtonePlaybackHandle {
++  stop: () => void
++}
++
++/**
++ * Plays a short synthesized preview of the requested ringtone on explicit user action.
++ */
++export function playRingtonePreview(
++  id: RingtoneId,
++  onEnded: () => void,
++): RingtonePlaybackHandle {
++  const ringtone = getRingtoneById(id)
++
++  if (typeof window === 'undefined') {
++    onEnded()
++    return { stop: () => {} }
++  }
++
++  const AudioContextCtor =
++    window.AudioContext ??
++    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
++
++  if (!AudioContextCtor) {
++    const timer = window.setTimeout(onEnded, 600)
++    return { stop: () => window.clearTimeout(timer) }
++  }
++
++  const ctx = new AudioContextCtor()
++  const now = ctx.currentTime
++  let stopped = false
++
++  const totalDuration = ringtone.notes.reduce(
++    (max, note) => Math.max(max, note.delay + note.duration),
++    0,
++  )
++
++  for (const note of ringtone.notes) {
++    const oscillator = ctx.createOscillator()
++    const gain = ctx.createGain()
++
++    oscillator.type = 'sine'
++    oscillator.frequency.setValueAtTime(note.frequency, now + note.delay)
++
++    gain.gain.setValueAtTime(0.0001, now + note.delay)
++    gain.gain.exponentialRampToValueAtTime(0.14, now + note.delay + 0.025)
++    gain.gain.exponentialRampToValueAtTime(0.0001, now + note.delay + note.duration)
++
++    oscillator.connect(gain)
++    gain.connect(ctx.destination)
++
++    oscillator.start(now + note.delay)
++    oscillator.stop(now + note.delay + note.duration + 0.02)
++  }
++
++  const cleanup = () => {
++    if (stopped) return
++    stopped = true
++    window.clearTimeout(endTimer)
++    void ctx.close().catch(() => {})
++  }
++
++  const endTimer = window.setTimeout(() => {
++    cleanup()
++    onEnded()
++  }, Math.ceil((totalDuration + 0.08) * 1000))
++
++  return {
++    stop: cleanup,
++  }
++}

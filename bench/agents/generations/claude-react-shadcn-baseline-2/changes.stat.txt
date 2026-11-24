@@ -1,0 +1,4 @@
+ src/App.tsx                       | 97 +++++++++++++++++++++++++++++----------
+ src/components/ui/radio-group.tsx | 45 ++++++++++++++++++
+ src/pages/Ajustes.tsx             | 71 ++++++++++++++++++++++++++++
+ 3 files changed, 189 insertions(+), 24 deletions(-)

@@ -1,0 +1,158 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..e7e1b6b 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
+ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+ import { Input } from '@/components/ui/input'
+ import { Label } from '@/components/ui/label'
++import { SettingsPage } from '@/components/settings-page'
+ 
+ export default function App() {
+   return (
+@@ -12,9 +13,12 @@ export default function App() {
+           <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+             Perfil
+           </a>
++          <a href="#ajustes" className="text-sm text-muted-foreground hover:text-foreground">
++            Ajustes
++          </a>
+         </nav>
+       </header>
+-      <main className="mx-auto max-w-3xl p-4">
++      <main className="mx-auto grid max-w-3xl gap-6 p-4">
+         <Card id="perfil">
+           <CardHeader>
+             <CardTitle>Perfil</CardTitle>
+@@ -34,6 +38,7 @@ export default function App() {
+             <Button>Guardar</Button>
+           </CardFooter>
+         </Card>
++        <SettingsPage />
+       </main>
+     </div>
+   )
+diff --git a/src/components/settings-page.tsx b/src/components/settings-page.tsx
+new file mode 100644
+index 0000000..2ef8e08
+--- /dev/null
++++ b/src/components/settings-page.tsx
+@@ -0,0 +1,67 @@
++import { useId, useState } from 'react'
++import { Button } from '@/components/ui/button'
++import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import { Label } from '@/components/ui/label'
++import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
++
++const RINGTONES = ['Calisto', 'Ganímedes', 'Luna', 'Europa'] as const
++type Ringtone = (typeof RINGTONES)[number]
++
++export function SettingsPage() {
++  const id = useId()
++  const legendId = `${id}-tono`
++  const [ringtone, setRingtone] = useState<Ringtone>('Calisto')
++  const [status, setStatus] = useState('')
++
++  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setStatus(`Ajustes guardados. Tono de llamada: ${ringtone}.`)
++  }
++
++  return (
++    <Card id="ajustes" aria-labelledby={`${id}-titulo`} role="region">
++      <CardHeader>
++        <CardTitle>
++          <h2 id={`${id}-titulo`}>Ajustes</h2>
++        </CardTitle>
++        <CardDescription>Personaliza cómo te avisa el teléfono.</CardDescription>
++      </CardHeader>
++      <form onSubmit={handleSubmit} className="contents">
++        <CardContent>
++          <div className="grid gap-3">
++            <Label asChild>
++              <span id={legendId}>Tono de llamada</span>
++            </Label>
++            <RadioGroup
++              name="tono"
++              value={ringtone}
++              onValueChange={(value) => {
++                setRingtone(value as Ringtone)
++                setStatus('')
++              }}
++              aria-labelledby={legendId}
++            >
++              {RINGTONES.map((tone) => {
++                const optionId = `${id}-tono-${tone}`
++                return (
++                  <div key={tone} className="flex items-center gap-3">
++                    <RadioGroupItem value={tone} id={optionId} />
++                    <Label htmlFor={optionId} className="font-normal">
++                      {tone}
++                    </Label>
++                  </div>
++                )
++              })}
++            </RadioGroup>
++          </div>
++        </CardContent>
++        <CardFooter className="gap-4">
++          <Button type="submit">Guardar</Button>
++          <p role="status" className="text-sm text-muted-foreground">
++            {status}
++          </p>
++        </CardFooter>
++      </form>
++    </Card>
++  )
++}
+diff --git a/src/components/ui/radio-group.tsx b/src/components/ui/radio-group.tsx
+new file mode 100644
+index 0000000..d54c761
+--- /dev/null
++++ b/src/components/ui/radio-group.tsx
+@@ -0,0 +1,45 @@
++import * as React from "react"
++import { cn } from "cn"
++import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
++import { CircleIcon } from "lucide-react"
++
++function RadioGroup({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
++  return (
++    <RadioGroupPrimitive.Root
++      data-slot="radio-group"
++      className={cn("grid w-full gap-3", className)}
++      {...props}
++    />
++  )
++}
++
++function RadioGroupItem({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
++  return (
++    <RadioGroupPrimitive.Item
++      data-slot="radio-group-item"
++      className={cn(
++        "peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 dark:data-[state=checked]:bg-primary",
++        className
++      )}
++      {...props}
++    >
++      <RadioGroupPrimitive.Indicator
++        data-slot="radio-group-indicator"
++        className="flex size-4 items-center justify-center"
++      >
++        <CircleIcon
++          aria-hidden="true"
++          className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-current"
++        />
++      </RadioGroupPrimitive.Indicator>
++    </RadioGroupPrimitive.Item>
++  )
++}
++
++export { RadioGroup, RadioGroupItem }

@@ -1,0 +1,6 @@
+ index.html                      |   2 +-
+ src/App.tsx                     | 179 ++++++++++++++++++++++++++++----
+ src/components/SettingsPage.tsx | 176 +++++++++++++++++++++++++++++++
+ src/components/ui/card.tsx      |  10 +-
+ src/index.css                   | 222 +++++++++++++++++++++++++++++++++++++---
+ 5 files changed, 554 insertions(+), 35 deletions(-)

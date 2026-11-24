@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajustes — Tono de llamada</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="page-header">
+        <p class="eyebrow">Ajustes</p>
+        <h1>Sonido y llamadas</h1>
+        <p class="subtitle">
+          Elige el tono que sonará cuando recibas una llamada entrante.
+        </p>
+      </header>
+
+      <main>
+        <form id="ringtone-form" class="settings-card" novalidate>
+          <div class="current-summary">
+            <span class="summary-label">Tono activo</span>
+            <strong id="active-ringtone-label" class="summary-value">Calisto</strong>
+          </div>
+
+          <fieldset class="ringtone-fieldset">
+            <legend class="fieldset-legend">Tono de llamada</legend>
+
+            <ul class="ringtone-list" role="list">
+              <li class="ringtone-item">
+                <label class="ringtone-option" for="tone-calisto">
+                  <input
+                    type="radio"
+                    id="tone-calisto"
+                    name="ringtone"
+                    value="Calisto"
+                    checked
+                  />
+                  <span class="radio-indicator" aria-hidden="true"></span>
+                  <span class="tone-info">
+                    <span class="tone-name">Calisto</span>
+                    <span class="tone-description">Acorde cristalino y pausado</span>
+                  </span>
+                </label>
+                <button
+                  type="button"
+                  class="preview-button"
+                  data-tone="Calisto"
+                  aria-label="Escuchar vista previa de Calisto"
+                  aria-pressed="false"
+                >
+                  <span class="preview-icon" aria-hidden="true">▶</span>
+                  <span class="preview-text">Probar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item">
+                <label class="ringtone-option" for="tone-ganimedes">
+                  <input
+                    type="radio"
+                    id="tone-ganimedes"
+                    name="ringtone"
+                    value="Ganímedes"
+                  />
+                  <span class="radio-indicator" aria-hidden="true"></span>
+                  <span class="tone-info">
+                    <span class="tone-name">Ganímedes</span>
+                    <span class="tone-description">Pulso rítmico y cálido</span>
+                  </span>
+                </label>
+                <button
+                  type="button"
+                  class="preview-button"
+                  data-tone="Ganímedes"
+                  aria-label="Escuchar vista previa de Ganímedes"
+                  aria-pressed="false"
+                >
+                  <span class="preview-icon" aria-hidden="true">▶</span>
+                  <span class="preview-text">Probar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item">
+                <label class="ringtone-option" for="tone-luna">
+                  <input
+                    type="radio"
+                    id="tone-luna"
+                    name="ringtone"
+                    value="Luna"
+                  />
+                  <span class="radio-indicator" aria-hidden="true"></span>
+                  <span class="tone-info">
+                    <span class="tone-name">Luna</span>
+                    <span class="tone-description">Melodía suave y nocturna</span>
+                  </span>
+                </label>
+                <button
+                  type="button"
+                  class="preview-button"
+                  data-tone="Luna"
+                  aria-label="Escuchar vista previa de Luna"
+                  aria-pressed="false"
+                >
+                  <span class="preview-icon" aria-hidden="true">▶</span>
+                  <span class="preview-text">Probar</span>
+                </button>
+              </li>
+
+              <li class="ringtone-item">
+                <label class="ringtone-option" for="tone-europa">
+                  <input
+                    type="radio"
+                    id="tone-europa"
+                    name="ringtone"
+                    value="Europa"
+                  />
+                  <span class="radio-indicator" aria-hidden="true"></span>
+                  <span class="tone-info">
+                    <span class="tone-name">Europa</span>
+                    <span class="tone-description">Campanillas claras y brillantes</span>
+                  </span>
+                </label>
+                <button
+                  type="button"
+                  class="preview-button"
+                  data-tone="Europa"
+                  aria-label="Escuchar vista previa de Europa"
+                  aria-pressed="false"
+                >
+                  <span class="preview-icon" aria-hidden="true">▶</span>
+                  <span class="preview-text">Probar</span>
+                </button>
+              </li>
+            </ul>
+          </fieldset>
+
+          <div class="card-footer">
+            <p
+              id="status-message"
+              class="status-message"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <button type="submit" class="save-button">Guardar cambios</button>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,603 @@
+diff --git a/index.html b/index.html
+index 6d61415..237956e 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes — Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..722bae8 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,23 +1,46 @@
+-import { Button } from '@/components/ui/button'
+-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+-import { Input } from '@/components/ui/input'
+-import { Label } from '@/components/ui/label'
++import { type FormEvent, useEffect, useState } from "react"
++import { Button } from "@/components/ui/button"
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from "@/components/ui/card"
++import { Input } from "@/components/ui/input"
++import { Label } from "@/components/ui/label"
++import { SettingsPage } from "@/components/settings-page"
++
++type Section = "ajustes" | "perfil"
++
++function getInitialSection(): Section {
++  return window.location.hash === "#perfil" ? "perfil" : "ajustes"
++}
++
++function ProfilePage() {
++  const [savedMessage, setSavedMessage] = useState("")
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setSavedMessage("Datos del perfil guardados.")
++  }
+ 
+-export default function App() {
+   return (
+-    <div className="min-h-screen bg-background text-foreground">
+-      <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
+-          <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+-            Perfil
+-          </a>
+-        </nav>
+-      </header>
+-      <main className="mx-auto max-w-3xl p-4">
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1 className="text-2xl font-semibold tracking-tight">Perfil</h1>
++        <p className="text-sm text-muted-foreground">
++          Gestiona la información visible para tus contactos.
++        </p>
++      </div>
++
++      <form onSubmit={handleSubmit}>
+         <Card id="perfil">
+           <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
++            <CardTitle>
++              <h2 className="text-base font-medium">Información personal</h2>
++            </CardTitle>
+             <CardDescription>Datos visibles para tus contactos.</CardDescription>
+           </CardHeader>
+           <CardContent className="grid gap-4">
+@@ -30,10 +53,77 @@ export default function App() {
+               <Input id="email" type="email" defaultValue="ada@example.com" />
+             </div>
+           </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <Button type="submit">Guardar</Button>
++            <p
++              role="status"
++              aria-live="polite"
++              className="text-sm text-muted-foreground"
++            >
++              {savedMessage}
++            </p>
+           </CardFooter>
+         </Card>
++      </form>
++    </div>
++  )
++}
++
++export default function App() {
++  const [activeSection, setActiveSection] = useState<Section>(getInitialSection)
++
++  useEffect(() => {
++    document.title =
++      activeSection === "ajustes"
++        ? "Ajustes — Mi cuenta"
++        : "Perfil — Mi cuenta"
++  }, [activeSection])
++
++  useEffect(() => {
++    function handleHashChange() {
++      setActiveSection(getInitialSection())
++    }
++    window.addEventListener("hashchange", handleHashChange)
++    return () => window.removeEventListener("hashchange", handleHashChange)
++  }, [])
++
++  return (
++    <div className="min-h-screen bg-background text-foreground">
++      <header className="border-b">
++        <nav
++          aria-label="Navegación principal"
++          className="mx-auto flex max-w-3xl items-center gap-6 p-4"
++        >
++          <span className="font-semibold">Mi cuenta</span>
++          <a
++            href="#ajustes"
++            aria-current={activeSection === "ajustes" ? "page" : undefined}
++            onClick={() => setActiveSection("ajustes")}
++            className={`text-sm transition-colors ${
++              activeSection === "ajustes"
++                ? "font-medium text-foreground"
++                : "text-muted-foreground hover:text-foreground"
++            }`}
++          >
++            Ajustes
++          </a>
++          <a
++            href="#perfil"
++            aria-current={activeSection === "perfil" ? "page" : undefined}
++            onClick={() => setActiveSection("perfil")}
++            className={`text-sm transition-colors ${
++              activeSection === "perfil"
++                ? "font-medium text-foreground"
++                : "text-muted-foreground hover:text-foreground"
++            }`}
++          >
++            Perfil
++          </a>
++        </nav>
++      </header>
++
++      <main className="mx-auto max-w-3xl p-4 py-6">
++        {activeSection === "ajustes" ? <SettingsPage /> : <ProfilePage />}
+       </main>
+     </div>
+   )
+diff --git a/src/components/settings-page.tsx b/src/components/settings-page.tsx
+new file mode 100644
+index 0000000..05e16ff
+--- /dev/null
++++ b/src/components/settings-page.tsx
+@@ -0,0 +1,243 @@
++import { type FormEvent, useEffect, useState } from "react"
++import { Bell, Check, Square, Volume2 } from "lucide-react"
++import { Button } from "@/components/ui/button"
++import {
++  Card,
++  CardAction,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from "@/components/ui/card"
++import { Label } from "@/components/ui/label"
++import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
++import {
++  RINGTONES,
++  type RingtoneId,
++  playRingtonePreview,
++  stopRingtonePreview,
++} from "@/lib/ringtone-audio"
++
++const STORAGE_KEY = "settings.ringtone"
++const DEFAULT_RINGTONE: RingtoneId = "calisto"
++
++function readStoredRingtone(): RingtoneId {
++  try {
++    const stored = window.localStorage.getItem(STORAGE_KEY)
++    if (stored && RINGTONES.some((tone) => tone.id === stored)) {
++      return stored as RingtoneId
++    }
++  } catch {
++    // Ignore storage access failures in restricted contexts.
++  }
++  return DEFAULT_RINGTONE
++}
++
++function getRingtoneName(id: RingtoneId): string {
++  return RINGTONES.find((tone) => tone.id === id)?.name ?? "Calisto"
++}
++
++export function SettingsPage() {
++  const [savedRingtone, setSavedRingtone] = useState<RingtoneId>(() =>
++    readStoredRingtone()
++  )
++  const [selectedRingtone, setSelectedRingtone] =
++    useState<RingtoneId>(savedRingtone)
++  const [playingRingtone, setPlayingRingtone] = useState<RingtoneId | null>(
++    null
++  )
++  const [statusMessage, setStatusMessage] = useState<string>("")
++
++  const hasChanges = selectedRingtone !== savedRingtone
++  const savedRingtoneName = getRingtoneName(savedRingtone)
++
++  useEffect(() => {
++    return () => {
++      stopRingtonePreview()
++    }
++  }, [])
++
++  function handleSelectRingtone(value: string) {
++    const nextId = value as RingtoneId
++    setSelectedRingtone(nextId)
++    setStatusMessage("")
++  }
++
++  function handleTogglePreview(toneId: RingtoneId) {
++    if (playingRingtone === toneId) {
++      stopRingtonePreview()
++      setPlayingRingtone(null)
++      return
++    }
++
++    const started = playRingtonePreview(toneId, () => {
++      setPlayingRingtone((current) => (current === toneId ? null : current))
++    })
++
++    if (started) {
++      setPlayingRingtone(toneId)
++    } else {
++      setPlayingRingtone(null)
++      setStatusMessage("La vista previa de audio no está disponible en este navegador.")
++    }
++  }
++
++  function handleReset() {
++    stopRingtonePreview()
++    setPlayingRingtone(null)
++    setSelectedRingtone(savedRingtone)
++    setStatusMessage("Cambios descartados.")
++  }
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setSavedRingtone(selectedRingtone)
++    try {
++      window.localStorage.setItem(STORAGE_KEY, selectedRingtone)
++    } catch {
++      // Ignore storage write errors in restricted contexts.
++    }
++    setStatusMessage(
++      `Tono de llamada guardado: ${getRingtoneName(selectedRingtone)}.`
++    )
++  }
++
++  return (
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1 className="text-2xl font-semibold tracking-tight">Ajustes</h1>
++        <p className="text-sm text-muted-foreground">
++          Personaliza las preferencias de sonido y notificaciones de tu cuenta.
++        </p>
++      </div>
++
++      <form onSubmit={handleSubmit}>
++        <Card id="ajustes-tono">
++          <CardHeader>
++            <CardTitle>
++              <h2
++                id="ringtone-heading"
++                className="flex items-center gap-2 text-base font-medium"
++              >
++                <Bell aria-hidden="true" className="size-4 text-muted-foreground" />
++                Tono de llamada
++              </h2>
++            </CardTitle>
++            <CardDescription id="ringtone-description">
++              Selecciona el tono que sonará cuando recibas una llamada entrante.
++            </CardDescription>
++            <CardAction>
++              <span className="inline-flex items-center rounded-md border bg-muted/60 px-2.5 py-1 text-xs font-medium text-foreground">
++                Actual: {savedRingtoneName}
++              </span>
++            </CardAction>
++          </CardHeader>
++
++          <CardContent>
++            <RadioGroup
++              value={selectedRingtone}
++              onValueChange={handleSelectRingtone}
++              aria-labelledby="ringtone-heading"
++              aria-describedby="ringtone-description"
++              className="gap-2.5"
++            >
++              {RINGTONES.map((tone) => {
++                const inputId = `ringtone-${tone.id}`
++                const descId = `ringtone-${tone.id}-description`
++                const isSelected = selectedRingtone === tone.id
++                const isPlaying = playingRingtone === tone.id
++
++                return (
++                  <div
++                    key={tone.id}
++                    className={`flex items-center justify-between gap-3 rounded-lg border px-3.5 py-3 transition-colors ${
++                      isSelected
++                        ? "border-primary/40 bg-muted/40"
++                        : "border-border hover:bg-muted/20"
++                    }`}
++                  >
++                    <div className="flex min-w-0 flex-1 items-start gap-3">
++                      <RadioGroupItem
++                        id={inputId}
++                        value={tone.id}
++                        aria-describedby={descId}
++                        className="mt-0.5"
++                      />
++                      <div className="grid min-w-0 flex-1 gap-0.5">
++                        <Label
++                          htmlFor={inputId}
++                          className="cursor-pointer font-medium text-foreground"
++                        >
++                          {tone.name}
++                        </Label>
++                        <p
++                          id={descId}
++                          className="text-xs text-muted-foreground"
++                        >
++                          {tone.description}
++                        </p>
++                      </div>
++                    </div>
++
++                    <Button
++                      type="button"
++                      variant={isPlaying ? "secondary" : "outline"}
++                      size="sm"
++                      aria-pressed={isPlaying}
++                      aria-label={
++                        isPlaying
++                          ? `Detener vista previa de ${tone.name}`
++                          : `Probar vista previa de ${tone.name}`
++                      }
++                      onClick={() => handleTogglePreview(tone.id)}
++                    >
++                      {isPlaying ? (
++                        <>
++                          <Square aria-hidden="true" className="size-3.5" />
++                          <span>Detener</span>
++                        </>
++                      ) : (
++                        <>
++                          <Volume2 aria-hidden="true" className="size-3.5" />
++                          <span>Probar</span>
++                        </>
++                      )}
++                    </Button>
++                  </div>
++                )
++              })}
++            </RadioGroup>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <div className="flex items-center gap-2">
++              <Button type="submit">Guardar cambios</Button>
++              {hasChanges && (
++                <Button type="button" variant="ghost" onClick={handleReset}>
++                  Descartar
++                </Button>
++              )}
++            </div>
++
++            <p
++              role="status"
++              aria-live="polite"
++              className="flex items-center gap-1.5 text-sm text-muted-foreground"
++            >
++              {statusMessage && (
++                <>
++                  <Check
++                    aria-hidden="true"
++                    className="size-4 shrink-0 text-foreground"
++                  />
++                  <span>{statusMessage}</span>
++                </>
++              )}
++            </p>
++          </CardFooter>
++        </Card>
++      </form>
++    </div>
++  )
++}
+diff --git a/src/components/ui/radio-group.tsx b/src/components/ui/radio-group.tsx
+new file mode 100644
+index 0000000..1102fbc
+--- /dev/null
++++ b/src/components/ui/radio-group.tsx
+@@ -0,0 +1,45 @@
++import * as React from "react"
++import { cn } from "cn"
++import { CircleIcon } from "lucide-react"
++import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
++
++function RadioGroup({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
++  return (
++    <RadioGroupPrimitive.Root
++      data-slot="radio-group"
++      className={cn("grid gap-2", className)}
++      {...props}
++    />
++  )
++}
++
++function RadioGroupItem({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
++  return (
++    <RadioGroupPrimitive.Item
++      data-slot="radio-group-item"
++      className={cn(
++        "aspect-square size-4 shrink-0 rounded-full border border-input text-primary transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[state=checked]:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
++        className
++      )}
++      {...props}
++    >
++      <RadioGroupPrimitive.Indicator
++        data-slot="radio-group-indicator"
++        className="flex items-center justify-center"
++      >
++        <CircleIcon
++          aria-hidden="true"
++          className="size-2 fill-primary text-primary"
++        />
++      </RadioGroupPrimitive.Indicator>
++    </RadioGroupPrimitive.Item>
++  )
++}
++
++export { RadioGroup, RadioGroupItem }
+diff --git a/src/lib/ringtone-audio.ts b/src/lib/ringtone-audio.ts
+new file mode 100644
+index 0000000..1c6b48d
+--- /dev/null
++++ b/src/lib/ringtone-audio.ts
+@@ -0,0 +1,137 @@
++export type RingtoneId = "calisto" | "ganimedes" | "luna" | "europa"
++
++export interface RingtoneOption {
++  id: RingtoneId
++  name: string
++  description: string
++  notes: ReadonlyArray<{ frequency: number; start: number; duration: number }>
++  waveform: OscillatorType
++}
++
++export const RINGTONES: ReadonlyArray<RingtoneOption> = [
++  {
++    id: "calisto",
++    name: "Calisto",
++    description: "Campanas suaves con cadencia descendente",
++    waveform: "sine",
++    notes: [
++      { frequency: 659.25, start: 0, duration: 0.35 },
++      { frequency: 523.25, start: 0.28, duration: 0.35 },
++      { frequency: 440, start: 0.56, duration: 0.55 },
++    ],
++  },
++  {
++    id: "ganimedes",
++    name: "Ganímedes",
++    description: "Arpegio cristalino en ascenso",
++    waveform: "triangle",
++    notes: [
++      { frequency: 440, start: 0, duration: 0.24 },
++      { frequency: 554.37, start: 0.2, duration: 0.24 },
++      { frequency: 659.25, start: 0.4, duration: 0.24 },
++      { frequency: 880, start: 0.6, duration: 0.5 },
++    ],
++  },
++  {
++    id: "luna",
++    name: "Luna",
++    description: "Tono sereno y cálido de dos notas",
++    waveform: "sine",
++    notes: [
++      { frequency: 587.33, start: 0, duration: 0.45 },
++      { frequency: 493.88, start: 0.42, duration: 0.65 },
++    ],
++  },
++  {
++    id: "europa",
++    name: "Europa",
++    description: "Pulso rítmico y nítido de cuatro notas",
++    waveform: "triangle",
++    notes: [
++      { frequency: 783.99, start: 0, duration: 0.18 },
++      { frequency: 659.25, start: 0.2, duration: 0.18 },
++      { frequency: 783.99, start: 0.42, duration: 0.18 },
++      { frequency: 1046.5, start: 0.64, duration: 0.42 },
++    ],
++  },
++]
++
++let activeContext: AudioContext | null = null
++let activeTimeout: number | null = null
++
++export function stopRingtonePreview(): void {
++  if (activeTimeout !== null) {
++    window.clearTimeout(activeTimeout)
++    activeTimeout = null
++  }
++  if (activeContext) {
++    void activeContext.close().catch(() => {})
++    activeContext = null
++  }
++}
++
++export function playRingtonePreview(
++  ringtoneId: RingtoneId,
++  onEnded?: () => void
++): boolean {
++  stopRingtonePreview()
++
++  const ringtone = RINGTONES.find((item) => item.id === ringtoneId)
++  if (!ringtone) {
++    return false
++  }
++
++  const AudioCtx =
++    window.AudioContext ||
++    (window as Window & { webkitAudioContext?: typeof AudioContext })
++      .webkitAudioContext
++
++  if (!AudioCtx) {
++    return false
++  }
++
++  try {
++    const context = new AudioCtx()
++    activeContext = context
++
++    const now = context.currentTime
++    let maxEnd = 0
++
++    for (const note of ringtone.notes) {
++      const oscillator = context.createOscillator()
++      const gain = context.createGain()
++
++      oscillator.type = ringtone.waveform
++      oscillator.frequency.setValueAtTime(note.frequency, now + note.start)
++
++      gain.gain.setValueAtTime(0.0001, now + note.start)
++      gain.gain.exponentialRampToValueAtTime(0.16, now + note.start + 0.025)
++      gain.gain.exponentialRampToValueAtTime(
++        0.0001,
++        now + note.start + note.duration
++      )
++
++      oscillator.connect(gain)
++      gain.connect(context.destination)
++
++      oscillator.start(now + note.start)
++      oscillator.stop(now + note.start + note.duration + 0.02)
++
++      maxEnd = Math.max(maxEnd, note.start + note.duration)
++    }
++
++    activeTimeout = window.setTimeout(() => {
++      if (activeContext === context) {
++        void context.close().catch(() => {})
++        activeContext = null
++      }
++      activeTimeout = null
++      onEnded?.()
++    }, Math.ceil((maxEnd + 0.1) * 1000))
++
++    return true
++  } catch {
++    stopRingtonePreview()
++    return false
++  }
++}

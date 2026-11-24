@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajustes · Tono de llamada</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1d1d1f;
+      --muted: #555a64;
+      --border: #c9ccd3;
+      --accent: #0b57d0;
+      --accent-bg: #e8f0fe;
+      --focus: #0b57d0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121316;
+        --card: #1e2025;
+        --text: #f1f2f4;
+        --muted: #b4b8c0;
+        --border: #4a4e57;
+        --accent: #8ab4f8;
+        --accent-bg: #23314a;
+        --focus: #8ab4f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -3rem;
+      padding: .5rem 1rem;
+      background: var(--card);
+      color: var(--text);
+      border: 2px solid var(--focus);
+      border-radius: .5rem;
+    }
+    .skip-link:focus { top: 1rem; }
+    header, main { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1rem; }
+    header { padding-bottom: 0; }
+    h1 { font-size: 1.75rem; margin: 0; }
+    h2 { font-size: 1.25rem; margin: 0 0 .25rem; }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+
+    fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+    legend { padding: 0; font-weight: 600; font-size: 1.125rem; }
+    .hint { color: var(--muted); margin: .25rem 0 1rem; }
+
+    .options { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      border: 1px solid var(--border);
+      border-radius: .75rem;
+      padding: .25rem .25rem .25rem .75rem;
+    }
+    .option:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .option label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      min-height: 2.75rem;  /* objetivo táctil ≥ 44px */
+      cursor: pointer;
+    }
+    .option input[type="radio"] {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    button {
+      font: inherit;
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+      padding: .5rem .875rem;
+      border-radius: .5rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--accent); }
+    button.playing { border-color: var(--accent); color: var(--accent); }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0);
+      white-space: nowrap; border: 0;
+    }
+  
+
+    .status { margin: 1rem 0 0; color: var(--muted); min-height: 1.5em; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .option, button { transition: border-color .15s, background-color .15s; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header>
+    <h1>Ajustes</h1>
+  </header>
+
+  <main id="contenido">
+    <section aria-labelledby="sonido-titulo">
+      <h2 id="sonido-titulo">Sonido</h2>
+
+      <form id="ajustes-form">
+        <fieldset aria-describedby="tono-ayuda">
+          <legend>Tono de llamada</legend>
+          <p id="tono-ayuda" class="hint">
+            Elige el sonido que se reproducirá al recibir una llamada. El cambio se guarda automáticamente.
+          </p>
+
+          <ul class="options" role="list">
+            <li class="option">
+              <label>
+                <input type="radio" name="tono" value="calisto">
+                Calisto
+              </label>
+              <button type="button" class="preview" data-tono="calisto">
+                Escuchar <span class="visually-hidden">Calisto</span>
+              </button>
+            </li>
+            <li class="option">
+              <label>
+                <input type="radio" name="tono" value="ganimedes">
+                Ganímedes
+              </label>
+              <button type="button" class="preview" data-tono="ganimedes">
+                Escuchar <span class="visually-hidden">Ganímedes</span>
+              </button>
+            </li>
+            <li class="option">
+              <label>
+                <input type="radio" name="tono" value="luna">
+                Luna
+              </label>
+              <button type="button" class="preview" data-tono="luna">
+                Escuchar <span class="visually-hidden">Luna</span>
+              </button>
+            </li>
+            <li class="option">
+              <label>
+                <input type="radio" name="tono" value="europa">
+                Europa
+              </label>
+              <button type="button" class="preview" data-tono="europa">
+                Escuchar <span class="visually-hidden">Europa</span>
+              </button>
+            </li>
+          </ul>
+        </fieldset>
+
+        <p class="status" role="status" aria-live="polite" id="estado"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = 'ajustes.tonoLlamada';
+      const DEFAULT = 'calisto';
+      const NOMBRES = { calisto: 'Calisto', ganimedes: 'Ganímedes', luna: 'Luna', europa: 'Europa' };
+
+      // Melodías sintetizadas (frecuencias en Hz) para previsualizar cada tono.
+      const MELODIAS = {
+        calisto:   [659, 784, 988, 784],
+        ganimedes: [440, 554, 659, 880, 659],
+        luna:      [523, 392, 523, 392],
+        europa:    [880, 740, 587, 740, 880],
+      };
+
+      const form = document.getElementById('ajustes-form');
+      const estado = document.getElementById('estado');
+      const radios = form.elements.tono;
+
+      // Restaurar la selección guardada
+      let guardado = DEFAULT;
+      try { guardado = localStorage.getItem(STORAGE_KEY) || DEFAULT; } catch {}
+      if (!NOMBRES[guardado]) guardado = DEFAULT;
+      radios.value = guardado;
+
+      form.addEventListener('change', (e) => {
+        if (e.target.name !== 'tono') return;
+        try { localStorage.setItem(STORAGE_KEY, e.target.value); } catch {}
+        estado.textContent = `Tono de llamada cambiado a ${NOMBRES[e.target.value]}.`;
+      });
+
+      form.addEventListener('submit', (e) => e.preventDefault());
+
+      // Previsualización con Web Audio
+      let ctx = null;
+      let reproduciendo = null; // { boton, nodos, timer }
+
+      function detener() {
+        if (!reproduciendo) return;
+        reproduciendo.nodos.forEach((n) => { try { n.stop(); } catch {} });
+        clearTimeout(reproduciendo.timer);
+        reproduciendo.boton.classList.remove('playing');
+        reproduciendo.boton.firstChild.textContent = 'Escuchar ';
+        reproduciendo = null;
+      }
+
+      function reproducir(boton) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) {
+          estado.textContent = 'Tu navegador no permite previsualizar sonidos.';
+          return;
+        }
+        ctx ??= new AudioCtx();
+        const notas = MELODIAS[boton.dataset.tono];
+        const dur = 0.22;
+        const t0 = ctx.currentTime + 0.05;
+        const nodos = notas.map((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const start = t0 + i * dur;
+          gain.gain.setValueAtTime(0.0001, start);
+          gain.gain.exponentialRampToValueAtTime(0.25, start + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + dur - 0.02);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + dur);
+          return osc;
+        });
+        boton.classList.add('playing');
+        boton.firstChild.textContent = 'Detener ';
+        const timer = setTimeout(detener, (notas.length * dur + 0.1) * 1000);
+        reproduciendo = { boton, nodos, timer };
+      }
+
+      form.querySelectorAll('.preview').forEach((boton) => {
+        boton.addEventListener('click', () => {
+          const eraEste = reproduciendo?.boton === boton;
+          detener();
+          if (!eraEste) reproducir(boton);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

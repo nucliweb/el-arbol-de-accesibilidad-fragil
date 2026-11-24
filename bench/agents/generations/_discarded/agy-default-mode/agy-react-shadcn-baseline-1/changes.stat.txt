@@ -1,0 +1,6 @@
+ index.html                      |   2 +-
+ src/App.tsx                     |  83 +++++++++++------
+ src/components/ProfilePage.tsx  |  72 +++++++++++++++
+ src/components/SettingsPage.tsx | 192 ++++++++++++++++++++++++++++++++++++++++
+ src/lib/ringtonePlayer.ts       | 131 +++++++++++++++++++++++++++
+ 5 files changed, 453 insertions(+), 27 deletions(-)

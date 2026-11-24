@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajustes · Sonido</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --text: #1a1d23;
+      --muted: #555b66;
+      --border: #c9ced6;
+      --accent: #2346c7;
+      --accent-text: #ffffff;
+      --focus: #2346c7;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121418;
+        --surface: #1c1f26;
+        --text: #eef0f4;
+        --muted: #aab1bd;
+        --border: #3a404c;
+        --accent: #8ea6ff;
+        --accent-text: #0d1020;
+        --focus: #8ea6ff;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -3rem;
+      padding: .5rem 1rem;
+      background: var(--accent);
+      color: var(--accent-text);
+      border-radius: .375rem;
+    }
+    .skip-link:focus { top: 1rem; }
+    header, main { max-width: 36rem; margin: 0 auto; padding: 1.5rem 1rem; }
+    header { padding-bottom: 0; }
+    h1 { font-size: 1.75rem; margin: 0; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .75rem;
+      padding: 1.25rem;
+    }
+    h2 { font-size: 1.25rem; margin: 0 0 1rem; }
+    fieldset { border: 0; margin: 0; padding: 0; }
+    legend { font-weight: 600; padding: 0; margin-bottom: .25rem; }
+    .hint { color: var(--muted); margin: 0 0 1rem; font-size: .9375rem; }
+    .options { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+    .option label {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      min-height: 3rem;
+      padding: .5rem .875rem;
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      cursor: pointer;
+    }
+    .option input {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      accent-color: var(--accent);
+      flex: none;
+    }
+    .option label:has(input:checked) {
+      border-color: var(--accent);
+      outline: 1px solid var(--accent);
+    }
+    .option input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+    button {
+      font: inherit;
+      min-height: 2.75rem;
+      padding: .5rem 1.125rem;
+      border-radius: .5rem;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+    }
+    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .primary { background: var(--accent); color: var(--accent-text); }
+    .secondary { background: transparent; color: var(--accent); }
+    .status { margin: 1rem 0 0; min-height: 1.5em; }
+    @media (prefers-reduced-motion: no-preference) {
+      button, .option label { transition: background-color .15s, border-color .15s; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header>
+    <h1>Ajustes</h1>
+  </header>
+
+  <main id="contenido">
+    <section class="card" aria-labelledby="sonido-titulo">
+      <h2 id="sonido-titulo">Sonido</h2>
+
+      <form id="ajustes-form">
+        <fieldset aria-describedby="tono-ayuda">
+          <legend>Tono de llamada</legend>
+          <p id="tono-ayuda" class="hint">Elige el sonido que se reproducirá al recibir una llamada.</p>
+
+          <ul class="options">
+            <li class="option">
+              <label><input type="radio" name="tono" value="calisto" checked> Calisto</label>
+            </li>
+            <li class="option">
+              <label><input type="radio" name="tono" value="ganimedes"> Ganímedes</label>
+            </li>
+            <li class="option">
+              <label><input type="radio" name="tono" value="luna"> Luna</label>
+            </li>
+            <li class="option">
+              <label><input type="radio" name="tono" value="europa"> Europa</label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <div class="actions">
+          <button type="button" class="secondary" id="escuchar">Escuchar tono seleccionado</button>
+          <button type="submit" class="primary">Guardar</button>
+        </div>
+
+        <p class="status" id="estado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = 'ajustes.tonoLlamada';
+      const form = document.getElementById('ajustes-form');
+      const estado = document.getElementById('estado');
+      const escuchar = document.getElementById('escuchar');
+
+      // Melodías de ejemplo (frecuencias en Hz) generadas con Web Audio.
+      const TONOS = {
+        calisto:   [523.25, 659.25, 783.99, 659.25],
+        ganimedes: [392.00, 493.88, 587.33, 783.99],
+        luna:      [659.25, 587.33, 523.25, 440.00],
+        europa:    [440.00, 554.37, 440.00, 659.25],
+      };
+
+      const nombreDe = (valor) =>
+        form.querySelector(`input[name="tono"][value="${valor}"]`)
+          .parentElement.textContent.trim();
+
+      const seleccionado = () => form.elements.tono.value;
+
+      // Restaurar preferencia guardada
+      try {
+        const guardado = localStorage.getItem(STORAGE_KEY);
+        if (guardado && TONOS[guardado]) form.elements.tono.value = guardado;
+      } catch { /* almacenamiento no disponible */ }
+
+      let ctx;
+      escuchar.addEventListener('click', () => {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) {
+          estado.textContent = 'Tu navegador no permite reproducir la vista previa.';
+          return;
+        }
+        ctx ??= new AudioCtx();
+        const notas = TONOS[seleccionado()];
+        const dur = 0.22;
+        const t0 = ctx.currentTime + 0.05;
+        notas.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const start = t0 + i * dur;
+          gain.gain.setValueAtTime(0, start);
+          gain.gain.linearRampToValueAtTime(0.25, start + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + dur);
+        });
+        estado.textContent = `Reproduciendo ${nombreDe(seleccionado())}.`;
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const valor = seleccionado();
+        try {
+          localStorage.setItem(STORAGE_KEY, valor);
+          estado.textContent = `Tono de llamada guardado: ${nombreDe(valor)}.`;
+        } catch {
+          estado.textContent = 'No se ha podido guardar el ajuste.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

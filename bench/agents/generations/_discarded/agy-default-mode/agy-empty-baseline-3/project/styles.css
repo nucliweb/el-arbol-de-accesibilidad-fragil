@@ -1,0 +1,322 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-subtle: #f0f3f9;
+  --surface-hover: #f7f9fc;
+  --border: #d9e1ec;
+  --text-primary: #141b2d;
+  --text-secondary: #52607a;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eff6ff;
+  --accent-text: #ffffff;
+  --focus-ring: #2563eb;
+  --success: #15803d;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface-subtle: #273549;
+    --surface-hover: #253349;
+    --border: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --accent: #60a5fa;
+    --accent-hover: #3b82f6;
+    --accent-soft: rgba(96, 165, 250, 0.14);
+    --accent-text: #0f172a;
+    --focus-ring: #93c5fd;
+    --success: #4ade80;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 560px;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0.5rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.settings-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.current-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--surface-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.summary-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.ringtone-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 1.25rem;
+}
+
+.fieldset-legend {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.875rem;
+  padding: 0;
+}
+
+.ringtone-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.ringtone-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+  background-color: var(--surface);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.ringtone-item:hover {
+  background-color: var(--surface-hover);
+}
+
+.ringtone-item:has(input[type="radio"]:checked) {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+.ringtone-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.625rem 0.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.ringtone-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.radio-indicator {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+
+.radio-indicator::after {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: var(--accent);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+
+.ringtone-option input[type="radio"]:checked + .radio-indicator {
+  border-color: var(--accent);
+}
+
+.ringtone-option input[type="radio"]:checked + .radio-indicator::after {
+  transform: scale(1);
+}
+
+.ringtone-option input[type="radio"]:focus-visible + .radio-indicator {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.tone-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tone-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tone-description {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.preview-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.preview-button:hover {
+  border-color: var(--accent);
+}
+
+.preview-button[aria-pressed="true"] {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.preview-button:focus-visible,
+.save-button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background-color: var(--surface-subtle);
+}
+
+.status-message {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--success);
+  min-height: 1.25rem;
+}
+
+.save-button {
+  padding: 0.625rem 1.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--accent-text);
+  background-color: var(--accent);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.save-button:hover {
+  background-color: var(--accent-hover);
+}
+
+@media (max-width: 480px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .radio-indicator::after {
+    background-color: Highlight;
+  }
+}
+
