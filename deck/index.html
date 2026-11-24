@@ -495,7 +495,7 @@ updateTabIndices() {
           <p>Crea una página de ajustes con un selector de tono de llamada. Las opciones son: Calisto, Ganímedes, Luna y Europa.</p>
         </blockquote>
         <ul>
-          <li>Claude Code (Claude Opus 5.5) y Antigravity (Gemini).</li>
+          <li>Claude Code (Claude Opus 5.5) y Antigravity (modelo por defecto).</li>
           <li>Perfiles limpios: sin skills, memoria ni configuración personal.</li>
           <li>Dos escenarios: una carpeta vacía y un proyecto React existente con shadcn/ui.</li>
           <li>3 repeticiones por combinación.</li>
@@ -503,7 +503,6 @@ updateTabIndices() {
         <div class="notes">
           <h3 id="experimento-notas">Notas</h3>
           <p>El experimento es sencillo. Este es el prompt, literal: crea una página de ajustes con un selector de tono de llamada, con estas cuatro opciones. No menciono ninguna tecnología.</p>
-          <!-- PENDIENTE: revisar este párrafo cuando estén los resultados de Antigravity. -->
           <p>Lo he lanzado con Claude Code y con Antigravity de Google, con perfiles limpios, sin mis skills ni mi configuración, para ver lo que obtendría cualquiera. En dos escenarios: una carpeta vacía y un proyecto React que ya existe y usa shadcn, que es como trabajamos casi siempre. Tres repeticiones de cada, porque los agentes no son deterministas.</p>
         </div>
       </section>
@@ -515,14 +514,13 @@ updateTabIndices() {
           <thead><tr><th scope="col">Agente</th><th scope="col">Qué generó</th><th scope="col" class="num">Radio nativo</th></tr></thead>
           <tbody>
             <tr><th scope="row">Claude Code</th><td>Un único <code>index.html</code></td><td class="num good">3 de 3</td></tr>
-            <!-- PENDIENTE: Antigravity se repite con --dangerously-skip-permissions --sandbox; los datos en modo por defecto se descartaron. -->
-            <tr><th scope="row">Antigravity</th><td>Pendiente</td><td class="num">–</td></tr>
+            <tr><th scope="row">Antigravity</th><td>HTML, CSS y JavaScript sin framework</td><td class="num good">3 de 3</td></tr>
           </tbody>
         </table>
         <p>Con <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, enlace para saltar al contenido y región <code>aria-live</code>.</p>
         <div class="notes">
           <h3 id="carpeta-vacia-notas">Notas</h3>
-          <p>Y aquí me llevé la primera sorpresa. Yo esperaba que la IA generara React y shadcn por defecto. Pues no: en una carpeta vacía, Claude generó las tres veces HTML semántico. Radios nativos, fieldset y legend, labels, un enlace para saltar al contenido e incluso una región aria-live para anunciar que se ha guardado. Sin framework.</p>
+          <p>Y aquí me llevé la primera sorpresa. Yo esperaba que la IA generara React y shadcn por defecto. Pues no: en una carpeta vacía, los dos agentes, las seis veces, generaron HTML semántico. Radios nativos, fieldset y legend, labels, un enlace para saltar al contenido e incluso una región aria-live para anunciar que se ha guardado. Sin framework.</p>
           <p>Cuando nadie les condiciona, los agentes eligen la plataforma.</p>
         </div>
       </section>
@@ -534,14 +532,13 @@ updateTabIndices() {
           <thead><tr><th scope="col">Agente</th><th scope="col" class="num"><code>RadioGroup</code> de Radix</th><th scope="col" class="num">Radio nativo</th></tr></thead>
           <tbody>
             <tr><th scope="row">Claude Code</th><td class="num bad">3 de 3</td><td class="num">0 de 3</td></tr>
-            <!-- PENDIENTE: resultados de Antigravity repetidos en sandbox. -->
-            <tr><th scope="row">Antigravity</th><td class="num">–</td><td class="num">–</td></tr>
+            <tr><th scope="row">Antigravity</th><td class="num bad">3 de 3</td><td class="num">0 de 3</td></tr>
           </tbody>
         </table>
         <p>El componente no estaba instalado: los agentes lo <strong>escribieron a mano</strong>, imitando el de shadcn.</p>
         <div class="notes">
           <h3 id="proyecto-react-notas">Notas</h3>
-          <p>Segundo escenario: el mismo prompt, pero dentro de un proyecto React con shadcn que ya tiene botones, tarjetas y campos de texto, pero no tiene el componente de radio. Las tres veces, Claude escribió a mano un RadioGroup de Radix, imitando el de shadcn: botones con rol de radio y JavaScript.</p>
+          <p>Segundo escenario: el mismo prompt, pero dentro de un proyecto React con shadcn que ya tiene botones, tarjetas y campos de texto, pero no tiene el componente de radio. Las seis veces, los dos agentes escribieron a mano un RadioGroup de Radix, imitando el de shadcn: botones con rol de radio y JavaScript. Ni una sola vez usaron el radio nativo que habían elegido en la carpeta vacía.</p>
         </div>
       </section>
 
@@ -573,21 +570,21 @@ updateTabIndices() {
       </section>
 
       <section class="slide" id="instalado-no-basta">
-        <h2 id="instalado-no-basta-titulo">Instalarlo no basta: el agente tiene que consultarlo</h2>
+        <h2 id="instalado-no-basta-titulo">Instalarlo no siempre basta: el agente tiene que consultarlo</h2>
         <table>
-          <caption>Claude Code en el proyecto React + shadcn</caption>
-          <thead><tr><th scope="col">Condición</th><th scope="col" class="num">Consultó Modern Web Guidance</th><th scope="col" class="num">Radio nativo</th></tr></thead>
+          <caption>Radio nativo en el proyecto React + shadcn (entre paréntesis, cuántas veces consultó Modern Web Guidance)</caption>
+          <thead><tr><th scope="col">Condición</th><th scope="col" class="num">Claude Code</th><th scope="col" class="num">Antigravity</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Sin Modern Web Guidance</th><td class="num">–</td><td class="num">0 de 3</td></tr>
-            <tr><th scope="row">Instalado</th><td class="num">1 de 3</td><td class="num">1 de 3</td></tr>
-            <tr><th scope="row">Instalado + <code>AGENTS.md</code></th><td class="num good">3 de 3</td><td class="num good">3 de 3</td></tr>
+            <tr><th scope="row">Sin Modern Web Guidance</th><td class="num">0 de 3</td><td class="num">0 de 3</td></tr>
+            <tr><th scope="row">Instalado</th><td class="num">1 de 3 (1)</td><td class="num good">3 de 3 (3)</td></tr>
+            <tr><th scope="row">Instalado + <code>AGENTS.md</code></th><td class="num good">3 de 3 (3)</td><td class="num good">3 de 3 (3)</td></tr>
           </tbody>
         </table>
-        <!-- PENDIENTE: añadir los resultados de Antigravity con Modern Web Guidance y con AGENTS.md. -->
         <div class="notes">
           <h3 id="instalado-no-basta-notas">Notas</h3>
-          <p>Lo instalé y repetí el experimento. En el proyecto React, con Modern Web Guidance solo instalado, Claude lo consultó una de cada tres veces. Y fijaos: esa vez, y solo esa vez, usó el radio nativo. Las otras dos ni lo miró y volvió a escribir el componente de Radix.</p>
-          <p>Así que instalarlo no basta. Añadí al proyecto un fichero AGENTS.md de dos líneas, el que recomienda la propia documentación, y el resultado fue tres de tres: siempre lo consultó y siempre usó el radio nativo, dentro del mismo proyecto React.</p>
+          <p>Lo instalé y repetí el experimento en el proyecto React. Antigravity lo consultó siempre y las tres veces usó el radio nativo. Claude solo lo consultó una de cada tres veces. Y fijaos: esa vez, y solo esa vez, usó el radio nativo. Las otras dos ni lo miró y volvió a escribir el componente de Radix.</p>
+          <p>Así que instalarlo no siempre basta: depende de que el agente decida consultarlo. Añadí al proyecto un fichero AGENTS.md de dos líneas, el que recomienda la propia documentación, y el resultado fue tres de tres en los dos agentes: siempre lo consultaron y siempre usaron el radio nativo, dentro del mismo proyecto React.</p>
+          <p>Un detalle de método: en Claude, que consultó la guía, lo he comprobado en el registro de herramientas; en Antigravity, por lo que el propio agente dice en su respuesta.</p>
         </div>
       </section>
 
