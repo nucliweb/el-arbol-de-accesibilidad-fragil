@@ -155,3 +155,12 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+
+# Reference material: third-party video and the 2025 lightning talk export
+resources/
+
+# Process log: local only, contains the user's literal prompts
+docs/process-log.jsonl
+
+# macOS
+.DS_Store

@@ -31,7 +31,7 @@ One JSON object per line, with these fields:
 | Field | Required | Description |
 | --- | --- | --- |
 | `ts` | yes | ISO 8601 timestamp with offset, e.g. `2026-11-23T16:34:35+01:00`. |
-| `type` | yes | `request`, `decision`, `requirement`, `action` or `verification`. |
+| `type` | yes | `request`, `finding`, `decision`, `requirement`, `action` or `verification`. A `finding` is a fact learned from analysis or research that later decisions build on. |
 | `by` | yes | `user` or `claude`. |
 | `summary` | yes | One sentence describing what happened. |
 | `rationale` | no | Why, including the alternatives that were discarded. |
@@ -40,4 +40,4 @@ One JSON object per line, with these fields:
 
 Keep the file valid JSONL: check every line with `jq -c . docs/process-log.jsonl > /dev/null` after appending.
 
-Every commit includes `docs/process-log.jsonl`. Before committing, append the entries for the work being committed (including the commit itself) and stage the log along with the other files. Never create commits that only contain log entries.
+The log is local only: it is git-ignored because it holds the user's literal prompts and the repository is public. Never stage or commit it. Before each commit, still append the entries for the work being committed, including the commit itself.
