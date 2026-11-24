@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Tono de llamada | Ajustes</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Preferencias del dispositivo</p>
+      <h1>Ajustes</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="settings-card">
+      <div class="section-header">
+        <h2 id="sound-heading">Sonido y llamadas</h2>
+        <p class="current-setting">
+          Tono actual: <strong id="current-ringtone">Calisto</strong>
+        </p>
+      </div>
+
+      <form id="ringtone-form" aria-labelledby="sound-heading">
+        <fieldset class="ringtone-fieldset" aria-describedby="ringtone-hint">
+          <legend>Tono de llamada</legend>
+          <p id="ringtone-hint" class="field-hint">
+            Selecciona el tono que sonará al recibir una llamada entrante.
+          </p>
+
+          <div class="radio-group">
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="ringtone-calisto"
+                name="ringtone"
+                value="calisto"
+                checked
+              >
+              <label for="ringtone-calisto">Calisto</label>
+            </div>
+
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="ringtone-ganimedes"
+                name="ringtone"
+                value="ganimedes"
+              >
+              <label for="ringtone-ganimedes">Ganímedes</label>
+            </div>
+
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="ringtone-luna"
+                name="ringtone"
+                value="luna"
+              >
+              <label for="ringtone-luna">Luna</label>
+            </div>
+
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="ringtone-europa"
+                name="ringtone"
+                value="europa"
+              >
+              <label for="ringtone-europa">Europa</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            Guardar cambios
+          </button>
+          <button
+            type="button"
+            id="preview-button"
+            class="btn btn-secondary"
+            aria-pressed="false"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path id="preview-icon-path" fill="currentColor" d="M8 5v14l11-7z"/>
+            </svg>
+            <span>Escuchar tono</span>
+          </button>
+        </div>
+
+        <p id="status-message" class="status-message" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="container">
+      <p>Los ajustes de sonido se guardan localmente en este navegador.</p>
+    </div>
+  </footer>
+</body>
+</html>

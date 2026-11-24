@@ -1,0 +1,12 @@
+{
+  "agent": "agy",
+  "scenario": "react-shadcn",
+  "condition": "mwg",
+  "rep": 1,
+  "prompt": "Crea una página de ajustes con un selector de tono de llamada. Las opciones son: Calisto, Ganímedes, Luna y Europa.",
+  "cliVersion": "1.5.16",
+  "startedAt": "2026-11-24T07:09:53.808Z",
+  "exitCode": 0,
+  "timedOut": false,
+  "durationMs": 412187
+}

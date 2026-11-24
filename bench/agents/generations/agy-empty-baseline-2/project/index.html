@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajustes — Tono de llamada</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <p class="page-eyebrow">Sonido y notificaciones</p>
+        <h1>Ajustes</h1>
+        <p class="page-subtitle">
+          Configura cómo suena tu dispositivo cuando recibes una llamada.
+        </p>
+      </header>
+
+      <main>
+        <section class="settings-card" aria-labelledby="sound-section-title">
+          <div class="card-header">
+            <div>
+              <h2 id="sound-section-title">Llamadas entrantes</h2>
+              <p class="card-description">
+                Elige un tono de llamada y pulsa «Escuchar» para probarlo.
+              </p>
+            </div>
+            <div class="current-badge">
+              <span class="current-badge-label">Actual:</span>
+              <strong id="current-ringtone-name">Calisto</strong>
+            </div>
+          </div>
+
+          <form id="ringtone-form" class="ringtone-form">
+            <fieldset class="ringtone-fieldset">
+              <legend class="ringtone-legend">Tono de llamada</legend>
+
+              <ul class="ringtone-list">
+                <li class="ringtone-item">
+                  <label class="ringtone-option" for="ringtone-calisto">
+                    <input
+                      type="radio"
+                      id="ringtone-calisto"
+                      name="ringtone"
+                      value="calisto"
+                      class="ringtone-input"
+                      checked
+                    />
+                    <span class="ringtone-info">
+                      <span class="ringtone-name">Calisto</span>
+                      <span class="ringtone-desc">Acorde cristalino y sereno</span>
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    class="preview-button"
+                    data-ringtone="calisto"
+                    aria-label="Escuchar tono Calisto"
+                    aria-pressed="false"
+                  >
+                    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M8 5.14v14l11-7-11-7z" fill="currentColor" />
+                    </svg>
+                    <svg class="icon icon-stop" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+                    </svg>
+                    <span class="preview-text">Escuchar</span>
+                  </button>
+                </li>
+
+                <li class="ringtone-item">
+                  <label class="ringtone-option" for="ringtone-ganimedes">
+                    <input
+                      type="radio"
+                      id="ringtone-ganimedes"
+                      name="ringtone"
+                      value="ganimedes"
+                      class="ringtone-input"
+                    />
+                    <span class="ringtone-info">
+                      <span class="ringtone-name">Ganímedes</span>
+                      <span class="ringtone-desc">Campanas cálidas y resonantes</span>
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    class="preview-button"
+                    data-ringtone="ganimedes"
+                    aria-label="Escuchar tono Ganímedes"
+                    aria-pressed="false"
+                  >
+                    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M8 5.14v14l11-7-11-7z" fill="currentColor" />
+                    </svg>
+                    <svg class="icon icon-stop" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+                    </svg>
+                    <span class="preview-text">Escuchar</span>
+                  </button>
+                </li>
+
+                <li class="ringtone-item">
+                  <label class="ringtone-option" for="ringtone-luna">
+                    <input
+                      type="radio"
+                      id="ringtone-luna"
+                      name="ringtone"
+                      value="luna"
+                      class="ringtone-input"
+                    />
+                    <span class="ringtone-info">
+                      <span class="ringtone-name">Luna</span>
+                      <span class="ringtone-desc">Melodía nocturna y suave</span>
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    class="preview-button"
+                    data-ringtone="luna"
+                    aria-label="Escuchar tono Luna"
+                    aria-pressed="false"
+                  >
+                    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M8 5.14v14l11-7-11-7z" fill="currentColor" />
+                    </svg>
+                    <svg class="icon icon-stop" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+                    </svg>
+                    <span class="preview-text">Escuchar</span>
+                  </button>
+                </li>
+
+                <li class="ringtone-item">
+                  <label class="ringtone-option" for="ringtone-europa">
+                    <input
+                      type="radio"
+                      id="ringtone-europa"
+                      name="ringtone"
+                      value="europa"
+                      class="ringtone-input"
+                    />
+                    <span class="ringtone-info">
+                      <span class="ringtone-name">Europa</span>
+                      <span class="ringtone-desc">Destello brillante y definido</span>
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    class="preview-button"
+                    data-ringtone="europa"
+                    aria-label="Escuchar tono Europa"
+                    aria-pressed="false"
+                  >
+                    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M8 5.14v14l11-7-11-7z" fill="currentColor" />
+                    </svg>
+                    <svg class="icon icon-stop" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+                    </svg>
+                    <span class="preview-text">Escuchar</span>
+                  </button>
+                </li>
+              </ul>
+            </fieldset>
+
+            <div class="form-footer">
+              <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+              <button type="submit" class="save-button" id="save-button">
+                Guardar cambios
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

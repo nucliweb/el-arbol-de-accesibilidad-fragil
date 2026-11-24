@@ -1,0 +1,433 @@
+:root {
+  color-scheme: light dark;
+
+  /* Raw light and dark palette tokens (WCAG AA/AAA contrast) */
+  --color-bg-light: #f4f6f9;
+  --color-bg-dark: #0f1319;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #181f28;
+  --color-surface-hover-light: #eef3f9;
+  --color-surface-hover-dark: #212b38;
+  --color-surface-selected-light: #e5f0fb;
+  --color-surface-selected-dark: #1a2d42;
+
+  --color-text-light: #151920;
+  --color-text-dark: #f1f5f9;
+  --color-text-muted-light: #475467;
+  --color-text-muted-dark: #b8c4d4;
+
+  --color-border-light: #6b7685;
+  --color-border-dark: #8594a6;
+  --color-border-subtle-light: #cbd2dc;
+  --color-border-subtle-dark: #323e4e;
+
+  --color-accent-light: #0f4c81;
+  --color-accent-dark: #7cc4fa;
+  --color-accent-hover-light: #0b3a63;
+  --color-accent-hover-dark: #9ed4fc;
+  --color-accent-text-light: #ffffff;
+  --color-accent-text-dark: #0b1929;
+
+  --color-focus-light: #0b57d0;
+  --color-focus-dark: #8ab4f8;
+
+  --color-status-bg-light: #e6f4ea;
+  --color-status-bg-dark: #132e21;
+  --color-status-text-light: #13542d;
+  --color-status-text-dark: #9be5b4;
+  --color-status-border-light: #2c7a4b;
+  --color-status-border-dark: #56b87a;
+
+  /* Default (light) semantic tokens */
+  --color-bg: var(--color-bg-light);
+  --color-surface: var(--color-surface-light);
+  --color-surface-hover: var(--color-surface-hover-light);
+  --color-surface-selected: var(--color-surface-selected-light);
+  --color-text: var(--color-text-light);
+  --color-text-muted: var(--color-text-muted-light);
+  --color-border: var(--color-border-light);
+  --color-border-subtle: var(--color-border-subtle-light);
+  --color-accent: var(--color-accent-light);
+  --color-accent-hover: var(--color-accent-hover-light);
+  --color-accent-text: var(--color-accent-text-light);
+  --color-focus: var(--color-focus-light);
+  --color-status-bg: var(--color-status-bg-light);
+  --color-status-text: var(--color-status-text-light);
+  --color-status-border: var(--color-status-border-light);
+
+  accent-color: var(--color-accent);
+}
+
+/* Fallback for browsers without light-dark() support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: var(--color-bg-dark);
+    --color-surface: var(--color-surface-dark);
+    --color-surface-hover: var(--color-surface-hover-dark);
+    --color-surface-selected: var(--color-surface-selected-dark);
+    --color-text: var(--color-text-dark);
+    --color-text-muted: var(--color-text-muted-dark);
+    --color-border: var(--color-border-dark);
+    --color-border-subtle: var(--color-border-subtle-dark);
+    --color-accent: var(--color-accent-dark);
+    --color-accent-hover: var(--color-accent-hover-dark);
+    --color-accent-text: var(--color-accent-text-dark);
+    --color-focus: var(--color-focus-dark);
+    --color-status-bg: var(--color-status-bg-dark);
+    --color-status-text: var(--color-status-text-dark);
+    --color-status-border: var(--color-status-border-dark);
+  }
+}
+
+/* Modern light-dark() token resolution */
+@supports (color: light-dark(white, black)) {
+  :root {
+    --color-bg: light-dark(var(--color-bg-light), var(--color-bg-dark));
+    --color-surface: light-dark(var(--color-surface-light), var(--color-surface-dark));
+    --color-surface-hover: light-dark(var(--color-surface-hover-light), var(--color-surface-hover-dark));
+    --color-surface-selected: light-dark(var(--color-surface-selected-light), var(--color-surface-selected-dark));
+    --color-text: light-dark(var(--color-text-light), var(--color-text-dark));
+    --color-text-muted: light-dark(var(--color-text-muted-light), var(--color-text-muted-dark));
+    --color-border: light-dark(var(--color-border-light), var(--color-border-dark));
+    --color-border-subtle: light-dark(var(--color-border-subtle-light), var(--color-border-subtle-dark));
+    --color-accent: light-dark(var(--color-accent-light), var(--color-accent-dark));
+    --color-accent-hover: light-dark(var(--color-accent-hover-light), var(--color-accent-hover-dark));
+    --color-accent-text: light-dark(var(--color-accent-text-light), var(--color-accent-text-dark));
+    --color-focus: light-dark(var(--color-focus-light), var(--color-focus-dark));
+    --color-status-bg: light-dark(var(--color-status-bg-light), var(--color-status-bg-dark));
+    --color-status-text: light-dark(var(--color-status-text-light), var(--color-status-text-dark));
+    --color-status-border: light-dark(var(--color-status-border-light), var(--color-status-border-dark));
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.container {
+  inline-size: min(100% - 2rem, 36rem);
+  margin-inline: auto;
+}
+
+.page-header {
+  padding-block: 2rem 1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+main {
+  flex: 1;
+  padding-block: 0.5rem 2rem;
+}
+
+.settings-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-block-end: 1rem;
+  margin-block-end: 1.25rem;
+  border-block-end: 1px solid var(--color-border-subtle);
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.current-setting {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.current-setting strong {
+  color: var(--color-text);
+}
+
+.ringtone-fieldset {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.ringtone-fieldset legend {
+  padding: 0;
+  margin-block-end: 0.25rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.field-hint {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.radio-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-block-size: 3rem;
+  padding-inline: 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+  background-color: var(--color-surface);
+}
+
+.radio-option:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+  background-color: var(--color-surface-selected);
+  border-color: var(--color-accent);
+}
+
+.radio-option input[type="radio"] {
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio-option label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-block-size: 3rem;
+  padding-block: 0.625rem;
+  font-size: max(1rem, 1em);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked + label {
+  font-weight: 600;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-block-size: 3rem;
+  padding: 0.625rem 1.25rem;
+  font: inherit;
+  font-size: max(1rem, 1em);
+  font-weight: 600;
+  line-height: 1.25;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.btn-secondary[aria-pressed="true"] {
+  background-color: var(--color-surface-selected);
+  border-color: var(--color-accent);
+}
+
+.btn-icon {
+  flex: none;
+}
+
+/* High-contrast keyboard focus indicators */
+:where(input, button):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.status-message {
+  margin: 1rem 0 0;
+  min-block-size: 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-status-text);
+}
+
+.status-message:not(:empty) {
+  padding: 0.75rem 1rem;
+  background-color: var(--color-status-bg);
+  border: 1px solid var(--color-status-border);
+  border-radius: 0.5rem;
+}
+
+.page-footer {
+  padding-block: 1rem 2rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+/* Larger tap targets on coarse pointers (touchscreens) */
+@media (pointer: coarse) {
+  .radio-option,
+  .radio-option label,
+  .btn {
+    min-block-size: 3.25rem;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: no-preference) {
+  .radio-option,
+  .btn {
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+}
+
+/* Fallback for browsers without accent-color support */
+@supports not (accent-color: auto) {
+  .radio-option input[type="radio"] {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .radio-option label {
+    position: relative;
+    padding-inline-start: 2rem;
+  }
+
+  .radio-option input[type="radio"] + label::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    background-color: var(--color-surface);
+  }
+
+  .radio-option input[type="radio"]:checked + label::before {
+    border-color: var(--color-accent);
+  }
+
+  .radio-option input[type="radio"]:checked + label::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0.3125rem;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+  }
+
+  .radio-option input[type="radio"]:focus-visible + label::before {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Forced Colors Mode (Windows High Contrast) */
+@media (forced-colors: active) {
+  .settings-card,
+  .radio-option,
+  .btn,
+  .status-message:not(:empty) {
+    border-color: ButtonBorder;
+  }
+
+  .radio-option:has(input[type="radio"]:checked),
+  .btn-secondary[aria-pressed="true"] {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  :where(input, button):focus-visible {
+    outline: 3px solid Highlight;
+  }
+
+  @supports not (accent-color: auto) {
+    .radio-option input[type="radio"]:checked + label::after {
+      background-color: transparent;
+      border: 0.3125rem solid Highlight;
+    }
+  }
+}

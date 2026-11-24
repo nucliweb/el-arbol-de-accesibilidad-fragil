@@ -1,0 +1,652 @@
+diff --git a/index.html b/index.html
+index 6d61415..cba0f77 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes | Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..bc5005d 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,38 +1,154 @@
++import { useId, useState, type FormEvent } from 'react'
++import { CheckCircle2 } from 'lucide-react'
++import { RingtoneSettingsForm } from '@/components/RingtoneSettingsForm'
+ import { Button } from '@/components/ui/button'
+-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from '@/components/ui/card'
+ import { Input } from '@/components/ui/input'
+ import { Label } from '@/components/ui/label'
+ 
+ export default function App() {
++  const profileHeadingId = useId()
++  const nameInputId = useId()
++  const emailInputId = useId()
++
++  const [name, setName] = useState('Ada Lovelace')
++  const [email, setEmail] = useState('ada@example.com')
++  const [statusMessage, setStatusMessage] = useState('')
++
++  function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setStatusMessage('Perfil guardado correctamente.')
++  }
++
+   return (
+     <div className="min-h-screen bg-background text-foreground">
++      <a href="#contenido-principal" className="skip-link visually-hidden">
++        Ir al contenido principal
++      </a>
++
+       <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
++        <nav
++          aria-label="Principal"
++          className="mx-auto flex max-w-3xl items-center justify-between gap-6 px-4 py-3"
++        >
+           <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+-            Perfil
+-          </a>
++          <ul className="flex items-center gap-5 text-sm">
++            <li>
++              <a
++                href="#tono-de-llamada"
++                className="settings-nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-foreground"
++              >
++                Tono de llamada
++              </a>
++            </li>
++            <li>
++              <a
++                href="#perfil"
++                className="settings-nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-foreground"
++              >
++                Perfil
++              </a>
++            </li>
++          </ul>
+         </nav>
+       </header>
+-      <main className="mx-auto max-w-3xl p-4">
++
++      <main className="mx-auto grid max-w-3xl gap-6 px-4 py-8">
++        <div className="grid gap-1">
++          <h1
++            id="contenido-principal"
++            tabIndex={-1}
++            className="settings-heading text-2xl font-semibold tracking-tight"
++          >
++            Ajustes
++          </h1>
++          <p className="text-sm text-muted-foreground">
++            Configura tus preferencias de sonido y los datos de tu cuenta.
++          </p>
++        </div>
++
++        <div
++          role="status"
++          className={
++            statusMessage
++              ? 'flex items-center gap-2 rounded-lg border border-[var(--control-border)] bg-muted px-4 py-3 text-sm font-medium text-foreground'
++              : 'visually-hidden'
++          }
++        >
++          {statusMessage && (
++            <>
++              <CheckCircle2 aria-hidden="true" className="size-4 shrink-0" />
++              <span>{statusMessage}</span>
++            </>
++          )}
++        </div>
++
++        <RingtoneSettingsForm onSaved={setStatusMessage} />
++
+         <Card id="perfil">
+           <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
++            <CardTitle asChild>
++              <h2 id={profileHeadingId}>Perfil</h2>
++            </CardTitle>
+             <CardDescription>Datos visibles para tus contactos.</CardDescription>
+           </CardHeader>
+-          <CardContent className="grid gap-4">
+-            <div className="grid gap-2">
+-              <Label htmlFor="nombre">Nombre</Label>
+-              <Input id="nombre" defaultValue="Ada Lovelace" />
+-            </div>
+-            <div className="grid gap-2">
+-              <Label htmlFor="email">Correo electrónico</Label>
+-              <Input id="email" type="email" defaultValue="ada@example.com" />
+-            </div>
+-          </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
+-          </CardFooter>
++
++          <form
++            aria-labelledby={profileHeadingId}
++            onSubmit={handleProfileSubmit}
++            className="flex flex-col gap-4"
++          >
++            <CardContent className="grid gap-6">
++              <div className="grid gap-1.5">
++                <Label htmlFor={nameInputId}>
++                  Nombre <span aria-hidden="true" className="text-destructive">*</span>
++                </Label>
++                <Input
++                  id={nameInputId}
++                  name="name"
++                  type="text"
++                  autoComplete="name"
++                  required
++                  value={name}
++                  onChange={(event) => setName(event.target.value)}
++                  className="settings-input"
++                />
++              </div>
++
++              <div className="grid gap-1.5">
++                <Label htmlFor={emailInputId}>
++                  Correo electrónico <span aria-hidden="true" className="text-destructive">*</span>
++                </Label>
++                <Input
++                  id={emailInputId}
++                  name="email"
++                  type="email"
++                  inputMode="email"
++                  autoComplete="email"
++                  autoCorrect="off"
++                  autoCapitalize="none"
++                  spellCheck={false}
++                  required
++                  value={email}
++                  onChange={(event) => setEmail(event.target.value)}
++                  className="settings-input"
++                />
++              </div>
++            </CardContent>
++
++            <CardFooter>
++              <Button type="submit" className="settings-submit">
++                Guardar perfil
++              </Button>
++            </CardFooter>
++          </form>
+         </Card>
+       </main>
+     </div>
+diff --git a/src/components/RingtoneSettingsForm.tsx b/src/components/RingtoneSettingsForm.tsx
+new file mode 100644
+index 0000000..10f26ff
+--- /dev/null
++++ b/src/components/RingtoneSettingsForm.tsx
+@@ -0,0 +1,132 @@
++import { useId, useState, type FormEvent } from 'react'
++import { Check } from 'lucide-react'
++import { Button } from '@/components/ui/button'
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from '@/components/ui/card'
++
++const RINGTONE_OPTIONS = [
++  { value: 'calisto', label: 'Calisto' },
++  { value: 'ganimedes', label: 'Ganímedes' },
++  { value: 'luna', label: 'Luna' },
++  { value: 'europa', label: 'Europa' },
++] as const
++
++type RingtoneValue = (typeof RINGTONE_OPTIONS)[number]['value']
++
++const STORAGE_KEY = 'settings:ringtone'
++
++function isRingtoneValue(value: string | null): value is RingtoneValue {
++  return RINGTONE_OPTIONS.some((option) => option.value === value)
++}
++
++function getInitialRingtone(): RingtoneValue {
++  if (typeof window === 'undefined') {
++    return 'calisto'
++  }
++  try {
++    const stored = window.localStorage.getItem(STORAGE_KEY)
++    if (isRingtoneValue(stored)) {
++      return stored
++    }
++  } catch {
++    // Ignore storage access errors in restricted contexts
++  }
++  return 'calisto'
++}
++
++interface RingtoneSettingsFormProps {
++  onSaved: (message: string) => void
++}
++
++export function RingtoneSettingsForm({ onSaved }: RingtoneSettingsFormProps) {
++  const headingId = useId()
++  const descriptionId = useId()
++  const groupPrefix = useId()
++
++  const [savedRingtone, setSavedRingtone] = useState<RingtoneValue>(getInitialRingtone)
++  const [selectedRingtone, setSelectedRingtone] = useState<RingtoneValue>(savedRingtone)
++
++  const savedLabel =
++    RINGTONE_OPTIONS.find((option) => option.value === savedRingtone)?.label ?? 'Calisto'
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setSavedRingtone(selectedRingtone)
++    try {
++      window.localStorage.setItem(STORAGE_KEY, selectedRingtone)
++    } catch {
++      // Ignore storage write errors in restricted contexts
++    }
++    const chosenLabel =
++      RINGTONE_OPTIONS.find((option) => option.value === selectedRingtone)?.label ?? selectedRingtone
++    onSaved(`Tono de llamada guardado: ${chosenLabel}.`)
++  }
++
++  return (
++    <Card id="tono-de-llamada">
++      <CardHeader>
++        <CardTitle asChild>
++          <h2 id={headingId}>Tono de llamada</h2>
++        </CardTitle>
++        <CardDescription id={descriptionId}>
++          Elige el tono que sonará al recibir llamadas entrantes. Tono activo:{' '}
++          <strong className="font-medium text-foreground">{savedLabel}</strong>.
++        </CardDescription>
++      </CardHeader>
++
++      <form aria-labelledby={headingId} onSubmit={handleSubmit} className="flex flex-col gap-4">
++        <CardContent>
++          <fieldset className="grid gap-3 border-0 p-0" aria-describedby={descriptionId}>
++            <legend className="mb-2 text-sm font-medium text-foreground">
++              Opciones de tono de llamada
++            </legend>
++            <div className="grid gap-2.5">
++              {RINGTONE_OPTIONS.map((option) => {
++                const optionId = `${groupPrefix}-${option.value}`
++                const isSelected = selectedRingtone === option.value
++
++                return (
++                  <div key={option.value} className="ringtone-option">
++                    <input
++                      type="radio"
++                      id={optionId}
++                      name="ringtone"
++                      value={option.value}
++                      checked={isSelected}
++                      onChange={() => setSelectedRingtone(option.value)}
++                      className="ringtone-radio"
++                    />
++                    <label htmlFor={optionId} className="ringtone-label">
++                      {option.label}
++                    </label>
++                    {isSelected && (
++                      <Check
++                        aria-hidden="true"
++                        className="size-4 shrink-0 text-foreground"
++                      />
++                    )}
++                  </div>
++                )
++              })}
++            </div>
++          </fieldset>
++        </CardContent>
++
++        <CardFooter className="justify-between gap-3">
++          <Button type="submit" className="settings-submit">
++            Guardar tono
++          </Button>
++          {selectedRingtone !== savedRingtone && (
++            <span className="text-sm text-muted-foreground">Cambios sin guardar</span>
++          )}
++        </CardFooter>
++      </form>
++    </Card>
++  )
++}
+diff --git a/src/components/ui/card.tsx b/src/components/ui/card.tsx
+index cf02f48..f506d2c 100644
+--- a/src/components/ui/card.tsx
++++ b/src/components/ui/card.tsx
+@@ -1,5 +1,6 @@
+ import * as React from "react"
+ import { cn } from "cn"
++import { Slot } from "radix-ui"
+ 
+ function Card({
+   className,
+@@ -32,9 +33,14 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+   )
+ }
+ 
+-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
++function CardTitle({
++  className,
++  asChild = false,
++  ...props
++}: React.ComponentProps<"div"> & { asChild?: boolean }) {
++  const Comp = asChild ? Slot.Root : "div"
+   return (
+-    <div
++    <Comp
+       data-slot="card-title"
+       className={cn(
+         "font-heading text-base leading-snug font-medium group-data-[size=sm]/card:text-sm",
+diff --git a/src/index.css b/src/index.css
+index fb3c7e9..0a8ce41 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -49,6 +49,7 @@
+ }
+ 
+ :root {
++    color-scheme: light dark;
+     --background: oklch(1 0 0);
+     --foreground: oklch(0.145 0 0);
+     --card: oklch(1 0 0);
+@@ -60,13 +61,16 @@
+     --secondary: oklch(0.97 0 0);
+     --secondary-foreground: oklch(0.205 0 0);
+     --muted: oklch(0.97 0 0);
+-    --muted-foreground: oklch(0.556 0 0);
++    --muted-foreground: oklch(0.45 0 0);
+     --accent: oklch(0.97 0 0);
+     --accent-foreground: oklch(0.205 0 0);
+     --destructive: oklch(0.577 0.245 27.325);
+-    --border: oklch(0.922 0 0);
+-    --input: oklch(0.922 0 0);
+-    --ring: oklch(0.708 0 0);
++    --border: oklch(0.86 0 0);
++    --input: oklch(0.556 0 0);
++    --ring: oklch(0.35 0 0);
++    --control-accent: oklch(0.205 0 0);
++    --control-border: oklch(0.556 0 0);
++    --focus-outline: oklch(0.42 0.19 260);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -83,7 +87,34 @@
+     --sidebar-ring: oklch(0.708 0 0);
+ }
+ 
++@media (prefers-color-scheme: dark) {
++    :root:not(.light) {
++        --background: oklch(0.145 0 0);
++        --foreground: oklch(0.985 0 0);
++        --card: oklch(0.205 0 0);
++        --card-foreground: oklch(0.985 0 0);
++        --popover: oklch(0.205 0 0);
++        --popover-foreground: oklch(0.985 0 0);
++        --primary: oklch(0.922 0 0);
++        --primary-foreground: oklch(0.205 0 0);
++        --secondary: oklch(0.269 0 0);
++        --secondary-foreground: oklch(0.985 0 0);
++        --muted: oklch(0.269 0 0);
++        --muted-foreground: oklch(0.74 0 0);
++        --accent: oklch(0.269 0 0);
++        --accent-foreground: oklch(0.985 0 0);
++        --destructive: oklch(0.704 0.191 22.216);
++        --border: oklch(1 0 0 / 16%);
++        --input: oklch(0.68 0 0);
++        --ring: oklch(0.78 0 0);
++        --control-accent: oklch(0.546 0.245 262.881);
++        --control-border: oklch(0.68 0 0);
++        --focus-outline: oklch(0.76 0.16 255);
++    }
++}
++
+ .dark {
++    color-scheme: dark;
+     --background: oklch(0.145 0 0);
+     --foreground: oklch(0.985 0 0);
+     --card: oklch(0.205 0 0);
+@@ -95,13 +126,16 @@
+     --secondary: oklch(0.269 0 0);
+     --secondary-foreground: oklch(0.985 0 0);
+     --muted: oklch(0.269 0 0);
+-    --muted-foreground: oklch(0.708 0 0);
++    --muted-foreground: oklch(0.74 0 0);
+     --accent: oklch(0.269 0 0);
+     --accent-foreground: oklch(0.985 0 0);
+     --destructive: oklch(0.704 0.191 22.216);
+-    --border: oklch(1 0 0 / 10%);
+-    --input: oklch(1 0 0 / 15%);
+-    --ring: oklch(0.556 0 0);
++    --border: oklch(1 0 0 / 16%);
++    --input: oklch(0.68 0 0);
++    --ring: oklch(0.78 0 0);
++    --control-accent: oklch(0.546 0.245 262.881);
++    --control-border: oklch(0.68 0 0);
++    --focus-outline: oklch(0.76 0.16 255);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -120,11 +154,200 @@
+ @layer base {
+   * {
+     @apply border-border outline-ring/50;
+-    }
++  }
+   body {
+     @apply bg-background text-foreground;
+-    }
++    accent-color: var(--control-accent);
++  }
+   html {
+     @apply font-sans;
+-    }
++  }
++}
++
++/* Accessible visually-hidden utility with focus opt-out for skip links */
++.visually-hidden:where(:not(:focus-within, :active)) {
++  position: absolute !important;
++  clip-path: inset(50%) !important;
++  overflow: hidden !important;
++  width: 1px !important;
++  height: 1px !important;
++  margin: -1px !important;
++  padding: 0 !important;
++  border: 0 !important;
++  white-space: nowrap !important;
++}
++
++.skip-link:focus-visible {
++  position: fixed;
++  inset-block-start: 0.75rem;
++  inset-inline-start: 0.75rem;
++  z-index: 50;
++  padding-block: 0.5rem;
++  padding-inline: 1rem;
++  border-radius: var(--radius-md);
++  background-color: var(--primary);
++  color: var(--primary-foreground);
++  font-size: 0.875rem;
++  font-weight: 500;
++  outline: 3px solid var(--focus-outline);
++  outline-offset: 2px;
++}
++
++/* Accessible form controls: minimum 1rem font size & 48px tap targets */
++.settings-input {
++  font: inherit;
++  font-size: max(1rem, 1em);
++  min-block-size: 48px;
++  border-color: var(--control-border);
++}
++
++.settings-input:user-invalid {
++  border-color: var(--destructive);
++}
++
++.settings-input:focus-visible,
++.settings-submit:focus-visible,
++.settings-nav-link:focus-visible,
++.settings-heading:focus-visible {
++  outline: 3px solid var(--focus-outline);
++  outline-offset: 2px;
++}
++
++.settings-submit {
++  min-block-size: 48px;
++  padding-inline: 1rem;
++  font-size: max(1rem, 1em);
++}
++
++/* Native radio group options */
++.ringtone-option {
++  position: relative;
++  display: flex;
++  align-items: center;
++  gap: 0.75rem;
++  min-block-size: 48px;
++  padding-inline: 0.875rem;
++  border: 2px solid var(--control-border);
++  border-radius: var(--radius-lg);
++  background-color: var(--card);
++  transition: background-color 150ms ease, border-color 150ms ease;
++}
++
++.ringtone-option:hover {
++  background-color: var(--muted);
++}
++
++.ringtone-option:has(.ringtone-radio:checked) {
++  border-color: var(--control-accent);
++  background-color: color-mix(in oklab, var(--muted) 65%, var(--card));
++}
++
++.ringtone-radio {
++  flex: none;
++  inline-size: 1.25rem;
++  block-size: 1.25rem;
++  margin: 0;
++  cursor: pointer;
++  accent-color: var(--control-accent);
++}
++
++.ringtone-radio:focus-visible {
++  outline: 3px solid var(--focus-outline);
++  outline-offset: 3px;
++}
++
++.ringtone-label {
++  flex: 1;
++  display: flex;
++  align-items: center;
++  min-block-size: 48px;
++  padding-block: 0.625rem;
++  font: inherit;
++  font-size: max(1rem, 1em);
++  line-height: 1.4;
++  font-weight: 500;
++  cursor: pointer;
++}
++
++@media (pointer: coarse) {
++  .settings-input,
++  .settings-submit,
++  .ringtone-option,
++  .ringtone-label {
++    min-block-size: 52px;
++  }
++}
++
++/* Fallback for browsers without native accent-color support */
++@supports not (accent-color: auto) {
++  .ringtone-radio {
++    position: absolute !important;
++    clip-path: inset(50%) !important;
++    overflow: hidden !important;
++    width: 1px !important;
++    height: 1px !important;
++    margin: -1px !important;
++    padding: 0 !important;
++    border: 0 !important;
++    white-space: nowrap !important;
++  }
++
++  .ringtone-label {
++    position: relative;
++    padding-inline-start: 2rem;
++  }
++
++  .ringtone-radio + .ringtone-label::before {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 1.25rem;
++    block-size: 1.25rem;
++    border: 2px solid var(--control-border);
++    border-radius: 9999px;
++    background-color: var(--card);
++    box-sizing: border-box;
++  }
++
++  .ringtone-radio:checked + .ringtone-label::before {
++    border-color: var(--control-accent);
++  }
++
++  .ringtone-radio:checked + .ringtone-label::after {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0.3125rem;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 0.625rem;
++    block-size: 0.625rem;
++    border-radius: 9999px;
++    background-color: var(--control-accent);
++  }
++
++  .ringtone-radio:focus-visible + .ringtone-label::before {
++    outline: 3px solid var(--focus-outline);
++    outline-offset: 2px;
++  }
++}
++
++@media (forced-colors: active) {
++  .ringtone-option {
++    border: 1px solid CanvasText;
++  }
++
++  .ringtone-option:has(.ringtone-radio:checked) {
++    border: 2px solid Highlight;
++  }
++
++  .ringtone-radio:focus-visible,
++  .settings-input:focus-visible,
++  .settings-submit:focus-visible,
++  .settings-nav-link:focus-visible,
++  .skip-link:focus-visible {
++    outline: 3px solid Highlight;
++    outline-offset: 2px;
++  }
+ }
+\ No newline at end of file

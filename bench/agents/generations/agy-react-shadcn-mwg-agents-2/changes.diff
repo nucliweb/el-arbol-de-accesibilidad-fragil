@@ -1,0 +1,733 @@
+diff --git a/index.html b/index.html
+index 6d61415..cba0f77 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes | Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..5c94077 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,39 +1,158 @@
++import { useEffect, useId, useState, type FormEvent } from 'react'
++import { Check } from 'lucide-react'
++import { SettingsPage } from '@/components/SettingsPage'
+ import { Button } from '@/components/ui/button'
+ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+ import { Input } from '@/components/ui/input'
+ import { Label } from '@/components/ui/label'
+ 
+-export default function App() {
++type PageView = 'ajustes' | 'perfil'
++
++function getPageFromHash(): PageView {
++  if (typeof window === 'undefined') {
++    return 'ajustes'
++  }
++  return window.location.hash === '#perfil' ? 'perfil' : 'ajustes'
++}
++
++function ProfilePage() {
++  const idPrefix = useId()
++  const formHeadingId = `${idPrefix}-profile-heading`
++  const nameId = `${idPrefix}-nombre`
++  const emailId = `${idPrefix}-email`
++  const [statusMessage, setStatusMessage] = useState('')
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setStatusMessage('Perfil guardado.')
++  }
++
+   return (
+-    <div className="min-h-screen bg-background text-foreground">
+-      <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
+-          <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+-            Perfil
+-          </a>
+-        </nav>
+-      </header>
+-      <main className="mx-auto max-w-3xl p-4">
+-        <Card id="perfil">
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1
++          id="contenido-principal"
++          tabIndex={-1}
++          className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
++        >
++          Perfil
++        </h1>
++        <p className="text-sm text-muted-foreground">Datos visibles para tus contactos.</p>
++      </div>
++
++      <Card>
++        <form
++          onSubmit={handleSubmit}
++          aria-labelledby={formHeadingId}
++          className="flex flex-col gap-(--card-spacing)"
++        >
+           <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
+-            <CardDescription>Datos visibles para tus contactos.</CardDescription>
++            <CardTitle as="h2" id={formHeadingId}>
++              Información personal
++            </CardTitle>
++            <CardDescription>Actualiza tu nombre y correo electrónico.</CardDescription>
+           </CardHeader>
+           <CardContent className="grid gap-4">
+             <div className="grid gap-2">
+-              <Label htmlFor="nombre">Nombre</Label>
+-              <Input id="nombre" defaultValue="Ada Lovelace" />
++              <Label htmlFor={nameId}>Nombre</Label>
++              <Input
++                id={nameId}
++                name="nombre"
++                autoComplete="name"
++                defaultValue="Ada Lovelace"
++                onChange={() => setStatusMessage('')}
++              />
+             </div>
+             <div className="grid gap-2">
+-              <Label htmlFor="email">Correo electrónico</Label>
+-              <Input id="email" type="email" defaultValue="ada@example.com" />
++              <Label htmlFor={emailId}>Correo electrónico</Label>
++              <Input
++                id={emailId}
++                name="email"
++                type="email"
++                autoComplete="email"
++                autoCorrect="off"
++                autoCapitalize="none"
++                spellCheck={false}
++                defaultValue="ada@example.com"
++                onChange={() => setStatusMessage('')}
++              />
+             </div>
+           </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <Button type="submit">Guardar</Button>
++            <div
++              role="status"
++              aria-live="polite"
++              aria-atomic="true"
++              className="flex min-h-5 items-center gap-1.5 text-sm text-foreground"
++            >
++              {statusMessage ? (
++                <>
++                  <Check aria-hidden="true" className="size-4 shrink-0" />
++                  <span>{statusMessage}</span>
++                </>
++              ) : null}
++            </div>
+           </CardFooter>
+-        </Card>
++        </form>
++      </Card>
++    </div>
++  )
++}
++
++export default function App() {
++  const [page, setPage] = useState<PageView>(() => getPageFromHash())
++
++  useEffect(() => {
++    document.title = page === 'ajustes' ? 'Ajustes | Mi cuenta' : 'Perfil | Mi cuenta'
++  }, [page])
++
++  useEffect(() => {
++    function handleHashChange() {
++      setPage(getPageFromHash())
++    }
++    window.addEventListener('hashchange', handleHashChange)
++    return () => window.removeEventListener('hashchange', handleHashChange)
++  }, [])
++
++  return (
++    <div className="min-h-screen bg-background text-foreground">
++      <a href="#contenido-principal" className="skip-link visually-hidden">
++        Saltar al contenido principal
++      </a>
++
++      <header className="border-b">
++        <div className="mx-auto flex max-w-3xl items-center gap-6 px-4">
++          <span className="py-3 font-semibold">Mi cuenta</span>
++          <nav aria-label="Principal">
++            <ul className="flex items-center gap-4">
++              <li>
++                <a
++                  href="#perfil"
++                  aria-current={page === 'perfil' ? 'page' : undefined}
++                  onClick={() => setPage('perfil')}
++                  className="nav-link"
++                >
++                  Perfil
++                </a>
++              </li>
++              <li>
++                <a
++                  href="#ajustes"
++                  aria-current={page === 'ajustes' ? 'page' : undefined}
++                  onClick={() => setPage('ajustes')}
++                  className="nav-link"
++                >
++                  Ajustes
++                </a>
++              </li>
++            </ul>
++          </nav>
++        </div>
++      </header>
++
++      <main className="mx-auto max-w-3xl px-4 py-6">
++        {page === 'ajustes' ? <SettingsPage /> : <ProfilePage />}
+       </main>
+     </div>
+   )
+diff --git a/src/components/SettingsPage.tsx b/src/components/SettingsPage.tsx
+new file mode 100644
+index 0000000..423eb80
+--- /dev/null
++++ b/src/components/SettingsPage.tsx
+@@ -0,0 +1,137 @@
++import { useId, useState, type FormEvent } from 'react'
++import { Bell, Check } from 'lucide-react'
++import { Button } from '@/components/ui/button'
++import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import {
++  RINGTONE_OPTIONS,
++  getRingtoneLabel,
++  loadSavedRingtone,
++  saveRingtone,
++  type RingtoneId,
++} from '@/lib/ringtones'
++
++export function SettingsPage() {
++  const idPrefix = useId()
++  const formHeadingId = `${idPrefix}-sound-heading`
++  const hintId = `${idPrefix}-ringtone-hint`
++
++  const [savedRingtone, setSavedRingtone] = useState<RingtoneId>(() => loadSavedRingtone())
++  const [selectedRingtone, setSelectedRingtone] = useState<RingtoneId>(() => loadSavedRingtone())
++  const [statusMessage, setStatusMessage] = useState('')
++
++  const hasUnsavedChanges = selectedRingtone !== savedRingtone
++  const savedLabel = getRingtoneLabel(savedRingtone)
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    saveRingtone(selectedRingtone)
++    setSavedRingtone(selectedRingtone)
++    setStatusMessage(`Tono de llamada guardado: ${getRingtoneLabel(selectedRingtone)}.`)
++  }
++
++  function handleReset() {
++    setSelectedRingtone(savedRingtone)
++    setStatusMessage(`Se mantiene el tono guardado: ${savedLabel}.`)
++  }
++
++  return (
++    <div className="grid gap-6">
++      <div className="grid gap-1">
++        <h1
++          id="contenido-principal"
++          tabIndex={-1}
++          className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
++        >
++          Ajustes
++        </h1>
++        <p className="text-sm text-muted-foreground">
++          Configura tus preferencias de llamadas y sonido.
++        </p>
++      </div>
++
++      <Card>
++        <form
++          onSubmit={handleSubmit}
++          aria-labelledby={formHeadingId}
++          noValidate
++          className="flex flex-col gap-(--card-spacing)"
++        >
++          <CardHeader>
++            <CardTitle as="h2" id={formHeadingId} className="flex items-center gap-2">
++              <Bell aria-hidden="true" className="size-4 text-muted-foreground" />
++              <span>Sonido y llamadas</span>
++            </CardTitle>
++            <CardDescription>
++              Elige el tono que sonará cuando recibas una llamada entrante.
++            </CardDescription>
++          </CardHeader>
++
++          <CardContent>
++            <fieldset className="ringtone-fieldset" aria-describedby={hintId}>
++              <legend className="text-sm font-medium text-foreground">Tono de llamada</legend>
++              <p id={hintId} className="mt-1 mb-3 text-sm text-muted-foreground">
++                Tono guardado actualmente:{' '}
++                <strong className="font-medium text-foreground">{savedLabel}</strong>
++                {hasUnsavedChanges ? ' (hay cambios sin guardar)' : ''}
++              </p>
++
++              <div className="grid gap-2.5">
++                {RINGTONE_OPTIONS.map((option) => {
++                  const optionId = `${idPrefix}-ringtone-${option.value}`
++                  const isSelected = selectedRingtone === option.value
++
++                  return (
++                    <div
++                      key={option.value}
++                      className="ringtone-option"
++                      data-selected={isSelected ? 'true' : undefined}
++                    >
++                      <input
++                        type="radio"
++                        id={optionId}
++                        name="ringtone"
++                        value={option.value}
++                        checked={isSelected}
++                        onChange={() => {
++                          setSelectedRingtone(option.value)
++                          setStatusMessage('')
++                        }}
++                        className="ringtone-radio"
++                      />
++                      <label htmlFor={optionId} className="ringtone-label">
++                        {option.label}
++                      </label>
++                    </div>
++                  )
++                })}
++              </div>
++            </fieldset>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <div className="flex flex-wrap items-center gap-2">
++              <Button type="submit">Guardar cambios</Button>
++              <Button type="button" variant="outline" onClick={handleReset}>
++                Restablecer
++              </Button>
++            </div>
++
++            <div
++              role="status"
++              aria-live="polite"
++              aria-atomic="true"
++              className="flex min-h-5 items-center gap-1.5 text-sm text-foreground"
++            >
++              {statusMessage ? (
++                <>
++                  <Check aria-hidden="true" className="size-4 shrink-0" />
++                  <span>{statusMessage}</span>
++                </>
++              ) : null}
++            </div>
++          </CardFooter>
++        </form>
++      </Card>
++    </div>
++  )
++}
+diff --git a/src/components/ui/card.tsx b/src/components/ui/card.tsx
+index cf02f48..d88e051 100644
+--- a/src/components/ui/card.tsx
++++ b/src/components/ui/card.tsx
+@@ -32,9 +32,13 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+   )
+ }
+ 
+-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
++function CardTitle({
++  as: Comp = "div",
++  className,
++  ...props
++}: React.ComponentProps<"div"> & { as?: "h2" | "h3" | "h4" | "div" }) {
+   return (
+-    <div
++    <Comp
+       data-slot="card-title"
+       className={cn(
+         "font-heading text-base leading-snug font-medium group-data-[size=sm]/card:text-sm",
+diff --git a/src/index.css b/src/index.css
+index fb3c7e9..4e391d3 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -49,6 +49,7 @@
+ }
+ 
+ :root {
++    color-scheme: light dark;
+     --background: oklch(1 0 0);
+     --foreground: oklch(0.145 0 0);
+     --card: oklch(1 0 0);
+@@ -60,13 +61,14 @@
+     --secondary: oklch(0.97 0 0);
+     --secondary-foreground: oklch(0.205 0 0);
+     --muted: oklch(0.97 0 0);
+-    --muted-foreground: oklch(0.556 0 0);
++    --muted-foreground: oklch(0.45 0 0);
+     --accent: oklch(0.97 0 0);
+     --accent-foreground: oklch(0.205 0 0);
+     --destructive: oklch(0.577 0.245 27.325);
+     --border: oklch(0.922 0 0);
+-    --input: oklch(0.922 0 0);
+-    --ring: oklch(0.708 0 0);
++    --control-border: oklch(0.52 0 0);
++    --input: oklch(0.52 0 0);
++    --ring: oklch(0.205 0 0);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -83,7 +85,40 @@
+     --sidebar-ring: oklch(0.708 0 0);
+ }
+ 
++@media (prefers-color-scheme: dark) {
++  :root:not(.light) {
++    --background: oklch(0.145 0 0);
++    --foreground: oklch(0.985 0 0);
++    --card: oklch(0.205 0 0);
++    --card-foreground: oklch(0.985 0 0);
++    --popover: oklch(0.205 0 0);
++    --popover-foreground: oklch(0.985 0 0);
++    --primary: oklch(0.922 0 0);
++    --primary-foreground: oklch(0.205 0 0);
++    --secondary: oklch(0.269 0 0);
++    --secondary-foreground: oklch(0.985 0 0);
++    --muted: oklch(0.269 0 0);
++    --muted-foreground: oklch(0.74 0 0);
++    --accent: oklch(0.269 0 0);
++    --accent-foreground: oklch(0.985 0 0);
++    --destructive: oklch(0.704 0.191 22.216);
++    --border: oklch(1 0 0 / 12%);
++    --control-border: oklch(0.708 0 0);
++    --input: oklch(0.708 0 0);
++    --ring: oklch(0.922 0 0);
++    --sidebar: oklch(0.205 0 0);
++    --sidebar-foreground: oklch(0.985 0 0);
++    --sidebar-primary: oklch(0.488 0.243 264.376);
++    --sidebar-primary-foreground: oklch(0.985 0 0);
++    --sidebar-accent: oklch(0.269 0 0);
++    --sidebar-accent-foreground: oklch(0.985 0 0);
++    --sidebar-border: oklch(1 0 0 / 12%);
++    --sidebar-ring: oklch(0.556 0 0);
++  }
++}
++
+ .dark {
++    color-scheme: dark;
+     --background: oklch(0.145 0 0);
+     --foreground: oklch(0.985 0 0);
+     --card: oklch(0.205 0 0);
+@@ -95,13 +130,14 @@
+     --secondary: oklch(0.269 0 0);
+     --secondary-foreground: oklch(0.985 0 0);
+     --muted: oklch(0.269 0 0);
+-    --muted-foreground: oklch(0.708 0 0);
++    --muted-foreground: oklch(0.74 0 0);
+     --accent: oklch(0.269 0 0);
+     --accent-foreground: oklch(0.985 0 0);
+     --destructive: oklch(0.704 0.191 22.216);
+-    --border: oklch(1 0 0 / 10%);
+-    --input: oklch(1 0 0 / 15%);
+-    --ring: oklch(0.556 0 0);
++    --border: oklch(1 0 0 / 12%);
++    --control-border: oklch(0.708 0 0);
++    --input: oklch(0.708 0 0);
++    --ring: oklch(0.922 0 0);
+     --chart-1: oklch(0.87 0 0);
+     --chart-2: oklch(0.556 0 0);
+     --chart-3: oklch(0.439 0 0);
+@@ -113,18 +149,219 @@
+     --sidebar-primary-foreground: oklch(0.985 0 0);
+     --sidebar-accent: oklch(0.269 0 0);
+     --sidebar-accent-foreground: oklch(0.985 0 0);
+-    --sidebar-border: oklch(1 0 0 / 10%);
++    --sidebar-border: oklch(1 0 0 / 12%);
+     --sidebar-ring: oklch(0.556 0 0);
+ }
+ 
+ @layer base {
+   * {
+     @apply border-border outline-ring/50;
+-    }
++  }
+   body {
+     @apply bg-background text-foreground;
+-    }
++    accent-color: var(--primary);
++  }
+   html {
+     @apply font-sans;
+-    }
+-}
+\ No newline at end of file
++  }
++}
++
++/* Canonical accessible visually-hidden utility (opts out on focus/active for skip links) */
++.visually-hidden:where(:not(:focus-within, :active)) {
++  position: absolute !important;
++  clip-path: inset(50%) !important;
++  overflow: hidden !important;
++  width: 1px !important;
++  height: 1px !important;
++  margin: -1px !important;
++  padding: 0 !important;
++  border: 0 !important;
++  white-space: nowrap !important;
++}
++
++.skip-link:focus-visible {
++  position: fixed;
++  inset-block-start: 0.75rem;
++  inset-inline-start: 0.75rem;
++  z-index: 50;
++  padding-inline: 1rem;
++  padding-block: 0.625rem;
++  border-radius: var(--radius-md);
++  background-color: var(--primary);
++  color: var(--primary-foreground);
++  font-size: 0.875rem;
++  font-weight: 500;
++  text-decoration: none;
++  outline: 3px solid var(--ring);
++  outline-offset: 2px;
++}
++
++/* Accessible navigation links with adequate touch target and visible focus */
++.nav-link {
++  display: inline-flex;
++  align-items: center;
++  min-block-size: 2.75rem;
++  padding-inline: 0.5rem;
++  border-block-end: 2px solid transparent;
++  font-size: 0.875rem;
++  color: var(--muted-foreground);
++  text-decoration: none;
++  transition: color 0.15s ease, border-color 0.15s ease;
++}
++
++.nav-link:hover {
++  color: var(--foreground);
++}
++
++.nav-link[aria-current="page"] {
++  color: var(--foreground);
++  font-weight: 600;
++  border-block-end-color: var(--primary);
++}
++
++.nav-link:focus-visible {
++  outline: 3px solid var(--ring);
++  outline-offset: 2px;
++  border-radius: var(--radius-sm);
++}
++
++/* Ringtone native radio group */
++.ringtone-fieldset {
++  border: 0;
++  margin: 0;
++  padding: 0;
++}
++
++.ringtone-option {
++  display: flex;
++  align-items: center;
++  gap: 0.75rem;
++  min-block-size: 3rem;
++  padding-inline: 1rem;
++  padding-block: 0.5rem;
++  border: 1px solid var(--control-border);
++  border-radius: var(--radius-lg);
++  background-color: var(--card);
++  transition: border-color 0.15s ease, background-color 0.15s ease;
++}
++
++.ringtone-option:hover {
++  background-color: var(--muted);
++}
++
++.ringtone-option[data-selected="true"] {
++  border-width: 2px;
++  border-color: var(--primary);
++  background-color: var(--muted);
++}
++
++.ringtone-radio {
++  accent-color: var(--primary);
++  inline-size: 1.25rem;
++  block-size: 1.25rem;
++  flex-shrink: 0;
++  margin: 0;
++  cursor: pointer;
++}
++
++.ringtone-radio:focus-visible {
++  outline: 3px solid var(--ring);
++  outline-offset: 3px;
++}
++
++.ringtone-label {
++  flex: 1;
++  cursor: pointer;
++  font: inherit;
++  font-size: max(1rem, 1em);
++  line-height: 1.4;
++  color: var(--foreground);
++  padding-block: 0.625rem;
++  margin-block: -0.625rem;
++  user-select: none;
++}
++
++.ringtone-option[data-selected="true"] .ringtone-label {
++  font-weight: 600;
++}
++
++@media (pointer: coarse) {
++  .ringtone-option {
++    min-block-size: 3.25rem;
++  }
++}
++
++/* Progressive enhancement fallback when accent-color is not supported */
++@supports not (accent-color: auto) {
++  .ringtone-radio {
++    position: absolute !important;
++    clip-path: inset(50%) !important;
++    overflow: hidden !important;
++    width: 1px !important;
++    height: 1px !important;
++    margin: -1px !important;
++    padding: 0 !important;
++    border: 0 !important;
++    white-space: nowrap !important;
++  }
++
++  .ringtone-radio + .ringtone-label {
++    position: relative;
++    padding-inline-start: 2rem;
++    display: inline-flex;
++    align-items: center;
++  }
++
++  .ringtone-radio + .ringtone-label::before {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 1.25rem;
++    block-size: 1.25rem;
++    border: 2px solid var(--control-border);
++    border-radius: 9999px;
++    background-color: var(--background);
++    box-sizing: border-box;
++  }
++
++  .ringtone-radio:checked + .ringtone-label::before {
++    border-color: var(--primary);
++  }
++
++  .ringtone-radio:checked + .ringtone-label::after {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0.3125rem;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 0.625rem;
++    block-size: 0.625rem;
++    border-radius: 9999px;
++    border: 0.3125rem solid var(--primary);
++    box-sizing: border-box;
++  }
++
++  .ringtone-radio:focus-visible + .ringtone-label::before {
++    outline: 3px solid var(--ring);
++    outline-offset: 2px;
++  }
++}
++
++@media (forced-colors: active) {
++  .ringtone-option[data-selected="true"] {
++    border-color: Highlight;
++  }
++
++  .nav-link[aria-current="page"] {
++    border-block-end-color: Highlight;
++  }
++
++  .ringtone-radio:focus-visible,
++  .nav-link:focus-visible,
++  .skip-link:focus-visible {
++    outline: 2px solid Highlight;
++    outline-offset: 2px;
++  }
++}
+diff --git a/src/lib/ringtones.ts b/src/lib/ringtones.ts
+new file mode 100644
+index 0000000..85395bb
+--- /dev/null
++++ b/src/lib/ringtones.ts
+@@ -0,0 +1,51 @@
++export interface RingtoneOption {
++  readonly value: RingtoneId
++  readonly label: string
++}
++
++export const RINGTONE_OPTIONS = [
++  { value: 'calisto', label: 'Calisto' },
++  { value: 'ganimedes', label: 'Ganímedes' },
++  { value: 'luna', label: 'Luna' },
++  { value: 'europa', label: 'Europa' },
++] as const
++
++export type RingtoneId = (typeof RINGTONE_OPTIONS)[number]['value']
++
++export const DEFAULT_RINGTONE: RingtoneId = 'calisto'
++
++const STORAGE_KEY = 'settings:ringtone'
++
++export function isRingtoneId(value: string): value is RingtoneId {
++  return RINGTONE_OPTIONS.some((option) => option.value === value)
++}
++
++export function getRingtoneLabel(id: RingtoneId): string {
++  return RINGTONE_OPTIONS.find((option) => option.value === id)?.label ?? RINGTONE_OPTIONS[0].label
++}
++
++export function loadSavedRingtone(): RingtoneId {
++  if (typeof window === 'undefined') {
++    return DEFAULT_RINGTONE
++  }
++  try {
++    const stored = window.localStorage.getItem(STORAGE_KEY)
++    if (stored && isRingtoneId(stored)) {
++      return stored
++    }
++  } catch {
++    // Ignore storage access errors (e.g., restricted browsing contexts)
++  }
++  return DEFAULT_RINGTONE
++}
++
++export function saveRingtone(id: RingtoneId): void {
++  if (typeof window === 'undefined') {
++    return
++  }
++  try {
++    window.localStorage.setItem(STORAGE_KEY, id)
++  } catch {
++    // Ignore storage access errors
++  }
++}

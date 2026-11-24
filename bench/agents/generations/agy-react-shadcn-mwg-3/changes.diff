@@ -1,0 +1,514 @@
+diff --git a/index.html b/index.html
+index 6d61415..cba0f77 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes | Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..bccda82 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,39 +1,181 @@
++import { useEffect, useId, useState, type FormEvent } from 'react'
++import { SettingsPage } from '@/components/settings-page'
+ import { Button } from '@/components/ui/button'
+-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from '@/components/ui/card'
+ import { Input } from '@/components/ui/input'
+ import { Label } from '@/components/ui/label'
+ 
+-export default function App() {
++type Section = 'ajustes' | 'perfil'
++
++function getSectionFromHash(): Section {
++  return window.location.hash === '#perfil' ? 'perfil' : 'ajustes'
++}
++
++function ProfilePage() {
++  const headingId = useId()
++  const [statusMessage, setStatusMessage] = useState('')
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setStatusMessage('Cambios del perfil guardados.')
++  }
++
+   return (
+-    <div className="min-h-screen bg-background text-foreground">
+-      <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
+-          <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
+-            Perfil
+-          </a>
+-        </nav>
+-      </header>
+-      <main className="mx-auto max-w-3xl p-4">
+-        <Card id="perfil">
+-          <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
+-            <CardDescription>Datos visibles para tus contactos.</CardDescription>
+-          </CardHeader>
++    <div className="space-y-6">
++      <div>
++        <h1
++          id="contenido-principal"
++          tabIndex={-1}
++          className="text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
++        >
++          Perfil
++        </h1>
++        <p className="mt-1 text-sm text-muted-foreground">
++          Actualiza la información visible para tus contactos.
++        </p>
++      </div>
++
++      <Card id="perfil">
++        <CardHeader>
++          <CardTitle>
++            <h2 id={headingId}>Datos personales</h2>
++          </CardTitle>
++          <CardDescription>Datos visibles para tus contactos.</CardDescription>
++        </CardHeader>
++
++        <form
++          onSubmit={handleSubmit}
++          aria-labelledby={headingId}
++          className="flex flex-col gap-(--card-spacing)"
++        >
+           <CardContent className="grid gap-4">
+             <div className="grid gap-2">
+               <Label htmlFor="nombre">Nombre</Label>
+-              <Input id="nombre" defaultValue="Ada Lovelace" />
++              <Input
++                id="nombre"
++                name="nombre"
++                autoComplete="name"
++                defaultValue="Ada Lovelace"
++                onChange={() => {
++                  if (statusMessage) setStatusMessage('')
++                }}
++              />
+             </div>
+             <div className="grid gap-2">
+               <Label htmlFor="email">Correo electrónico</Label>
+-              <Input id="email" type="email" defaultValue="ada@example.com" />
++              <Input
++                id="email"
++                name="email"
++                type="email"
++                autoComplete="email"
++                autoCorrect="off"
++                autoCapitalize="none"
++                spellCheck={false}
++                defaultValue="ada@example.com"
++                onChange={() => {
++                  if (statusMessage) setStatusMessage('')
++                }}
++              />
+             </div>
+           </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
++          <CardFooter className="flex flex-wrap items-center gap-4">
++            <Button type="submit">Guardar cambios</Button>
++            <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
++              {statusMessage}
++            </p>
+           </CardFooter>
+-        </Card>
++        </form>
++      </Card>
++    </div>
++  )
++}
++
++export default function App() {
++  const [activeSection, setActiveSection] = useState<Section>(getSectionFromHash)
++
++  useEffect(() => {
++    document.title =
++      activeSection === 'ajustes' ? 'Ajustes | Mi cuenta' : 'Perfil | Mi cuenta'
++  }, [activeSection])
++
++  useEffect(() => {
++    function syncSection() {
++      setActiveSection(getSectionFromHash())
++    }
++    window.addEventListener('hashchange', syncSection)
++    window.addEventListener('popstate', syncSection)
++    return () => {
++      window.removeEventListener('hashchange', syncSection)
++      window.removeEventListener('popstate', syncSection)
++    }
++  }, [])
++
++  function navigateTo(section: Section) {
++    setActiveSection(section)
++    const nextHash = `#${section}`
++    if (window.location.hash !== nextHash) {
++      window.history.pushState(null, '', nextHash)
++    }
++  }
++
++  return (
++    <div className="min-h-screen bg-background text-foreground">
++      <header className="border-b">
++        <a href="#contenido-principal" className="skip-link visually-hidden">
++          Saltar al contenido principal
++        </a>
++        <div className="mx-auto flex max-w-3xl items-center gap-6 p-4">
++          <span className="font-semibold">Mi cuenta</span>
++          <nav aria-label="Principal">
++            <ul className="flex list-none items-center gap-4">
++              <li>
++                <a
++                  href="#perfil"
++                  aria-current={activeSection === 'perfil' ? 'page' : undefined}
++                  onClick={(event) => {
++                    event.preventDefault()
++                    navigateTo('perfil')
++                  }}
++                  className={`inline-flex min-h-8 items-center rounded-md px-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
++                    activeSection === 'perfil'
++                      ? 'font-medium text-foreground'
++                      : 'text-muted-foreground hover:text-foreground'
++                  }`}
++                >
++                  Perfil
++                </a>
++              </li>
++              <li>
++                <a
++                  href="#ajustes"
++                  aria-current={activeSection === 'ajustes' ? 'page' : undefined}
++                  onClick={(event) => {
++                    event.preventDefault()
++                    navigateTo('ajustes')
++                  }}
++                  className={`inline-flex min-h-8 items-center rounded-md px-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
++                    activeSection === 'ajustes'
++                      ? 'font-medium text-foreground'
++                      : 'text-muted-foreground hover:text-foreground'
++                  }`}
++                >
++                  Ajustes
++                </a>
++              </li>
++            </ul>
++          </nav>
++        </div>
++      </header>
++
++      <main className="mx-auto max-w-3xl p-4">
++        {activeSection === 'ajustes' ? <SettingsPage /> : <ProfilePage />}
+       </main>
+     </div>
+   )
+diff --git a/src/components/settings-page.tsx b/src/components/settings-page.tsx
+new file mode 100644
+index 0000000..8c0d70f
+--- /dev/null
++++ b/src/components/settings-page.tsx
+@@ -0,0 +1,146 @@
++import { useId, useState, type FormEvent } from 'react'
++import { Button } from '@/components/ui/button'
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from '@/components/ui/card'
++
++const STORAGE_KEY = 'mi-cuenta:ringtone'
++
++export interface RingtoneOption {
++  value: 'calisto' | 'ganimedes' | 'luna' | 'europa'
++  label: string
++}
++
++const RINGTONE_OPTIONS: readonly RingtoneOption[] = [
++  { value: 'calisto', label: 'Calisto' },
++  { value: 'ganimedes', label: 'Ganímedes' },
++  { value: 'luna', label: 'Luna' },
++  { value: 'europa', label: 'Europa' },
++]
++
++function getInitialRingtone(): RingtoneOption['value'] {
++  try {
++    const saved = window.localStorage.getItem(STORAGE_KEY)
++    if (RINGTONE_OPTIONS.some((option) => option.value === saved)) {
++      return saved as RingtoneOption['value']
++    }
++  } catch {
++    // Ignore storage access errors in restricted contexts
++  }
++  return 'calisto'
++}
++
++export function SettingsPage() {
++  const headingId = useId()
++  const descriptionId = useId()
++  const baseId = useId()
++
++  const [savedRingtone, setSavedRingtone] = useState<RingtoneOption['value']>(getInitialRingtone)
++  const [selectedRingtone, setSelectedRingtone] = useState<RingtoneOption['value']>(savedRingtone)
++  const [statusMessage, setStatusMessage] = useState('')
++
++  const savedLabel =
++    RINGTONE_OPTIONS.find((option) => option.value === savedRingtone)?.label ?? 'Calisto'
++
++  function handleSubmit(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++
++    const chosen = RINGTONE_OPTIONS.find((option) => option.value === selectedRingtone)
++    if (!chosen) return
++
++    setSavedRingtone(chosen.value)
++    try {
++      window.localStorage.setItem(STORAGE_KEY, chosen.value)
++    } catch {
++      // Ignore storage write errors in restricted contexts
++    }
++    setStatusMessage(`Tono de llamada guardado: ${chosen.label}.`)
++  }
++
++  return (
++    <div className="space-y-6">
++      <div>
++        <h1
++          id="contenido-principal"
++          tabIndex={-1}
++          className="text-2xl font-semibold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
++        >
++          Ajustes
++        </h1>
++        <p className="mt-1 text-sm text-muted-foreground">
++          Gestiona las preferencias de sonido de tu cuenta.
++        </p>
++      </div>
++
++      <Card id="ajustes">
++        <CardHeader>
++          <CardTitle>
++            <h2 id={headingId}>Sonido</h2>
++          </CardTitle>
++          <CardDescription id={descriptionId}>
++            Elige el sonido que escucharás al recibir una llamada entrante. Tono actual:{' '}
++            <strong className="font-medium text-foreground">{savedLabel}</strong>.
++          </CardDescription>
++        </CardHeader>
++
++        <form
++          onSubmit={handleSubmit}
++          aria-labelledby={headingId}
++          className="flex flex-col gap-(--card-spacing)"
++        >
++          <CardContent>
++            <fieldset aria-describedby={descriptionId} className="grid gap-2.5">
++              <legend className="mb-2 text-sm font-medium text-foreground">
++                Tono de llamada
++              </legend>
++
++              {RINGTONE_OPTIONS.map((option) => {
++                const optionId = `${baseId}-${option.value}`
++                const isSelected = selectedRingtone === option.value
++
++                return (
++                  <div
++                    key={option.value}
++                    className={`ringtone-option flex items-center gap-3 rounded-lg border px-3.5 transition-colors ${
++                      isSelected
++                        ? 'border-primary bg-muted/50'
++                        : 'border-border hover:bg-muted/30'
++                    }`}
++                  >
++                    <input
++                      type="radio"
++                      id={optionId}
++                      name="ringtone"
++                      value={option.value}
++                      checked={isSelected}
++                      onChange={() => {
++                        setSelectedRingtone(option.value)
++                        if (statusMessage) setStatusMessage('')
++                      }}
++                      className="ringtone-radio"
++                    />
++                    <label htmlFor={optionId} className="ringtone-label text-foreground">
++                      <span>{option.label}</span>
++                    </label>
++                  </div>
++                )
++              })}
++            </fieldset>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center gap-4">
++            <Button type="submit">Guardar cambios</Button>
++            <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
++              {statusMessage}
++            </p>
++          </CardFooter>
++        </form>
++      </Card>
++    </div>
++  )
++}
+diff --git a/src/index.css b/src/index.css
+index fb3c7e9..02baf7f 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -49,6 +49,7 @@
+ }
+ 
+ :root {
++    color-scheme: light;
+     --background: oklch(1 0 0);
+     --foreground: oklch(0.145 0 0);
+     --card: oklch(1 0 0);
+@@ -84,6 +85,7 @@
+ }
+ 
+ .dark {
++    color-scheme: dark;
+     --background: oklch(0.145 0 0);
+     --foreground: oklch(0.985 0 0);
+     --card: oklch(0.205 0 0);
+@@ -127,4 +129,119 @@
+   html {
+     @apply font-sans;
+     }
++}
++
++.visually-hidden:where(:not(:focus-within, :active)) {
++  position: absolute !important;
++  clip-path: inset(50%) !important;
++  overflow: hidden !important;
++  width: 1px !important;
++  height: 1px !important;
++  margin: -1px !important;
++  padding: 0 !important;
++  border: 0 !important;
++  white-space: nowrap !important;
++}
++
++.skip-link:focus-visible {
++  position: fixed;
++  inset-block-start: 0.75rem;
++  inset-inline-start: 0.75rem;
++  z-index: 50;
++  border-radius: var(--radius-md);
++  background-color: var(--primary);
++  color: var(--primary-foreground);
++  padding: 0.5rem 0.875rem;
++  font-size: 0.875rem;
++  font-weight: 500;
++  outline: 2px solid var(--primary);
++  outline-offset: 2px;
++}
++
++.ringtone-option {
++  min-block-size: 3rem;
++}
++
++.ringtone-radio {
++  accent-color: var(--primary);
++  inline-size: 1.125rem;
++  block-size: 1.125rem;
++  flex-shrink: 0;
++  cursor: pointer;
++}
++
++.ringtone-radio:focus-visible {
++  outline: 2px solid var(--primary);
++  outline-offset: 2px;
++}
++
++.ringtone-label {
++  display: flex;
++  flex: 1;
++  align-items: center;
++  min-block-size: 3rem;
++  font-size: max(1rem, 1em);
++  line-height: 1.4;
++  cursor: pointer;
++}
++
++@media (pointer: coarse) {
++  .ringtone-option,
++  .ringtone-label {
++    min-block-size: 3.25rem;
++  }
++}
++
++@supports not (accent-color: auto) {
++  .ringtone-radio {
++    position: absolute !important;
++    clip-path: inset(50%) !important;
++    overflow: hidden !important;
++    width: 1px !important;
++    height: 1px !important;
++    margin: -1px !important;
++    padding: 0 !important;
++    border: 0 !important;
++    white-space: nowrap !important;
++  }
++
++  .ringtone-radio + .ringtone-label {
++    position: relative;
++    padding-inline-start: 2rem;
++  }
++
++  .ringtone-radio + .ringtone-label::before {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 1.125rem;
++    block-size: 1.125rem;
++    border: 2px solid #767676;
++    border-radius: 9999px;
++    background-color: var(--background);
++    box-sizing: border-box;
++  }
++
++  .ringtone-radio:focus-visible + .ringtone-label::before {
++    outline: 2px solid var(--primary);
++    outline-offset: 2px;
++  }
++
++  .ringtone-radio:checked + .ringtone-label::before {
++    border-color: var(--primary);
++  }
++
++  .ringtone-radio:checked + .ringtone-label::after {
++    content: "";
++    position: absolute;
++    inset-inline-start: 0.3125rem;
++    inset-block-start: 50%;
++    transform: translateY(-50%);
++    inline-size: 0.5rem;
++    block-size: 0.5rem;
++    border-radius: 9999px;
++    background-color: var(--primary);
++  }
+ }
+\ No newline at end of file

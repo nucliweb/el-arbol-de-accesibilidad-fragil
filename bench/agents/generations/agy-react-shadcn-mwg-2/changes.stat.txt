@@ -1,0 +1,6 @@
+ index.html                 |   2 +-
+ src/App.tsx                | 119 +++++++++++++++++++++++--------
+ src/index.css              | 113 +++++++++++++++++++++++++++++-
+ src/pages/ProfilePage.tsx  | 105 ++++++++++++++++++++++++++++
+ src/pages/SettingsPage.tsx | 170 +++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 478 insertions(+), 31 deletions(-)

@@ -1,0 +1,600 @@
+diff --git a/index.html b/index.html
+index 6d61415..237956e 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Mi cuenta</title>
++    <title>Ajustes — Mi cuenta</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/src/App.tsx b/src/App.tsx
+index a5b14b9..0b63351 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,39 +1,151 @@
+-import { Button } from '@/components/ui/button'
+-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+-import { Input } from '@/components/ui/input'
+-import { Label } from '@/components/ui/label'
++import { useEffect, useState } from "react"
++import { cn } from "cn"
++import { SettingsPage } from "@/components/settings-page"
++import { Button } from "@/components/ui/button"
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from "@/components/ui/card"
++import { Input } from "@/components/ui/input"
++import { Label } from "@/components/ui/label"
++
++type Page = "ajustes" | "perfil"
++
++function getPageFromHash(): Page {
++  if (typeof window !== "undefined" && window.location.hash === "#perfil") {
++    return "perfil"
++  }
++  return "ajustes"
++}
+ 
+ export default function App() {
++  const [page, setPage] = useState<Page>(getPageFromHash)
++  const [profileSaved, setProfileSaved] = useState(false)
++
++  useEffect(() => {
++    function handleHashChange() {
++      setPage(getPageFromHash())
++    }
++    window.addEventListener("hashchange", handleHashChange)
++    return () => window.removeEventListener("hashchange", handleHashChange)
++  }, [])
++
++  useEffect(() => {
++    document.title =
++      page === "ajustes" ? "Ajustes — Mi cuenta" : "Perfil — Mi cuenta"
++  }, [page])
++
++  function handleNavigate(nextPage: Page) {
++    setPage(nextPage)
++    setProfileSaved(false)
++  }
++
++  function handleProfileSubmit(event: React.FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setProfileSaved(true)
++  }
++
+   return (
+     <div className="min-h-screen bg-background text-foreground">
+       <header className="border-b">
+-        <nav className="mx-auto flex max-w-3xl items-center gap-6 p-4">
++        <nav
++          aria-label="Navegación principal"
++          className="mx-auto flex max-w-3xl items-center gap-6 p-4"
++        >
+           <span className="font-semibold">Mi cuenta</span>
+-          <a href="#perfil" className="text-sm text-muted-foreground hover:text-foreground">
++          <a
++            href="#ajustes"
++            aria-current={page === "ajustes" ? "page" : undefined}
++            onClick={() => handleNavigate("ajustes")}
++            className={cn(
++              "text-sm transition-colors",
++              page === "ajustes"
++                ? "font-medium text-foreground"
++                : "text-muted-foreground hover:text-foreground"
++            )}
++          >
++            Ajustes
++          </a>
++          <a
++            href="#perfil"
++            aria-current={page === "perfil" ? "page" : undefined}
++            onClick={() => handleNavigate("perfil")}
++            className={cn(
++              "text-sm transition-colors",
++              page === "perfil"
++                ? "font-medium text-foreground"
++                : "text-muted-foreground hover:text-foreground"
++            )}
++          >
+             Perfil
+           </a>
+         </nav>
+       </header>
+-      <main className="mx-auto max-w-3xl p-4">
+-        <Card id="perfil">
+-          <CardHeader>
+-            <CardTitle>Perfil</CardTitle>
+-            <CardDescription>Datos visibles para tus contactos.</CardDescription>
+-          </CardHeader>
+-          <CardContent className="grid gap-4">
+-            <div className="grid gap-2">
+-              <Label htmlFor="nombre">Nombre</Label>
+-              <Input id="nombre" defaultValue="Ada Lovelace" />
+-            </div>
+-            <div className="grid gap-2">
+-              <Label htmlFor="email">Correo electrónico</Label>
+-              <Input id="email" type="email" defaultValue="ada@example.com" />
++
++      <main className="mx-auto max-w-3xl p-4 py-8">
++        {page === "ajustes" ? (
++          <SettingsPage />
++        ) : (
++          <section aria-labelledby="profile-title" className="grid gap-6">
++            <div className="grid gap-1">
++              <h1
++                id="profile-title"
++                className="font-heading text-2xl font-semibold tracking-tight"
++              >
++                Perfil
++              </h1>
++              <p className="text-sm text-muted-foreground">
++                Gestiona la información visible para tus contactos.
++              </p>
+             </div>
+-          </CardContent>
+-          <CardFooter>
+-            <Button>Guardar</Button>
+-          </CardFooter>
+-        </Card>
++
++            <form onSubmit={handleProfileSubmit}>
++              <Card id="perfil">
++                <CardHeader>
++                  <CardTitle>
++                    <h2>Datos personales</h2>
++                  </CardTitle>
++                  <CardDescription>
++                    Datos visibles para tus contactos.
++                  </CardDescription>
++                </CardHeader>
++                <CardContent className="grid gap-4">
++                  <div className="grid gap-2">
++                    <Label htmlFor="nombre">Nombre</Label>
++                    <Input
++                      id="nombre"
++                      defaultValue="Ada Lovelace"
++                      onChange={() => setProfileSaved(false)}
++                    />
++                  </div>
++                  <div className="grid gap-2">
++                    <Label htmlFor="email">Correo electrónico</Label>
++                    <Input
++                      id="email"
++                      type="email"
++                      defaultValue="ada@example.com"
++                      onChange={() => setProfileSaved(false)}
++                    />
++                  </div>
++                </CardContent>
++                <CardFooter className="flex items-center justify-between gap-3">
++                  <Button type="submit">Guardar</Button>
++                  <div
++                    role="status"
++                    aria-live="polite"
++                    className="text-xs font-medium text-foreground"
++                  >
++                    {profileSaved ? "Perfil guardado." : null}
++                  </div>
++                </CardFooter>
++              </Card>
++            </form>
++          </section>
++        )}
+       </main>
+     </div>
+   )
+diff --git a/src/components/settings-page.tsx b/src/components/settings-page.tsx
+new file mode 100644
+index 0000000..0aaed9b
+--- /dev/null
++++ b/src/components/settings-page.tsx
+@@ -0,0 +1,250 @@
++import { useEffect, useRef, useState } from "react"
++import { cn } from "cn"
++import { Check, Square, Volume2 } from "lucide-react"
++import { Button } from "@/components/ui/button"
++import {
++  Card,
++  CardContent,
++  CardDescription,
++  CardFooter,
++  CardHeader,
++  CardTitle,
++} from "@/components/ui/card"
++import { Label } from "@/components/ui/label"
++import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
++import {
++  playRingtonePreview,
++  type RingtoneId,
++  type RingtonePlayback,
++} from "@/lib/ringtone-preview"
++
++interface RingtoneOption {
++  id: RingtoneId
++  name: string
++  description: string
++}
++
++const STORAGE_KEY = "settings.ringtone"
++
++const RINGTONE_OPTIONS: readonly RingtoneOption[] = [
++  {
++    id: "calisto",
++    name: "Calisto",
++    description: "Melodía suave y cristalina.",
++  },
++  {
++    id: "ganimedes",
++    name: "Ganímedes",
++    description: "Acorde cálido y envolvente.",
++  },
++  {
++    id: "luna",
++    name: "Luna",
++    description: "Pulsos serenos y minimalistas.",
++  },
++  {
++    id: "europa",
++    name: "Europa",
++    description: "Campanas claras y brillantes.",
++  },
++] as const
++
++function isRingtoneId(value: string): value is RingtoneId {
++  return RINGTONE_OPTIONS.some((option) => option.id === value)
++}
++
++function loadSavedRingtone(): RingtoneId {
++  try {
++    const stored = window.localStorage.getItem(STORAGE_KEY)
++    if (stored && isRingtoneId(stored)) {
++      return stored
++    }
++  } catch {
++    // Ignore storage access issues
++  }
++  return "calisto"
++}
++
++export function SettingsPage() {
++  const [savedTone, setSavedTone] = useState<RingtoneId>(loadSavedRingtone)
++  const [selectedTone, setSelectedTone] = useState<RingtoneId>(savedTone)
++  const [isPlaying, setIsPlaying] = useState(false)
++  const [statusMessage, setStatusMessage] = useState("")
++  const playbackRef = useRef<RingtonePlayback | null>(null)
++
++  const selectedOption =
++    RINGTONE_OPTIONS.find((option) => option.id === selectedTone) ??
++    RINGTONE_OPTIONS[0]
++
++  const savedOption =
++    RINGTONE_OPTIONS.find((option) => option.id === savedTone) ??
++    RINGTONE_OPTIONS[0]
++
++  const hasUnsavedChanges = selectedTone !== savedTone
++
++  function stopPreview() {
++    playbackRef.current?.stop()
++    playbackRef.current = null
++    setIsPlaying(false)
++  }
++
++  useEffect(() => {
++    return () => {
++      playbackRef.current?.stop()
++      playbackRef.current = null
++    }
++  }, [])
++
++  function handleToneChange(value: string) {
++    if (!isRingtoneId(value)) return
++    stopPreview()
++    setSelectedTone(value)
++    setStatusMessage("")
++  }
++
++  function handleTogglePreview() {
++    if (isPlaying) {
++      stopPreview()
++      return
++    }
++
++    const playback = playRingtonePreview(selectedTone, () => {
++      playbackRef.current = null
++      setIsPlaying(false)
++    })
++
++    if (playback) {
++      playbackRef.current = playback
++      setIsPlaying(true)
++    }
++  }
++
++  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    setSavedTone(selectedTone)
++    try {
++      window.localStorage.setItem(STORAGE_KEY, selectedTone)
++    } catch {
++      // Ignore storage access issues
++    }
++    setStatusMessage(`Tono de llamada guardado: ${selectedOption.name}.`)
++  }
++
++  return (
++    <section aria-labelledby="settings-title" className="grid gap-6">
++      <div className="grid gap-1">
++        <h1
++          id="settings-title"
++          className="font-heading text-2xl font-semibold tracking-tight"
++        >
++          Ajustes
++        </h1>
++        <p className="text-sm text-muted-foreground">
++          Personaliza las preferencias de sonido para tus llamadas entrantes.
++        </p>
++      </div>
++
++      <form onSubmit={handleSubmit}>
++        <Card id="tono-de-llamada">
++          <CardHeader>
++            <CardTitle>
++              <h2 id="ringtone-heading">Tono de llamada</h2>
++            </CardTitle>
++            <CardDescription id="ringtone-description">
++              Selecciona el tono que sonará al recibir una llamada. Tono activo:{" "}
++              <span className="font-medium text-foreground">
++                {savedOption.name}
++              </span>
++              .
++            </CardDescription>
++          </CardHeader>
++
++          <CardContent className="grid gap-4">
++            <RadioGroup
++              name="ringtone"
++              value={selectedTone}
++              onValueChange={handleToneChange}
++              aria-labelledby="ringtone-heading"
++              aria-describedby="ringtone-description"
++            >
++              {RINGTONE_OPTIONS.map((option) => {
++                const inputId = `ringtone-${option.id}`
++                const descId = `ringtone-${option.id}-desc`
++                const isSelected = selectedTone === option.id
++
++                return (
++                  <div
++                    key={option.id}
++                    className={cn(
++                      "relative flex items-start gap-3 rounded-lg border px-3.5 py-3 transition-colors",
++                      isSelected
++                        ? "border-primary bg-muted/50"
++                        : "border-border hover:bg-muted/30"
++                    )}
++                  >
++                    <RadioGroupItem
++                      id={inputId}
++                      value={option.id}
++                      aria-describedby={descId}
++                      className="mt-0.5"
++                    />
++                    <div className="grid flex-1 gap-0.5">
++                      <Label
++                        htmlFor={inputId}
++                        className="cursor-pointer font-medium after:absolute after:inset-0"
++                      >
++                        {option.name}
++                      </Label>
++                      <p id={descId} className="text-xs text-muted-foreground">
++                        {option.description}
++                      </p>
++                    </div>
++                  </div>
++                )
++              })}
++            </RadioGroup>
++          </CardContent>
++
++          <CardFooter className="flex flex-wrap items-center justify-between gap-3">
++            <div className="flex flex-wrap items-center gap-2">
++              <Button type="submit">Guardar</Button>
++              <Button
++                type="button"
++                variant="outline"
++                onClick={handleTogglePreview}
++                aria-pressed={isPlaying}
++              >
++                {isPlaying ? (
++                  <>
++                    <Square aria-hidden="true" className="size-3.5" />
++                    Detener vista previa
++                  </>
++                ) : (
++                  <>
++                    <Volume2 aria-hidden="true" className="size-4" />
++                    Escuchar {selectedOption.name}
++                  </>
++                )}
++              </Button>
++            </div>
++
++            <div
++              role="status"
++              aria-live="polite"
++              className="text-xs text-muted-foreground"
++            >
++              {statusMessage ? (
++                <span className="inline-flex items-center gap-1 font-medium text-foreground">
++                  <Check aria-hidden="true" className="size-3.5" />
++                  {statusMessage}
++                </span>
++              ) : hasUnsavedChanges ? (
++                <span>Cambios sin guardar</span>
++              ) : null}
++            </div>
++          </CardFooter>
++        </Card>
++      </form>
++    </section>
++  )
++}
+diff --git a/src/components/ui/radio-group.tsx b/src/components/ui/radio-group.tsx
+new file mode 100644
+index 0000000..ff4d741
+--- /dev/null
++++ b/src/components/ui/radio-group.tsx
+@@ -0,0 +1,41 @@
++import * as React from "react"
++import { cn } from "cn"
++import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
++
++function RadioGroup({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
++  return (
++    <RadioGroupPrimitive.Root
++      data-slot="radio-group"
++      className={cn("grid gap-2", className)}
++      {...props}
++    />
++  )
++}
++
++function RadioGroupItem({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
++  return (
++    <RadioGroupPrimitive.Item
++      data-slot="radio-group-item"
++      className={cn(
++        "peer relative flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input text-primary transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 dark:data-[state=checked]:bg-primary",
++        className
++      )}
++      {...props}
++    >
++      <RadioGroupPrimitive.Indicator
++        data-slot="radio-group-indicator"
++        className="flex items-center justify-center"
++      >
++        <span className="size-1.5 rounded-full bg-current" />
++      </RadioGroupPrimitive.Indicator>
++    </RadioGroupPrimitive.Item>
++  )
++}
++
++export { RadioGroup, RadioGroupItem }
+diff --git a/src/lib/ringtone-preview.ts b/src/lib/ringtone-preview.ts
+new file mode 100644
+index 0000000..3bfaead
+--- /dev/null
++++ b/src/lib/ringtone-preview.ts
+@@ -0,0 +1,97 @@
++export type RingtoneId = "calisto" | "ganimedes" | "luna" | "europa"
++
++interface NoteStep {
++  frequency: number
++  start: number
++  duration: number
++  type: OscillatorType
++}
++
++const RINGTONE_PATTERNS: Record<RingtoneId, NoteStep[]> = {
++  calisto: [
++    { frequency: 523.25, start: 0, duration: 0.22, type: "sine" },
++    { frequency: 659.25, start: 0.22, duration: 0.22, type: "sine" },
++    { frequency: 783.99, start: 0.44, duration: 0.36, type: "sine" },
++  ],
++  ganimedes: [
++    { frequency: 392.0, start: 0, duration: 0.28, type: "triangle" },
++    { frequency: 493.88, start: 0.24, duration: 0.28, type: "triangle" },
++    { frequency: 587.33, start: 0.48, duration: 0.38, type: "triangle" },
++  ],
++  luna: [
++    { frequency: 440.0, start: 0, duration: 0.3, type: "sine" },
++    { frequency: 554.37, start: 0.36, duration: 0.42, type: "sine" },
++  ],
++  europa: [
++    { frequency: 659.25, start: 0, duration: 0.16, type: "sine" },
++    { frequency: 783.99, start: 0.16, duration: 0.16, type: "sine" },
++    { frequency: 987.77, start: 0.32, duration: 0.16, type: "sine" },
++    { frequency: 1318.51, start: 0.48, duration: 0.34, type: "sine" },
++  ],
++}
++
++export interface RingtonePlayback {
++  stop: () => void
++}
++
++export function playRingtonePreview(
++  toneId: RingtoneId,
++  onEnded: () => void
++): RingtonePlayback | null {
++  if (typeof window === "undefined") {
++    return null
++  }
++
++  const AudioCtx = window.AudioContext
++  if (!AudioCtx) {
++    return null
++  }
++
++  const context = new AudioCtx()
++  const notes = RINGTONE_PATTERNS[toneId]
++  const now = context.currentTime
++  let maxEnd = 0
++
++  for (const note of notes) {
++    const oscillator = context.createOscillator()
++    const gain = context.createGain()
++
++    oscillator.type = note.type
++    oscillator.frequency.setValueAtTime(note.frequency, now + note.start)
++
++    gain.gain.setValueAtTime(0.0001, now + note.start)
++    gain.gain.exponentialRampToValueAtTime(0.14, now + note.start + 0.03)
++    gain.gain.exponentialRampToValueAtTime(
++      0.0001,
++      now + note.start + note.duration
++    )
++
++    oscillator.connect(gain)
++    gain.connect(context.destination)
++
++    oscillator.start(now + note.start)
++    oscillator.stop(now + note.start + note.duration + 0.02)
++
++    maxEnd = Math.max(maxEnd, note.start + note.duration)
++  }
++
++  let stopped = false
++
++  const cleanup = () => {
++    if (stopped) return
++    stopped = true
++    window.clearTimeout(timerId)
++    void context.close().catch(() => {})
++  }
++
++  const timerId = window.setTimeout(() => {
++    cleanup()
++    onEnded()
++  }, Math.ceil((maxEnd + 0.08) * 1000))
++
++  return {
++    stop: () => {
++      cleanup()
++    },
++  }
++}

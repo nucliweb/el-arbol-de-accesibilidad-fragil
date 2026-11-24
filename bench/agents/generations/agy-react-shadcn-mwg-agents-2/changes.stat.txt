@@ -1,0 +1,7 @@
+ index.html                      |   2 +-
+ src/App.tsx                     | 161 +++++++++++++++++++++----
+ src/components/SettingsPage.tsx | 137 +++++++++++++++++++++
+ src/components/ui/card.tsx      |   8 +-
+ src/index.css                   | 261 ++++++++++++++++++++++++++++++++++++++--
+ src/lib/ringtones.ts            |  51 ++++++++
+ 6 files changed, 584 insertions(+), 36 deletions(-)
