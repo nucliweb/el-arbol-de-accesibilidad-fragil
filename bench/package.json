@@ -1,0 +1,12 @@
+{
+  "name": "radio-bench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'",
+    "build": "node scripts/build-all.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
+  }
+}
