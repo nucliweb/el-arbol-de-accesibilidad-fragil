@@ -1,0 +1,12 @@
+{
+  "name": "deck",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.1",
+    "playwright": "^1.65.1"
+  }
+}

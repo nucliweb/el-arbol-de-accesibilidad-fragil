@@ -1,0 +1,429 @@
+/* El árbol de accesibilidad frágil: deck styles.
+   Without JavaScript the page is a document; html.js switches to slides. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #fbfaf7;
+  --surface: #f1efe8;
+  --text: #1b1b1b;
+  --muted: #4a4a4a;
+  --accent: #0a58ca;
+  --bad: #b3261e;
+  --good: #146c2e;
+  --border: #c9c6bd;
+  --focus: #0a58ca;
+  --bar: #0a58ca;
+  --bar-bad: #b3261e;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --controls-height: 3.5rem;
+  --notes-height: 34dvh;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --surface: #1f1f1f;
+    --text: #ececec;
+    --muted: #b8b8b8;
+    --accent: #8ab4f8;
+    --bad: #f2b8b5;
+    --good: #7dd99a;
+    --border: #4a4a4a;
+    --focus: #8ab4f8;
+    --bar: #8ab4f8;
+    --bar-bad: #f2b8b5;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Document layout (default, and without JavaScript) ------------------- */
+
+#deck {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+}
+
+.slide {
+  padding-block: 2rem;
+  border-block-end: 1px solid var(--border);
+}
+
+.subtitle {
+  font-size: 1.4em;
+  color: var(--muted);
+  margin-block-start: 0;
+}
+
+.statement {
+  font-size: 1.6em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.bad {
+  color: var(--bad);
+}
+
+.good {
+  color: var(--good);
+}
+
+.source {
+  font-size: 0.8em;
+  color: var(--muted);
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 4px solid var(--accent);
+  font-size: 1.15em;
+}
+
+/* Code wraps instead of scrolling, so it never needs a scroll container. */
+pre {
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-size: 0.75em;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+code {
+  font-family: var(--mono);
+}
+
+kbd {
+  font-family: var(--mono);
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--border);
+  border-radius: 0.3em;
+  background: var(--surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
+}
+
+caption {
+  text-align: start;
+  font-weight: 600;
+  padding-block-end: 0.5rem;
+}
+
+th,
+td {
+  padding: 0.35rem 0.6rem;
+  border-block-end: 1px solid var(--border);
+  text-align: start;
+}
+
+td.num,
+th.num {
+  text-align: end;
+}
+
+figure {
+  margin: 1rem 0;
+}
+
+figcaption {
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.steps li::before {
+  content: counter(step) '. ';
+  color: var(--muted);
+}
+
+.steps .highlight {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+}
+
+/* Bar charts built from real tables: the numbers stay readable as text. */
+.bars td.bar-cell {
+  width: 55%;
+}
+
+.bars .bar {
+  display: block;
+  height: 1.1em;
+  inline-size: calc(var(--value) * 100%);
+  min-inline-size: 2px;
+  background: var(--bar);
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.bars .bar.is-bad {
+  background: var(--bar-bad);
+}
+
+/* Notes: visible in the document; in slides, only when turned on. */
+.notes {
+  margin-block-start: 2rem;
+  padding: 1rem 1.25rem;
+  border-inline-start: 4px solid var(--muted);
+  background: var(--surface);
+  font-size: 0.95rem;
+}
+
+.notes h3 {
+  margin-block-start: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+/* --- Controls and help ----------------------------------------------------- */
+
+#deck-controls {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 10;
+  height: var(--controls-height);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border-block-start: 1px solid var(--border);
+  font-size: 1rem;
+}
+
+#deck-controls button,
+#help button {
+  font: inherit;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+#deck-controls button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+#deck-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#slide-counter {
+  margin-inline-start: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+#help {
+  max-width: min(40rem, 92vw);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#help::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+/* --- Slide mode -------------------------------------------------------------- */
+
+html.js[data-mode='slides'] #deck {
+  max-width: none;
+  padding: 0;
+}
+
+/* Each slide fills the space above the controls and scrolls on its own if
+   its content does not fit (for example when zoomed to 200%). */
+html.js[data-mode='slides'] .slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* "safe" keeps the top reachable when the content does not fit (zoom). */
+  justify-content: safe center;
+  height: calc(100dvh - var(--controls-height));
+  overflow-y: auto;
+  padding: clamp(1.5rem, 5vmin, 4rem) clamp(1.5rem, 8vw, 8rem);
+  border: 0;
+  font-size: clamp(1.1rem, 1.2rem + 1vmin, 2rem);
+}
+
+html.js[data-mode='slides'] .slide[hidden],
+html.js .slide[hidden] {
+  display: none;
+}
+
+html.js[data-notes='hidden'] .notes {
+  display: none;
+}
+
+/* With notes on, the slide leaves room for the notes panel below it. */
+html.js[data-mode='slides'][data-notes='visible'] .slide {
+  justify-content: flex-start;
+  height: calc(100dvh - var(--controls-height) - var(--notes-height));
+}
+
+/* Notes of the current slide: a fixed panel just above the controls, with
+   its own scroll. Only one slide is visible, so only one panel shows. */
+html.js[data-mode='slides'] .notes {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: var(--controls-height);
+  height: var(--notes-height);
+  margin: 0;
+  overflow-y: auto;
+  padding: 1rem clamp(1.5rem, 8vw, 8rem);
+  border-inline-start: 0;
+  border-block-start: 4px solid var(--muted);
+  font-size: clamp(0.95rem, 0.9rem + 0.4vmin, 1.25rem);
+}
+
+html.js[data-mode='slides'] .slide img {
+  max-height: 55dvh;
+  width: auto;
+}
+
+html.js[data-mode='document'] #deck {
+  padding-block-end: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js[data-mode='slides'] .slide:not([hidden]) {
+    animation: slide-in 180ms ease-out;
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0.4;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .bars .bar,
+  .bars .bar.is-bad {
+    background: CanvasText;
+  }
+
+  #deck-controls button[aria-pressed='true'] {
+    outline: 3px solid Highlight;
+  }
+}
+
+@media print {
+  #deck-controls,
+  #help {
+    display: none;
+  }
+
+  .slide,
+  .slide[hidden] {
+    display: block !important;
+    break-after: page;
+  }
+
+  .notes {
+    display: block !important;
+  }
+}

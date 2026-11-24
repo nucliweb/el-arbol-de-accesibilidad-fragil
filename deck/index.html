@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>El árbol de accesibilidad frágil</title>
+    <meta name="description" content="Por qué el HTML semántico es clave para el rendimiento web. Charla de Joan León en A11y Conf 2026.">
+    <link rel="stylesheet" href="deck.css">
+    <script src="deck.js" defer></script>
+  </head>
+  <body>
+    <main id="deck">
+
+      <!-- ===================================================== Apertura (2 min) -->
+
+      <section class="slide" id="portada">
+        <h1 id="portada-titulo">El árbol de accesibilidad frágil</h1>
+        <p class="subtitle">Por qué el HTML semántico es clave para el rendimiento web</p>
+        <p>Joan León · A11y Conf 2026</p>
+        <div class="notes">
+          <h2 id="portada-notas">Notas</h2>
+          <p>Hola a todas y a todos. Soy Joan León y esta charla va de un árbol que casi nadie ve, pero que usan cada día millones de personas: el árbol de accesibilidad.</p>
+          <p>Vamos a ver por qué es frágil, qué lo rompe, y por qué cuidarlo hace que la web sea a la vez más accesible y más rápida.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="sigue-la-charla">
+        <h2 id="sigue-la-charla-titulo">Sigue la charla desde tu dispositivo</h2>
+        <!-- PENDIENTE: confirmar la URL publicada y añadir el código QR con su alternativa textual. -->
+        <p class="statement"><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil</a></p>
+        <ul>
+          <li><kbd>N</kbd> muestra u oculta las notas de cada diapositiva.</li>
+          <li><kbd>D</kbd> muestra todas las diapositivas en una sola página.</li>
+          <li><kbd>?</kbd> abre la ayuda, donde puedes desactivar los atajos de una tecla.</li>
+          <li>Las flechas, o los botones Anterior y Siguiente, cambian de diapositiva.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="sigue-la-charla-notas">Notas</h3>
+          <p>Antes de empezar: estas diapositivas están publicadas en la dirección que veis en pantalla. Cada diapositiva tiene notas como estas, escritas para que podáis seguir la charla leyendo, con un lector de pantalla o más tarde, cuando la reviséis.</p>
+          <p>Pulsad la tecla N para ver las notas o la D para leer todas las diapositivas seguidas como un documento. Si los atajos de una tecla os molestan con vuestro lector de pantalla, se pueden desactivar desde la ayuda, con la tecla de interrogación.</p>
+          <p>Y gracias a la intérprete de lengua de signos por acompañarnos hoy.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="sobre-mi">
+        <h2 id="sobre-mi-titulo">Joan León</h2>
+        <p>Consultor de rendimiento web en <a href="https://perf.reviews/">PerfReviews</a>.</p>
+        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
+        <div class="notes">
+          <h3 id="sobre-mi-notas">Notas</h3>
+          <p>Me dedico al rendimiento web. En PerfReviews ayudamos a empresas a que sus webs carguen y respondan más rápido. El año pasado di aquí una lightning talk sobre este tema y me quedé con ganas de contar mucho más: esta es la versión larga, con datos nuevos.</p>
+        </div>
+      </section>
+
+      <!-- ============================== La performance ya es accesibilidad (4 min) -->
+
+      <section class="slide" id="web-lenta">
+        <h2 id="web-lenta-titulo">Una web lenta es una web menos accesible</h2>
+        <p class="statement">El rendimiento web es accesibilidad: decide quién puede usar tu web y quién no.</p>
+        <div class="notes">
+          <h3 id="web-lenta-notas">Notas</h3>
+          <p>Empiezo con una idea que a veces se nos olvida: el rendimiento web no es solo una cuestión de negocio o de SEO. Una web que tarda diez segundos en responder en un móvil barato con una conexión mala no es lenta para esa persona: es inutilizable. Optimizar el rendimiento es facilitar el acceso a quien tiene peor conexión o un dispositivo de gama baja.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="quien-tiene-el-dispositivo-lento">
+        <h2 id="quien-titulo">¿Quién tiene el dispositivo más lento?</h2>
+        <ul>
+          <li>Las personas con discapacidad tienen más barreras para entrar y mantenerse en el mercado laboral, y con ellas menos acceso a tecnología reciente.</li>
+          <li>Muchas personas que usan tecnología de asistencia evitan actualizar: un cambio puede romper la única forma que tienen de usar el ordenador.</li>
+          <li>Un Android barato con TalkBack es la puerta de entrada a internet para mucha gente.</li>
+        </ul>
+        <p class="source">Fuente: Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
+        <!-- PENDIENTE: añadir un dato citable (por ejemplo, encuesta de WebAIM sobre lectores de pantalla o CrUX por tipo de dispositivo). -->
+        <div class="notes">
+          <h3 id="quien-notas">Notas</h3>
+          <p>Y aquí está la conexión que más me importa. ¿Quién tiene el dispositivo más lento? Como explica Eric Bailey, las personas con discapacidad tienen más barreras para acceder al empleo, y por tanto a tecnología reciente. Además, muchas personas que usan tecnología de asistencia no actualizan su sistema ni su navegador por miedo, justificado, a que se rompa lo único que les funciona.</p>
+          <p>Es decir: las personas que más dependen de que la web funcione bien son, con frecuencia, las que la usan en peores condiciones.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="traza-renfe">
+        <h2 id="traza-renfe-titulo">Así se ve una web que bloquea el hilo principal</h2>
+        <figure>
+          <picture>
+            <source srcset="assets/renfe-performance.avif" type="image/avif">
+            <img src="assets/renfe-performance.webp" width="1600" height="877" loading="lazy" decoding="async"
+                 alt="Panel Performance de Chrome DevTools grabando la carga de renfe.com. El hilo principal aparece ocupado casi sin pausa durante más de 6 segundos por tareas largas de JavaScript, cálculo de estilos y pintado; el LCP llega después de 5,9 segundos.">
+          </picture>
+          <figcaption>Carga de renfe.com/es/es en el panel Performance de Chrome DevTools.</figcaption>
+        </figure>
+        <div class="notes">
+          <h3 id="traza-renfe-notas">Notas</h3>
+          <p>Esta es una grabación del panel Performance de Chrome cargando la web de Renfe. Arriba está la red, con muchas peticiones en paralelo. Debajo, el hilo principal del navegador: durante más de seis segundos está ocupado casi sin descanso, con bloques amarillos de JavaScript y morados de estilos y layout.</p>
+          <p>Mientras el hilo principal está ocupado, el navegador no puede responder a nadie: ni a quien hace clic, ni a quien pulsa una tecla, ni a la tecnología de asistencia que le pregunta qué hay en pantalla. El elemento más grande de la página no aparece hasta casi los seis segundos.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="cada-milisegundo">
+        <h2 id="cada-milisegundo-titulo">Los milisegundos también suenan</h2>
+        <p>Tiempo desde que se pulsa una tecla hasta que el lector de pantalla empieza a hablar, en un equipo lento:</p>
+        <p class="statement">230–250 ms → 190–200 ms</p>
+        <p class="source">Marco Zehe, optimización del árbol de accesibilidad de Firefox 67 (2019), citado por Eric Bailey.</p>
+        <div class="notes">
+          <h3 id="cada-milisegundo-notas">Notas</h3>
+          <p>Para quien usa un lector de pantalla, el rendimiento se oye. En 2019, Marco Zehe, que trabajaba en la accesibilidad de Firefox, consiguió reducir el tiempo desde que se pulsa una tecla hasta que el lector empieza a hablar: en un equipo lento, de unos 240 milisegundos a unos 195.</p>
+          <p>¿Cómo lo consiguió? Creando menos objetos accesibles para los div que no aportan nada. Menos nodos, menos trabajo, menos espera. Quedaos con esta idea, porque es la tesis de la charla.</p>
+        </div>
+      </section>
+
+      <!-- ============================== Navegador y árbol de accesibilidad (4 min) -->
+
+      <section class="slide" id="como-pinta">
+        <h2 id="como-pinta-titulo">Cómo pinta un navegador</h2>
+        <ol class="steps">
+          <li>HTML → DOM</li>
+          <li>CSS → CSSOM</li>
+          <li>Cálculo de estilos</li>
+          <li class="highlight">Árbol de accesibilidad</li>
+          <li>Layout</li>
+          <li>Pintado</li>
+          <li>Composición</li>
+        </ol>
+        <p>El árbol de accesibilidad se construye a partir del DOM <strong>después de calcular los estilos</strong>: <code>display: none</code> o el <code>content</code> de un pseudoelemento lo cambian.</p>
+        <div class="notes">
+          <h3 id="como-pinta-notas">Notas</h3>
+          <p>Repasemos muy rápido qué hace el navegador. Descarga el HTML y construye el DOM. Descarga el CSS y construye el CSSOM. Calcula qué estilos se aplican a cada elemento, calcula dónde va cada cosa, que es el layout, pinta y compone la imagen final.</p>
+          <p>Y en paralelo, cuando hay una tecnología de asistencia escuchando, construye el árbol de accesibilidad. Fijaos en el orden: se construye después de calcular los estilos, porque el CSS también lo cambia. Un elemento con display none desaparece del árbol, y el texto de un pseudoelemento before o after aparece en él. Así que no, el CSS no es solo presentación.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="dom-mas-aria">
+        <h2 id="dom-mas-aria-titulo">DOM + ARIA → árbol de accesibilidad</h2>
+        <div class="columns">
+          <div>
+            <h3>HTML</h3>
+<pre><code>&lt;fieldset&gt;
+  &lt;legend&gt;Tono de llamada&lt;/legend&gt;
+  &lt;input type="radio" id="calisto"
+         name="tono" checked&gt;
+  &lt;label for="calisto"&gt;Calisto&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+          </div>
+          <div>
+            <h3>Árbol de accesibilidad</h3>
+<pre><code>group "Tono de llamada"
+  radio "Calisto"  checked: true</code></pre>
+          </div>
+        </div>
+        <p>Cada nodo tiene <strong>nombre</strong>, <strong>rol</strong>, <strong>estado</strong> y, si hace falta, <strong>descripción</strong>. Con HTML semántico, el navegador los rellena por ti.</p>
+        <div class="notes">
+          <h3 id="dom-mas-aria-notas">Notas</h3>
+          <p>A la izquierda, un grupo de radio buttons en HTML: un fieldset con su legend, un input de tipo radio y su label. A la derecha, lo que el navegador entrega a la tecnología de asistencia: un grupo llamado "Tono de llamada" y dentro un radio llamado "Calisto" que está marcado.</p>
+          <p>Cada objeto del árbol tiene un nombre, un rol, un estado y opcionalmente una descripción. Con HTML semántico todo eso sale gratis, sin escribir una sola línea de ARIA ni de JavaScript.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="un-bosque">
+        <h2 id="un-bosque-titulo">No es un árbol: es un bosque</h2>
+        <ul>
+          <li>Cada sistema operativo tiene su API: NSAccessibility en macOS, UI Automation e IAccessible2 en Windows, AT-SPI en Linux.</li>
+          <li>El árbol vive fuera de la página: el navegador lo envía a otro proceso, y la tecnología de asistencia lo consulta a través del sistema.</li>
+          <li>Si la página cambia más rápido de lo que el árbol se actualiza, lo que oye la persona ya no coincide con lo que hay en pantalla.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="un-bosque-notas">Notas</h3>
+          <p>Hablamos del árbol de accesibilidad como si fuera uno, pero en realidad es un bosque. Cada sistema operativo tiene su propia API de accesibilidad, y el navegador traduce la página a cada una de ellas.</p>
+          <p>Además, ese árbol vive fuera de la página: hay que enviarlo a otro proceso. Cuanto más grande y cambiante es el DOM, más datos viajan y más tarda en actualizarse. Y si la página cambia más deprisa de lo que el árbol se sincroniza, la persona que no ve la pantalla puede activar un control que ya no está, o que está en otro estado. Por eso decimos que es frágil.</p>
+        </div>
+      </section>
+
+      <!-- ============================================== Un radio button (8 min) -->
+
+      <section class="slide" id="voiceover-se-cae">
+        <h2 id="voiceover-se-cae-titulo">El día que VoiceOver dejó de hablar</h2>
+        <p>Una auditoría de una app de formación médica, hecha con Material Design. VoiceOver se colgaba siempre en la misma pantalla: una lista enorme de radio buttons.</p>
+        <blockquote>
+          <p>Priorizar la ergonomía del desarrollo sin tener en cuenta el HTML que genera puede acabar muy mal.</p>
+        </blockquote>
+        <p class="source">Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024 (traducción propia).</p>
+        <div class="notes">
+          <h3 id="voiceover-se-cae-notas">Notas</h3>
+          <p>Esta charla nace de una historia que contó Eric Bailey en 2024. Estaba auditando una app de formación médica construida con Material Design y, en una pantalla, VoiceOver dejaba de hablar. Reinició Safari, limpió la caché, reinició el ordenador: siempre igual. El culpable era un montón de radio buttons de Material inyectados en la página. Cuando los cambiaron por radios nativos, VoiceOver dejó de colgarse.</p>
+          <p>La frase original es: "prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening". Yo quería saber si eso sigue pasando hoy, en 2026, con los componentes que usamos ahora.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-nativo">
+        <h2 id="radio-nativo-titulo">Un radio button nativo</h2>
+<pre><code>&lt;div class="radio"&gt;
+  &lt;input type="radio" name="ringtone" id="moon-0" value="moon-0" checked&gt;
+  &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        <p>131 caracteres. 0 bytes de JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-nativo-notas">Notas</h3>
+          <p>He montado un banco de pruebas con seis implementaciones del mismo grupo de radio buttons: un título "Ajustes", un grupo "Tono de llamada" y N opciones. Todo el código está en el repositorio de la charla. Cada implementación se ha montado siguiendo su documentación oficial.</p>
+          <p>Esta es la referencia: el radio nativo. Un div, un input y un label. Ciento treinta y un caracteres y ni un byte de JavaScript.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-shadcn">
+        <h2 id="radio-shadcn-titulo">shadcn/ui con Radix</h2>
+<pre><code>&lt;div role="group" data-slot="field" data-orientation="horizontal" class="…"&gt;
+  &lt;button type="button" role="radio" aria-checked="true"
+          data-state="checked" value="moon-0" data-slot="radio-group-item"
+          id="moon-0" tabindex="-1" data-radix-collection-item class="…"&gt;
+    &lt;span data-state="checked" data-slot="radio-group-indicator" class="…"&gt;
+      &lt;span class="…"&gt;&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/button&gt;
+  &lt;label data-slot="field-label" for="moon-0" class="…"&gt;Calisto&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        <p>2.475 caracteres (las clases están recortadas con «…»). 275 KB de JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-shadcn-notas">Notas</h3>
+          <p>Ahora shadcn/ui con Radix, probablemente lo más usado hoy en proyectos React. Aquí no hay ningún input: hay un botón al que se le pone el rol radio con ARIA, un estado aria-checked que mantiene JavaScript, y dos spans para dibujar el círculo. He recortado las clases de Tailwind con puntos suspensivos; sin recortar, una sola opción ocupa casi dos mil quinientos caracteres.</p>
+          <p>Un dato curioso: la versión actual de shadcn ya no usa Radix por defecto, sino Base UI, que en vez de un botón genera un span con rol radio y un input oculto. También está en el banco de pruebas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-mui">
+        <h2 id="radio-mui-titulo">MUI</h2>
+<pre><code>&lt;label class="MuiFormControlLabel-root …"&gt;
+  &lt;span class="MuiButtonBase-root MuiRadio-root … Mui-checked …"&gt;
+    &lt;input class="PrivateSwitchBase-input …" type="radio"
+           value="moon-0" checked name="ringtone"&gt;
+    &lt;span class="…"&gt;
+      &lt;svg … aria-hidden="true" viewBox="0 0 24 24"&gt;&lt;path d="…"&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;svg … aria-hidden="true" viewBox="0 0 24 24"&gt;&lt;path d="…"&gt;&lt;/path&gt;&lt;/svg&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="MuiTypography-root … MuiFormControlLabel-label …"&gt;Calisto&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+        <p>1.119 caracteres. 329 KB de JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-mui-notas">Notas</h3>
+          <p>MUI sí usa un input nativo, y eso es bueno para la accesibilidad. Pero lo envuelve en spans, lo oculta visualmente y dibuja el círculo con dos SVG. Y cada vez que haces clic, añade elementos para el efecto ripple. Son 329 kilobytes de JavaScript para la página de ejemplo.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-material-web">
+        <h2 id="radio-material-web-titulo">Material Web</h2>
+<pre><code>&lt;md-radio id="moon-0" name="ringtone" value="moon-0" checked tabindex="0"&gt;
+  #shadow-root
+    &lt;div aria-hidden="true" class="container checked"&gt;
+      &lt;md-ripple aria-hidden="true"&gt;#shadow-root &lt;div class="surface"&gt;&lt;/div&gt;&lt;/md-ripple&gt;
+      &lt;md-focus-ring aria-hidden="true"&gt;&lt;/md-focus-ring&gt;
+      &lt;svg class="icon" viewBox="0 0 20 20"&gt;… una máscara y tres círculos …&lt;/svg&gt;
+      &lt;div class="touch-target"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/md-radio&gt;
+&lt;label for="moon-0"&gt;Calisto&lt;/label&gt;</code></pre>
+        <p>821 caracteres, con su shadow DOM. 41 KB de JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-material-web-notas">Notas</h3>
+          <p>Y Material Web, los web components de Google, sucesores de la librería que auditó Eric. Un elemento md-radio con su propio shadow DOM, que contiene otros dos web components con su shadow DOM, un SVG y varios divs. El rol de radio lo pone con JavaScript a través de ElementInternals. Es el más ligero en JavaScript, 41 kilobytes, pero ya veréis que el peso no lo es todo.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="una-opcion">
+        <h2 id="una-opcion-titulo">Lo que cuesta una opción</h2>
+        <table>
+          <caption>Página con 1 radio button, mediana de 5 ejecuciones</caption>
+          <thead>
+            <tr>
+              <th scope="col">Implementación</th>
+              <th scope="col" class="num">Elementos</th>
+              <th scope="col" class="num">Atributos</th>
+              <th scope="col" class="num">Profundidad</th>
+              <th scope="col" class="num">Selectores CSS</th>
+              <th scope="col" class="num">JavaScript</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Nativo</th><td class="num">5</td><td class="num">7</td><td class="num">3</td><td class="num">5</td><td class="num">0 KB</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">9</td><td class="num">36</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">8</td><td class="num">33</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">12</td><td class="num">25</td><td class="num">7</td><td class="num">35</td><td class="num">329 KB</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">16</td><td class="num">36</td><td class="num">7</td><td class="num">45</td><td class="num">41 KB</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Elementos, atributos y profundidad del bloque medido, incluido el shadow DOM. JavaScript descomprimido de toda la página.</p>
+        <div class="notes">
+          <h3 id="una-opcion-notas">Notas</h3>
+          <p>Con una sola opción, las diferencias parecen pequeñas: el nativo usa cinco elementos y siete atributos; el resto, entre ocho y dieciséis elementos y entre veinticinco y treinta y seis atributos. La diferencia grande está en el JavaScript: cero frente a entre 41 y 329 kilobytes.</p>
+          <p>Pero nadie hace un formulario de una opción. Veamos qué pasa cuando hay muchas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="cien-opciones">
+        <h2 id="cien-opciones-titulo">Con 100 opciones</h2>
+        <table>
+          <caption>100 radio buttons, CPU ralentizada ×4, mediana de 5 ejecuciones</caption>
+          <thead>
+            <tr>
+              <th scope="col">Implementación</th>
+              <th scope="col" class="num">Elementos</th>
+              <th scope="col" class="num">Tiempo de bloqueo (TBT)</th>
+              <th scope="col" class="num">Respuesta al clic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Nativo</th><td class="num">302</td><td class="num good">0 ms</td><td class="num good">&lt; 16 ms</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">405</td><td class="num">160 ms</td><td class="num">120 ms</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">305</td><td class="num">150 ms</td><td class="num">112 ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">903</td><td class="num">139 ms</td><td class="num bad">208 ms</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">1.402</td><td class="num bad">283 ms</td><td class="num">104 ms</td></tr>
+          </tbody>
+        </table>
+        <p class="source">La respuesta al clic se mide con Event Timing, que no registra eventos de menos de 16 ms. Por encima de 200 ms, el INP deja de considerarse bueno.</p>
+        <div class="notes">
+          <h3 id="cien-opciones-notas">Notas</h3>
+          <p>Con cien opciones, y la CPU ralentizada cuatro veces para simular un móvil normal, el radio nativo no bloquea el hilo principal ni un milisegundo, y el clic responde en menos de dieciséis milisegundos, que es lo mínimo que se puede medir.</p>
+          <p>Los componentes de framework bloquean entre 139 y 283 milisegundos al cargar. Y el clic de MUI tarda 208 milisegundos: ya supera el umbral de 200 que Google considera bueno para el INP, solo por los radio buttons de la página.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="trabajo-de-accesibilidad">
+        <h2 id="trabajo-de-accesibilidad-titulo">Un clic, con un lector de pantalla escuchando</h2>
+        <table class="bars">
+          <caption>Trabajo de accesibilidad en el hilo principal tras un clic. 1000 radio buttons, accesibilidad activada, CPU ×4</caption>
+          <thead>
+            <tr><th scope="col">Implementación</th><th scope="col" class="num">Milisegundos</th><th scope="col"><span class="visually-hidden">Barra proporcional</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Nativo</th><td class="num">2,6</td><td class="bar-cell"><span class="bar" style="--value: 0.002"></span></td></tr>
+            <tr><th scope="row">Nativo con estilos</th><td class="num">3,2</td><td class="bar-cell"><span class="bar" style="--value: 0.003"></span></td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">185</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.156"></span></td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">446</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.375"></span></td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">453</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.381"></span></td></tr>
+            <tr><th scope="row">MUI</th><td class="num">1.189</td><td class="bar-cell"><span class="bar is-bad" style="--value: 1"></span></td></tr>
+          </tbody>
+        </table>
+        <p class="source">Chrome con <code>--force-renderer-accessibility</code>, lo que ocurre cuando hay un lector de pantalla en marcha. Con 100 opciones: 1 ms en el nativo frente a 36 ms en MUI.</p>
+        <div class="notes">
+          <h3 id="trabajo-de-accesibilidad-notas">Notas</h3>
+          <p>Este es para mí el dato más importante de la charla. Chrome solo construye el árbol de accesibilidad cuando detecta una tecnología de asistencia. Se puede forzar con una opción de arranque, y entonces las trazas de rendimiento muestran el trabajo de accesibilidad con nombre propio.</p>
+          <p>Medimos un solo clic en una página con mil radio buttons. En el nativo, el navegador dedica 2,6 milisegundos a actualizar el árbol de accesibilidad. En shadcn, entre 185 y 446. En Material Web, 453. Y en MUI, casi 1,2 segundos. Más de un segundo de trabajo de accesibilidad por pulsar un radio button, que se suma a todo lo demás. Con cien opciones la diferencia es de un milisegundo frente a treinta y seis.</p>
+          <p>¿Por qué? Con un radio nativo, al hacer clic cambia el estado de dos inputs. Con un componente de React, el clic vuelve a renderizar el grupo, cambian atributos en muchos elementos, y cada cambio en el DOM es un cambio que el árbol de accesibilidad tiene que procesar.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="mil-opciones-material">
+        <h2 id="mil-opciones-material-titulo">Material Web con 1000 opciones: 108 segundos</h2>
+<pre><code>// @material/web 2.5.0 · radio/internal/single-selection-controller.js
+updateTabIndices() {
+  const siblings = this.controls;  // querySelectorAll de todos los radios del grupo
+  …
+  for (const sibling of siblings) {
+    if (sibling !== focusable) sibling.tabIndex = -1;
+  }
+}</code></pre>
+        <table>
+          <caption>Tiempo hasta que la página termina de renderizar (sin ralentizar la CPU)</caption>
+          <thead><tr><th scope="col">Opciones</th><th scope="col" class="num">Tiempo</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">100</th><td class="num">0,1 s</td></tr>
+            <tr><th scope="row">300</th><td class="num">0,8 s</td></tr>
+            <tr><th scope="row">1000</th><td class="num bad">24 s</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <h3 id="mil-opciones-material-notas">Notas</h3>
+          <p>Material Web tiene un problema adicional. Cada radio, al conectarse a la página, busca a todos los radios de su grupo y les reescribe el tabindex. Con N radios, eso son N al cuadrado escrituras en el DOM. Con cien opciones apenas se nota; con trescientas tarda casi un segundo; con mil, veinticuatro segundos en mi portátil, y ciento ocho segundos con la CPU de un móvil normal.</p>
+          <p>Y todo eso para reimplementar en JavaScript algo que el navegador ya hace solo con un grupo de radios nativo: un único punto de tabulación y la navegación con flechas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="gratis">
+        <h2 id="gratis-titulo">Lo que el navegador te da gratis</h2>
+        <ul>
+          <li>Un solo punto de tabulación por grupo y navegación con las flechas.</li>
+          <li>Nombre, rol y estado correctos en el árbol de accesibilidad.</li>
+          <li>Envío del formulario, validación con <code>required</code> y autocompletado.</li>
+          <li>Modo de alto contraste del sistema (<code>forced-colors</code>).</li>
+          <li>Funciona antes de que cargue el JavaScript, y si no carga nunca.</li>
+        </ul>
+        <p>Y con <code>accent-color</code> o <code>appearance: none</code>, el estilo de tu marca.</p>
+        <div class="notes">
+          <h3 id="gratis-notas">Notas</h3>
+          <p>Todo esto viene incluido en un input de tipo radio: el foco, las flechas, el nombre y el estado en el árbol de accesibilidad, el envío del formulario, la validación, el modo de alto contraste de Windows, y que funcione aunque el JavaScript falle.</p>
+          <p>¿Y el diseño? Con la propiedad accent-color se le aplica el color de la marca en una línea. Y si se necesita un diseño totalmente propio, appearance none permite dibujarlo con CSS sin perder nada de lo anterior. En el banco de pruebas, el nativo con estilos personalizados cuesta prácticamente lo mismo que el nativo sin tocar.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="matiz-tamano-dom">
+        <h2 id="matiz-tamano-dom-titulo">Un matiz honesto: el tamaño del DOM también cuenta</h2>
+        <table>
+          <caption>Radio nativo con 1000 opciones, CPU ×4</caption>
+          <thead><tr><th scope="col">Accesibilidad</th><th scope="col" class="num">Tiempo de bloqueo al cargar</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Desactivada</th><td class="num">16 ms</td></tr>
+            <tr><th scope="row">Activada</th><td class="num bad">479 ms</td></tr>
+          </tbody>
+        </table>
+        <p>El HTML semántico reduce el coste, pero no lo elimina: <strong>menos DOM es menos trabajo para el árbol de accesibilidad</strong>.</p>
+        <div class="notes">
+          <h3 id="matiz-tamano-dom-notas">Notas</h3>
+          <p>Quiero ser honesto con los datos. Con mil opciones, incluso el radio nativo paga: sin accesibilidad, la carga bloquea 16 milisegundos; con un lector de pantalla escuchando, 479. Construir el árbol de accesibilidad de una página grande cuesta, se haga como se haga.</p>
+          <p>La conclusión no es "el nativo es gratis", sino que cada nodo del DOM tiene un coste extra para quien usa tecnología de asistencia. Menos DOM y DOM más simple es menos trabajo, y ahí el HTML semántico gana por mucho.</p>
+        </div>
+      </section>
+
+      <!-- ============================================ ¿Y el lector de pantalla? (5 min) -->
+
+      <section class="slide" id="diez-anos">
+        <h2 id="diez-anos-titulo">Diez años haciendo la misma pregunta</h2>
+        <ol>
+          <li><strong>2016</strong>: Marcy Sutton: <q>you can't optimize what you can't measure</q>. Propone una métrica «Accessibility Tree Ready».</li>
+          <li><strong>2020</strong>: Scott Jehl pide en Lighthouse métricas que incluyan a la tecnología de asistencia (issue #11049). Sigue abierto.</li>
+          <li><strong>2024</strong>: Eric Bailey lo vuelve a pedir en performance.now().</li>
+          <li><strong>2026</strong>: aquí estamos.</li>
+        </ol>
+        <div class="notes">
+          <h3 id="diez-anos-notas">Notas</h3>
+          <p>Esto no es una idea nueva, y me parece importante decirlo. En 2016, Marcy Sutton ya daba charlas sobre accesibilidad y rendimiento. Decía que no se puede optimizar lo que no se puede medir, y que no había forma de medir el árbol de accesibilidad. Propuso una métrica, un "Accessibility Tree Ready".</p>
+          <p>En 2020, Scott Jehl abrió un issue en Lighthouse pidiendo métricas que tuvieran en cuenta a la tecnología de asistencia. Sigue abierto. En 2024, Eric Bailey lo volvió a pedir. Diez años de la misma pregunta. Y todo esto antes de la IA: antes pensábamos.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="hipotesis">
+        <h2 id="hipotesis-titulo">La hipótesis</h2>
+        <p class="statement">Optimizar el contenido para el rendimiento también hace más rápidos a los lectores de pantalla.</p>
+        <h3>Cómo la he puesto a prueba</h3>
+        <ul>
+          <li>En el navegador: trazas de Chrome con la accesibilidad activada (<code>--force-renderer-accessibility</code>).</li>
+          <li>En el lector de pantalla: VoiceOver automatizado, midiendo cuánto tarda en anunciar cada opción.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="hipotesis-notas">Notas</h3>
+          <p>Así que en 2026 la pregunta se puede responder, al menos en parte. Mi hipótesis es que optimizar el contenido para el rendimiento también hace más rápidos a los lectores de pantalla.</p>
+          <p>La he puesto a prueba en dos niveles. En el navegador, con las trazas de Chrome con la accesibilidad activada, que ya habéis visto. Y en el propio lector de pantalla, automatizando VoiceOver para medir cuánto tarda en anunciar cada opción.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="resultado-navegador">
+        <h2 id="resultado-navegador-titulo">En el navegador: confirmada</h2>
+        <ul>
+          <li>El trabajo de accesibilidad crece con la cantidad y la complejidad del DOM.</li>
+          <li>Tras un clic, con 1000 opciones: <strong>2,6 ms</strong> con el radio nativo frente a <strong>185–1.189 ms</strong> con componentes de framework.</li>
+          <li>Ese trabajo ocurre en el hilo principal: compite con la respuesta a la interacción.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="resultado-navegador-notas">Notas</h3>
+          <p>En el lado del navegador, la hipótesis se confirma: el trabajo de accesibilidad crece con el tamaño y la complejidad del DOM, y con los componentes de framework es entre setenta y cuatrocientas cincuenta veces mayor tras un mismo clic. Y ocurre en el hilo principal, el mismo que tiene que responder a la persona.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="resultado-voiceover">
+        <h2 id="resultado-voiceover-titulo">En VoiceOver</h2>
+        <!-- PENDIENTE: resultados de la prueba con VoiceOver automatizado (Guidepup). Se presentan tal cual salgan. -->
+        <p>Resultados pendientes.</p>
+        <div class="notes">
+          <h3 id="resultado-voiceover-notas">Notas</h3>
+          <p>Pendiente de los resultados de la prueba con VoiceOver.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="limitaciones">
+        <h2 id="limitaciones-titulo">Lo que estos datos no dicen</h2>
+        <ul>
+          <li>Solo Chrome y solo VoiceOver en macOS: ni NVDA, ni JAWS, ni TalkBack, ni líneas braille.</li>
+          <li>Un portátil rápido con la CPU ralentizada no es un móvil de gama baja.</li>
+          <li>Servidor local, sin limitar la red.</li>
+          <li>1000 opciones es un caso extremo; 100 ya es realista en formularios largos.</li>
+        </ul>
+        <p>Todo el código y los datos están en el repositorio para quien quiera repetirlo.</p>
+        <div class="notes">
+          <h3 id="limitaciones-notas">Notas</h3>
+          <p>Y lo que estos datos no dicen. Solo he probado Chrome y VoiceOver. Un portátil con la CPU ralentizada es una aproximación, no un móvil real. Y mil opciones es un caso extremo, aunque cien ya aparece en formularios de verdad, como un selector de países. Todo el código está publicado para que cualquiera pueda repetirlo con otros navegadores y lectores de pantalla, y me encantaría que lo hicierais.</p>
+        </div>
+      </section>
+
+      <!-- ============================================ La IA elige por ti (10 min) -->
+
+      <section class="slide" id="el-mismo-patron">
+        <h2 id="el-mismo-patron-titulo">El mismo patrón, década tras década</h2>
+        <ol>
+          <li><strong>2016</strong>, Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
+          <li><strong>2024</strong>, Material Components Web: el radio que colgó VoiceOver.</li>
+          <li><strong>2026</strong>, shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+        </ol>
+        <p>Y ahora lo escribe una IA.</p>
+        <div class="notes">
+          <h3 id="el-mismo-patron-notas">Notas</h3>
+          <p>Fijaos en el patrón. En 2016, el ejemplo de Marcy Sutton era un checkbox de Angular Material, un elemento propio con rol y tabindex puestos a mano. En 2024, el radio de Material que colgó VoiceOver. En 2026, el radio de shadcn: un botón con rol de radio.</p>
+          <p>Cambian los frameworks, pero el patrón es el mismo: reconstruir con divs, ARIA y JavaScript lo que el navegador ya ofrece. Y hoy, cada vez más, ese código no lo escribimos nosotros: lo escribe un agente de IA. Así que he querido comprobar qué elige.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="experimento">
+        <h2 id="experimento-titulo">El experimento</h2>
+        <blockquote>
+          <p>Crea una página de ajustes con un selector de tono de llamada. Las opciones son: Calisto, Ganímedes, Luna y Europa.</p>
+        </blockquote>
+        <ul>
+          <li>Claude Code (Claude Opus 5.5) y Antigravity (Gemini).</li>
+          <li>Perfiles limpios: sin skills, memoria ni configuración personal.</li>
+          <li>Dos escenarios: una carpeta vacía y un proyecto React existente con shadcn/ui.</li>
+          <li>3 repeticiones por combinación.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="experimento-notas">Notas</h3>
+          <p>El experimento es sencillo. Este es el prompt, literal: crea una página de ajustes con un selector de tono de llamada, con estas cuatro opciones. No menciono ninguna tecnología.</p>
+          <!-- PENDIENTE: revisar este párrafo cuando estén los resultados de Antigravity. -->
+          <p>Lo he lanzado con Claude Code y con Antigravity de Google, con perfiles limpios, sin mis skills ni mi configuración, para ver lo que obtendría cualquiera. En dos escenarios: una carpeta vacía y un proyecto React que ya existe y usa shadcn, que es como trabajamos casi siempre. Tres repeticiones de cada, porque los agentes no son deterministas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="carpeta-vacia">
+        <h2 id="carpeta-vacia-titulo">En una carpeta vacía: HTML semántico</h2>
+        <table>
+          <caption>Carpeta vacía, sin indicar tecnología</caption>
+          <thead><tr><th scope="col">Agente</th><th scope="col">Qué generó</th><th scope="col" class="num">Radio nativo</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td>Un único <code>index.html</code></td><td class="num good">3 de 3</td></tr>
+            <!-- PENDIENTE: Antigravity se repite con --dangerously-skip-permissions --sandbox; los datos en modo por defecto se descartaron. -->
+            <tr><th scope="row">Antigravity</th><td>Pendiente</td><td class="num">–</td></tr>
+          </tbody>
+        </table>
+        <p>Con <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, enlace para saltar al contenido y región <code>aria-live</code>.</p>
+        <div class="notes">
+          <h3 id="carpeta-vacia-notas">Notas</h3>
+          <p>Y aquí me llevé la primera sorpresa. Yo esperaba que la IA generara React y shadcn por defecto. Pues no: en una carpeta vacía, Claude generó las tres veces HTML semántico. Radios nativos, fieldset y legend, labels, un enlace para saltar al contenido e incluso una región aria-live para anunciar que se ha guardado. Sin framework.</p>
+          <p>Cuando nadie les condiciona, los agentes eligen la plataforma.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="proyecto-react">
+        <h2 id="proyecto-react-titulo">En un proyecto React con shadcn: el patrón del proyecto</h2>
+        <table>
+          <caption>Proyecto React + shadcn/ui existente, sin componente radio-group instalado</caption>
+          <thead><tr><th scope="col">Agente</th><th scope="col" class="num"><code>RadioGroup</code> de Radix</th><th scope="col" class="num">Radio nativo</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td class="num bad">3 de 3</td><td class="num">0 de 3</td></tr>
+            <!-- PENDIENTE: resultados de Antigravity repetidos en sandbox. -->
+            <tr><th scope="row">Antigravity</th><td class="num">–</td><td class="num">–</td></tr>
+          </tbody>
+        </table>
+        <p>El componente no estaba instalado: los agentes lo <strong>escribieron a mano</strong>, imitando el de shadcn.</p>
+        <div class="notes">
+          <h3 id="proyecto-react-notas">Notas</h3>
+          <p>Segundo escenario: el mismo prompt, pero dentro de un proyecto React con shadcn que ya tiene botones, tarjetas y campos de texto, pero no tiene el componente de radio. Las tres veces, Claude escribió a mano un RadioGroup de Radix, imitando el de shadcn: botones con rol de radio y JavaScript.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="la-ia-amplifica">
+        <h2 id="la-ia-amplifica-titulo">La IA amplifica lo que ya tienes</h2>
+        <p class="statement">El mismo agente, con el mismo prompt, escribe HTML semántico en una carpeta vacía y reproduce el patrón de tu proyecto cuando lo hay.</p>
+        <div class="notes">
+          <h3 id="la-ia-amplifica-notas">Notas</h3>
+          <p>Esta es la conclusión del experimento. La IA no elige mal por sí misma: amplifica lo que ya tienes. Si tu proyecto está lleno de componentes que reconstruyen controles nativos, el agente seguirá ese camino, aunque sepa hacerlo mejor. Y como casi nunca empezamos desde una carpeta vacía, ese es el caso real.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="modern-web-guidance">
+        <h2 id="modern-web-guidance-titulo">Modern Web Guidance</h2>
+        <ul>
+          <li>Skills y una CLI que dan a los agentes conocimiento actual de la plataforma web.</li>
+          <li>Publicado por Google Chrome, con Microsoft Edge, Mozilla Firefox y MDN. Licencia Apache 2.0.</li>
+          <li>Por defecto, solo recomienda lo que es Baseline Widely available.</li>
+        </ul>
+        <blockquote>
+          <p>Adapta checkboxes, radio buttons, sliders y barras de progreso a tu paleta sin sustituirlos por componentes propios.</p>
+        </blockquote>
+        <p class="source">Guía <code>brand-consistent-forms</code> (resumen propio). <a href="https://github.com/GoogleChrome/modern-web-guidance">github.com/GoogleChrome/modern-web-guidance</a></p>
+        <div class="notes">
+          <h3 id="modern-web-guidance-notas">Notas</h3>
+          <p>¿Cómo cambiamos eso? Aquí entra Modern Web Guidance. Es un conjunto de skills y una herramienta de línea de comandos que da a los agentes conocimiento actualizado de la plataforma web. Lo publica el equipo de Chrome, junto con Edge, Firefox y MDN, y por defecto solo recomienda funcionalidades que ya funcionan en todos los navegadores.</p>
+          <p>Y tiene una guía que parece escrita para esta charla: adaptar los controles de formulario a la marca sin sustituirlos por componentes propios.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="instalado-no-basta">
+        <h2 id="instalado-no-basta-titulo">Instalarlo no basta: el agente tiene que consultarlo</h2>
+        <table>
+          <caption>Claude Code en el proyecto React + shadcn</caption>
+          <thead><tr><th scope="col">Condición</th><th scope="col" class="num">Consultó Modern Web Guidance</th><th scope="col" class="num">Radio nativo</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Sin Modern Web Guidance</th><td class="num">–</td><td class="num">0 de 3</td></tr>
+            <tr><th scope="row">Instalado</th><td class="num">1 de 3</td><td class="num">1 de 3</td></tr>
+            <tr><th scope="row">Instalado + <code>AGENTS.md</code></th><td class="num good">3 de 3</td><td class="num good">3 de 3</td></tr>
+          </tbody>
+        </table>
+        <!-- PENDIENTE: añadir los resultados de Antigravity con Modern Web Guidance y con AGENTS.md. -->
+        <div class="notes">
+          <h3 id="instalado-no-basta-notas">Notas</h3>
+          <p>Lo instalé y repetí el experimento. En el proyecto React, con Modern Web Guidance solo instalado, Claude lo consultó una de cada tres veces. Y fijaos: esa vez, y solo esa vez, usó el radio nativo. Las otras dos ni lo miró y volvió a escribir el componente de Radix.</p>
+          <p>Así que instalarlo no basta. Añadí al proyecto un fichero AGENTS.md de dos líneas, el que recomienda la propia documentación, y el resultado fue tres de tres: siempre lo consultó y siempre usó el radio nativo, dentro del mismo proyecto React.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="agents-md">
+        <h2 id="agents-md-titulo">Dos líneas que cambian el resultado</h2>
+<pre><code># AGENTS.md
+
+## Desarrollo web
+
+- Antes de implementar o modificar cualquier interfaz, consulta
+  Modern Web Guidance (skill `modern-web-guidance`) y sigue sus
+  recomendaciones.
+- El objetivo de Baseline de este proyecto es Baseline Widely available.</code></pre>
+        <p>Lo que generó Claude, dentro del proyecto React con Tailwind:</p>
+<pre><code>&lt;fieldset&gt;
+  &lt;legend&gt;Tono de llamada&lt;/legend&gt;
+  &lt;input type="radio" className="size-4 accent-primary …" /&gt;</code></pre>
+        <div class="notes">
+          <h3 id="agents-md-notas">Notas</h3>
+          <p>Este es el fichero completo. No dice "usa radios nativos": eso sería darle la respuesta. Solo dice que consulte Modern Web Guidance antes de tocar la interfaz, y cuál es el objetivo de compatibilidad.</p>
+          <p>Y este es el resultado: un fieldset, un legend y un input de tipo radio con accent-color y el color primario del tema de shadcn. Dentro del mismo proyecto React y con Tailwind. Es exactamente la variante nativa de mi banco de pruebas.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="coste-del-agente">
+        <h2 id="coste-del-agente-titulo">¿Y cuánto cuesta?</h2>
+        <table>
+          <caption>Coste por generación de Claude Code</caption>
+          <thead><tr><th scope="col">Condición</th><th scope="col" class="num">Coste</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Sin Modern Web Guidance</th><td class="num">0,32–0,37 $</td></tr>
+            <tr><th scope="row">Con Modern Web Guidance</th><td class="num">0,46–0,71 $</td></tr>
+          </tbody>
+        </table>
+        <p>Unos céntimos más una vez, frente a cientos de milisegundos en cada clic de cada visita.</p>
+        <div class="notes">
+          <h3 id="coste-del-agente-notas">Notas</h3>
+          <p>Consultar la guía tiene un coste: cada generación pasa de unos 35 céntimos a entre 46 y 71. Lo pagamos una vez, al escribir el código. El componente pesado lo pagan todas las personas que usen la web, en cada visita y en cada clic. Y quien más lo paga es quien usa un lector de pantalla en un dispositivo modesto.</p>
+        </div>
+      </section>
+
+      <!-- ================================================================ Cierre (2 min) -->
+
+      <section class="slide" id="dx-ux">
+        <h2 id="dx-ux-titulo">La experiencia de desarrollo tiene un coste</h2>
+        <p class="statement">Cuando priorizamos la experiencia de desarrollo sobre la de las personas usuarias, alguien paga la diferencia. Y se puede medir.</p>
+        <div class="notes">
+          <h3 id="dx-ux-notas">Notas</h3>
+          <p>Cierro con la idea de la lightning talk del año pasado, ahora con datos. Elegimos componentes porque son cómodos para quien desarrolla. Esa comodidad tiene un coste, y no lo pagamos nosotros: lo pagan las personas usuarias, y sobre todo las que usan tecnología de asistencia. Hoy hemos visto que ese coste se puede medir.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="manana">
+        <h2 id="manana-titulo">Qué puedes hacer mañana</h2>
+        <ol>
+          <li>Usa HTML semántico primero: es tu primera optimización de accesibilidad y de rendimiento.</li>
+          <li>Prueba con un lector de pantalla: <kbd>Cmd</kbd> + <kbd>F5</kbd> activa VoiceOver en macOS.</li>
+          <li>Mide con la accesibilidad activada: <code>--force-renderer-accessibility</code>.</li>
+          <li>Dile a tu agente que consulte Modern Web Guidance desde el <code>AGENTS.md</code>.</li>
+          <li>Apoya el issue <a href="https://github.com/GoogleChrome/lighthouse/issues/11049">#11049 de Lighthouse</a>.</li>
+        </ol>
+        <div class="notes">
+          <h3 id="manana-notas">Notas</h3>
+          <p>Cinco cosas que podéis hacer mañana. Una: HTML semántico primero. Dos: probad con un lector de pantalla; en un Mac, Comando más F5 activa VoiceOver, y basta con comprobar que no se cuelga. Tres: cuando midáis el rendimiento, medid también con la accesibilidad activada. Cuatro: si trabajáis con agentes, decidles en el AGENTS.md que consulten Modern Web Guidance. Y cinco: pasaos por el issue de Lighthouse que abrió Scott Jehl en 2020; un poco de atención puede ayudar a que, por fin, tengamos una métrica.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="gracias">
+        <h2 id="gracias-titulo">Gracias</h2>
+        <p>Código, datos y referencias: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a></p>
+        <h3>Créditos</h3>
+        <ul>
+          <li>Eric Bailey, <cite>Accessible is Performant</cite> (2024).</li>
+          <li>Marcy Sutton, <cite>Accessibility and Performance</cite> (2016).</li>
+          <li>Scott Jehl, Lighthouse #11049 (2020).</li>
+          <li>Marco Zehe, trabajo de rendimiento del árbol de accesibilidad de Firefox.</li>
+          <li>Scott O'Hara, <cite>a11y_styled_form_controls</cite>.</li>
+        </ul>
+        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
+        <div class="notes">
+          <h3 id="gracias-notas">Notas</h3>
+          <p>Muchas gracias. Todo el código del banco de pruebas, el experimento con agentes, los datos y las referencias están en el repositorio. Gracias especialmente a Eric Bailey, Marcy Sutton, Scott Jehl, Marco Zehe y Scott O'Hara, sobre cuyo trabajo está construida esta charla. ¿Preguntas?</p>
+        </div>
+      </section>
+
+    </main>
+
+    <nav id="deck-controls" aria-label="Controles de la presentación" hidden>
+      <button type="button" id="prev-slide">Anterior</button>
+      <button type="button" id="next-slide">Siguiente</button>
+      <button type="button" id="toggle-notes" aria-pressed="false">Notas</button>
+      <button type="button" id="toggle-document" aria-pressed="false">Modo documento</button>
+      <button type="button" id="open-help">Ayuda</button>
+      <span id="slide-counter"></span>
+    </nav>
+
+    <div id="announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog id="help" aria-labelledby="help-titulo">
+      <h2 id="help-titulo">Ayuda</h2>
+      <table>
+        <caption class="visually-hidden">Atajos de teclado</caption>
+        <thead><tr><th scope="col">Tecla</th><th scope="col">Acción</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Av Pág</kbd> o <kbd>Espacio</kbd></td><td>Diapositiva siguiente</td></tr>
+          <tr><td><kbd>←</kbd>, <kbd>↑</kbd> o <kbd>Re Pág</kbd></td><td>Diapositiva anterior</td></tr>
+          <tr><td><kbd>Inicio</kbd> y <kbd>Fin</kbd></td><td>Primera y última diapositiva</td></tr>
+          <tr><td><kbd>N</kbd></td><td>Mostrar u ocultar las notas</td></tr>
+          <tr><td><kbd>D</kbd></td><td>Modo documento: todas las diapositivas en una página</td></tr>
+          <tr><td><kbd>?</kbd></td><td>Abrir esta ayuda</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <label>
+          <input type="checkbox" id="single-key-shortcuts" checked>
+          Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd> y <kbd>?</kbd>)
+        </label>
+      </p>
+      <p class="muted">Si usas un lector de pantalla, puede que las flechas no lleguen a la página en modo exploración. Usa los botones Anterior y Siguiente, o el modo documento.</p>
+      <form method="dialog">
+        <button type="submit">Cerrar</button>
+      </form>
+    </dialog>
+  </body>
+</html>
