@@ -448,12 +448,27 @@ updateTabIndices() {
       </section>
 
       <section class="slide" id="resultado-voiceover">
-        <h2 id="resultado-voiceover-titulo">En VoiceOver</h2>
-        <!-- PENDIENTE: resultados de la prueba con VoiceOver automatizado (Guidepup). Se presentan tal cual salgan. -->
-        <p>Resultados pendientes.</p>
+        <h2 id="resultado-voiceover-titulo">En VoiceOver: también se oye</h2>
+        <table>
+          <caption>Tiempo desde que se pulsa la flecha hasta que VoiceOver anuncia la opción (mediana, ms). Chrome con CPU ×4</caption>
+          <thead>
+            <tr><th scope="col">Implementación</th><th scope="col" class="num">10 opciones</th><th scope="col" class="num">100 opciones</th><th scope="col" class="num">1000 opciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Nativo</th><td class="num good">33</td><td class="num good">64</td><td class="num">436</td></tr>
+            <tr><th scope="row">Nativo con estilos</th><td class="num good">32</td><td class="num good">67</td><td class="num">437</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">47</td><td class="num">106</td><td class="num bad">1.063</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">47</td><td class="num">99</td><td class="num bad">859</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">57</td><td class="num bad">171</td><td class="num bad">1.973</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">45</td><td class="num">79</td><td class="num bad">1.068</td></tr>
+          </tbody>
+        </table>
+        <p>Con 1000 opciones, MUI tarda <strong>casi 2 segundos</strong> en anunciar cada opción: 4,5 veces más que el radio nativo.</p>
         <div class="notes">
           <h3 id="resultado-voiceover-notas">Notas</h3>
-          <p>Pendiente de los resultados de la prueba con VoiceOver.</p>
+          <p>Y ahora, lo que de verdad oye una persona. Automaticé VoiceOver en macOS: abro cada página, pongo el foco en el primer radio, pulso la flecha abajo veinte veces y mido cuánto tarda VoiceOver en decir la opción siguiente. Tres repeticiones de cada combinación.</p>
+          <p>Con diez opciones todo está entre 32 y 57 milisegundos. Con cien, el nativo sigue en unos 65 milisegundos, shadcn en unos 100 y MUI en 171. Con mil opciones, el nativo tarda 436 milisegundos, que ya es mucho, y los componentes de framework entre 860 milisegundos y casi dos segundos por opción. Imaginad recorrer una lista de países así: dos segundos de silencio por cada pulsación.</p>
+          <p>Así que la hipótesis se confirma también donde importa: en lo que oye la persona. Y se confirma el matiz: el tamaño del DOM castiga a todos, pero mucho más a los componentes que reconstruyen el control.</p>
         </div>
       </section>
 
@@ -464,6 +479,7 @@ updateTabIndices() {
           <li>Un portátil rápido con la CPU ralentizada no es un móvil de gama baja.</li>
           <li>Servidor local, sin limitar la red.</li>
           <li>1000 opciones es un caso extremo; 100 ya es realista en formularios largos.</li>
+          <li>En algunas pruebas con el radio nativo, la primera pulsación no movió la selección y VoiceOver quedó una opción por detrás; esos pasos se excluyen.</li>
         </ul>
         <p>Todo el código y los datos están en el repositorio para quien quiera repetirlo.</p>
         <div class="notes">

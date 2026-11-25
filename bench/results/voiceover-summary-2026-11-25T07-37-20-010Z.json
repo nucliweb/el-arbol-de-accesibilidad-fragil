@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "runs": 3,
+    "sizes": [
+      10,
+      100,
+      1000
+    ],
+    "steps": 20,
+    "targets": [
+      "native",
+      "native-styled",
+      "shadcn-base",
+      "shadcn-radix",
+      "mui",
+      "material-web"
+    ],
+    "throttle": 4,
+    "silenceMs": 5000,
+    "startedAt": "2026-11-25T07:37:20.010Z"
+  },
+  "groups": [
+    {
+      "n": 10,
+      "target": "native",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 33,
+      "p90Ms": 39,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 10,
+      "target": "native-styled",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 32,
+      "p90Ms": 37,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 10,
+      "target": "shadcn-base",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 59,
+      "medianMs": 47,
+      "p90Ms": 54,
+      "offsetSteps": 0,
+      "silences": 1
+    },
+    {
+      "n": 10,
+      "target": "shadcn-radix",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 59,
+      "medianMs": 47,
+      "p90Ms": 54,
+      "offsetSteps": 0,
+      "silences": 1
+    },
+    {
+      "n": 10,
+      "target": "mui",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 57,
+      "p90Ms": 64,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 10,
+      "target": "material-web",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 45,
+      "p90Ms": 55,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 100,
+      "target": "native",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 40,
+      "medianMs": 64,
+      "p90Ms": 69,
+      "offsetSteps": 19,
+      "silences": 1
+    },
+    {
+      "n": 100,
+      "target": "native-styled",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 40,
+      "medianMs": 67,
+      "p90Ms": 70,
+      "offsetSteps": 19,
+      "silences": 1
+    },
+    {
+      "n": 100,
+      "target": "shadcn-base",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 106,
+      "p90Ms": 112,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 100,
+      "target": "shadcn-radix",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 99,
+      "p90Ms": 105,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 100,
+      "target": "mui",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 170.5,
+      "p90Ms": 181,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 100,
+      "target": "material-web",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 79,
+      "p90Ms": 87,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 1000,
+      "target": "native",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 40,
+      "medianMs": 436,
+      "p90Ms": 446,
+      "offsetSteps": 18,
+      "silences": 2
+    },
+    {
+      "n": 1000,
+      "target": "native-styled",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 20,
+      "medianMs": 436.5,
+      "p90Ms": 459,
+      "offsetSteps": 36,
+      "silences": 4
+    },
+    {
+      "n": 1000,
+      "target": "shadcn-base",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 1063,
+      "p90Ms": 1095,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 1000,
+      "target": "shadcn-radix",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 858.5,
+      "p90Ms": 888,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 1000,
+      "target": "mui",
+      "runs": 3,
+      "errors": 0,
+      "measuredSteps": 60,
+      "medianMs": 1972.5,
+      "p90Ms": 2012,
+      "offsetSteps": 0,
+      "silences": 0
+    },
+    {
+      "n": 1000,
+      "target": "material-web",
+      "runs": 2,
+      "errors": 0,
+      "measuredSteps": 40,
+      "medianMs": 1067.5,
+      "p90Ms": 1100,
+      "offsetSteps": 0,
+      "silences": 0
+    }
+  ]
+}

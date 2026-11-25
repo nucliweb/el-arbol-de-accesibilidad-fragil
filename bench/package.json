@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test 'test/**/*.test.js'",
-    "build": "node scripts/build-all.js"
+    "voiceover": "node scripts/voiceover.js",
+    "voiceover:pilot": "node scripts/voiceover.js --runs=1 --n=10 --steps=3 --targets=native,shadcn-radix"
   },
   "devDependencies": {
     "playwright": "^1.65.1"

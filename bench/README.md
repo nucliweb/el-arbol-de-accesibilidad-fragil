@@ -43,3 +43,20 @@ node scripts/summarize.js
 Opciones de `measure.js`: `--runs`, `--n=1,10`, `--targets=native,mui`, `--modes=off,on` y `--throttle=4`.
 
 Los resultados se guardan en `results/`: un `raw-*.jsonl` con cada ejecución y un `summary-*.md` y `summary-*.json` con las medianas.
+
+## Prueba con VoiceOver
+
+Mide cuánto tarda VoiceOver (macOS) en anunciar cada opción al recorrer el grupo con la flecha abajo: abre cada página en Chrome con la CPU ×4, espera a que VoiceOver anuncie la primera opción, pulsa la flecha 20 veces y registra el tiempo hasta que VoiceOver dice la opción siguiente.
+
+Controla VoiceOver por AppleScript (`scripts/lib/voiceover.js`), sin modificar archivos del sistema. Necesita:
+
+- Marcar «Permitir que VoiceOver se controle con AppleScript» en Utilidad VoiceOver > General.
+- Dar permiso a la terminal para controlar VoiceOver cuando macOS lo pida.
+
+```sh
+npm run voiceover:pilot   # prueba rápida, unos segundos
+npm run voiceover         # prueba completa, unos 25 minutos
+node scripts/summarize-voiceover.js
+```
+
+Mientras se ejecuta, VoiceOver habla y controla el foco: no uses el equipo. Los pasos en que VoiceOver quedó una opción por detrás (una pulsación previa no movió la selección) se cuentan como «desfasados» y se excluyen de la latencia.
