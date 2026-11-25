@@ -353,11 +353,9 @@ updateTabIndices() {
 }</code></pre>
         <table>
           <caption>Tiempo hasta que la página termina de renderizar (sin ralentizar la CPU)</caption>
-          <thead><tr><th scope="col">Opciones</th><th scope="col" class="num">Tiempo</th></tr></thead>
+          <thead><tr><th scope="col">Opciones</th><th scope="col" class="num">100</th><th scope="col" class="num">300</th><th scope="col" class="num">1000</th></tr></thead>
           <tbody>
-            <tr><th scope="row">100</th><td class="num">0,1 s</td></tr>
-            <tr><th scope="row">300</th><td class="num">0,8 s</td></tr>
-            <tr><th scope="row">1000</th><td class="num bad">24 s</td></tr>
+            <tr><th scope="row">Tiempo</th><td class="num">0,1 s</td><td class="num">0,8 s</td><td class="num bad">24 s</td></tr>
           </tbody>
         </table>
         <div class="notes">
@@ -399,6 +397,32 @@ updateTabIndices() {
           <h3 id="matiz-tamano-dom-notas">Notas</h3>
           <p>Quiero ser honesto con los datos. Con mil opciones, incluso el radio nativo paga: sin accesibilidad, la carga bloquea 16 milisegundos; con un lector de pantalla escuchando, 479. Construir el árbol de accesibilidad de una página grande cuesta, se haga como se haga.</p>
           <p>La conclusión no es "el nativo es gratis", sino que cada nodo del DOM tiene un coste extra para quien usa tecnología de asistencia. Menos DOM y DOM más simple es menos trabajo, y ahí el HTML semántico gana por mucho.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="chrome-accessibility">
+        <h2 id="chrome-accessibility-titulo">El interruptor que no ves</h2>
+        <table>
+          <caption>Modos de accesibilidad en <code>chrome://accessibility</code></caption>
+          <thead><tr><th scope="col">Modo</th><th scope="col">Qué añade Chrome</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" lang="en">Native accessibility API support</th><td>Responde a las API de accesibilidad del sistema operativo</td></tr>
+            <tr><th scope="row" lang="en">Web accessibility</th><td>El árbol de la página: rol, nombre, valor, estado y posición de cada nodo</td></tr>
+            <tr><th scope="row" lang="en">Text metrics</th><td>Saltos de línea y límites de palabras del texto</td></tr>
+            <tr><th scope="row" lang="en">Extended properties</th><td>Estilos de texto, celdas de tabla, regiones vivas, rangos y relaciones</td></tr>
+            <tr><th scope="row" lang="en">Screen reader</th><td>Lo que solo necesita un lector de pantalla detectado</td></tr>
+            <tr><th scope="row" lang="en">HTML</th><td>Todos los atributos HTML de cada nodo</td></tr>
+          </tbody>
+        </table>
+        <p>Se encienden bajo demanda: un lector de pantalla pide el árbol completo; un dictado, el básico; un gestor de contraseñas, los formularios.</p>
+        <div class="notes">
+          <h3 id="chrome-accessibility-notas">Notas</h3>
+          <p>Si escribís chrome://accessibility en la barra de direcciones, Chrome os enseña algo que normalmente no se ve: qué partes del árbol de accesibilidad está construyendo y por qué. Por defecto todo está apagado. Chrome lo enciende bajo demanda, cuando una aplicación del sistema le pregunta por la página.</p>
+          <p>Y no se enciende todo o nada. Hay modos. Uno conecta Chrome con las API de accesibilidad del sistema. Otro construye el árbol de la página, con el rol, el nombre, el valor, el estado y la posición de cada nodo. Otros añaden los saltos de línea del texto, las propiedades extendidas, como las regiones vivas o las celdas de las tablas, lo que solo necesita un lector de pantalla, o todos los atributos HTML.</p>
+          <p>Según el código de Chromium, un lector de pantalla activa el modo completo; una herramienta de dictado, el básico; y un gestor de contraseñas, un modo que solo construye los formularios. Es decir, el coste del árbol de accesibilidad no lo pagan solo las personas que usan un lector de pantalla.</p>
+          <p>Lo descubrí por accidente preparando esta charla. Después de las pruebas con VoiceOver, macOS se quedó marcando VoiceOver como activo aunque estaba apagado. Esta página decía «tecnología de asistencia activa: VoiceOver», y Chrome construía el árbol completo en todas las páginas que abría. Me di cuenta porque el banco de pruebas, con la accesibilidad desactivada, empezó a medir trabajo de accesibilidad: entre 30 y 50 milisegundos más en cada carga de la web de viajes, con la CPU ralentizada como la de un móvil modesto. Ese es el impuesto que paga, en cada página, quien usa tecnología de asistencia. Cuanto más ligera sea la página, más pequeño es el impuesto.</p>
+          <p>Las descripciones de los modos salen del código de Chromium, del archivo ui/accessibility/ax_mode.h, y de la propia página en Chrome 158.</p>
+          <p>Para las mediciones, Chrome tiene dos opciones de arranque: force-renderer-accessibility, que enciende el árbol como lo haría un lector de pantalla, y disable-platform-accessibility-integration, que ignora lo que diga el sistema operativo.</p>
         </div>
       </section>
 
@@ -463,12 +487,89 @@ updateTabIndices() {
             <tr><th scope="row">Material Web</th><td class="num">45</td><td class="num">79</td><td class="num bad">1.068</td></tr>
           </tbody>
         </table>
-        <p>Con 1000 opciones, MUI tarda <strong>casi 2 segundos</strong> en anunciar cada opción: 4,5 veces más que el radio nativo.</p>
+        <p>Con 1000 opciones, MUI tarda <strong>casi 2 s</strong> por opción: 4,5 veces el nativo.</p>
         <div class="notes">
           <h3 id="resultado-voiceover-notas">Notas</h3>
           <p>Y ahora, lo que de verdad oye una persona. Automaticé VoiceOver en macOS: abro cada página, pongo el foco en el primer radio, pulso la flecha abajo veinte veces y mido cuánto tarda VoiceOver en decir la opción siguiente. Tres repeticiones de cada combinación.</p>
           <p>Con diez opciones todo está entre 32 y 57 milisegundos. Con cien, el nativo sigue en unos 65 milisegundos, shadcn en unos 100 y MUI en 171. Con mil opciones, el nativo tarda 436 milisegundos, que ya es mucho, y los componentes de framework entre 860 milisegundos y casi dos segundos por opción. Imaginad recorrer una lista de países así: dos segundos de silencio por cada pulsación.</p>
           <p>Así que la hipótesis se confirma también donde importa: en lo que oye la persona. Y se confirma el matiz: el tamaño del DOM castiga a todos, pero mucho más a los componentes que reconstruyen el control.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-escenario">
+        <h2 id="travel-escenario-titulo">Una web de verdad: A11yConf Travel</h2>
+        <table>
+          <caption>La misma búsqueda de hoteles, con el mismo contenido y los mismos nombres accesibles</caption>
+          <thead><tr><th scope="col">Versión</th><th scope="col">Construida con</th><th scope="col" class="num">JavaScript</th><th scope="col" class="num">Elementos</th><th scope="col" class="num">Selectores CSS</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Nativa</th><td>HTML: <code>select</code>, fechas, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good">10,6 KB</td><td class="num good">758</td><td class="num good">68</td></tr>
+            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad">785 KB</td><td class="num bad">2.041</td><td class="num bad">626</td></tr>
+          </tbody>
+        </table>
+        <p>La tarea: 14 pasos con teclado. Filtrar por estrellas, precio y régimen, abrir un hotel, recorrer sus habitaciones y cerrar.</p>
+        <div class="notes">
+          <h3 id="travel-escenario-notas">Notas</h3>
+          <p>Mil radio buttons demuestran el mecanismo, pero no son la web que usamos cada día. Así que construí una web de viajes ficticia, A11yConf Travel, con una búsqueda de hoteles: un formulario de búsqueda, filtros por estrellas, precio, régimen y servicios, una lista de treinta hoteles, un selector de orden y un modal con el detalle de cada hotel.</p>
+          <p>La hice dos veces, con exactamente el mismo contenido y los mismos nombres accesibles. Una con HTML nativo y unos 10 kilobytes de JavaScript para filtrar. Otra como se hacen muchas webs con años a cuestas: React, Material UI con sus iconos, react-select para el destino, react-datepicker para las fechas y react-modal para el detalle. La versión legacy carga 785 kilobytes de JavaScript, casi el triple de elementos y nueve veces más selectores CSS.</p>
+          <p>Y en las dos versiones medí la misma tarea con el teclado, catorce pasos: moverse por los filtros de estrellas, marcar cuatro estrellas, bajar el precio, cambiar el régimen, abrir el primer hotel, recorrer sus habitaciones y cerrar con Escape.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-navegador">
+        <h2 id="travel-navegador-titulo">En el navegador: el árbol cuesta lo mismo; lo de alrededor, no</h2>
+        <table>
+          <caption>La tarea de 14 pasos con la accesibilidad activada. Mediana de 5 ejecuciones, CPU ×4</caption>
+          <thead><tr><th scope="col">Medida</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Hilo principal</th><td class="num good">255 ms</td><td class="num bad">991 ms</td></tr>
+            <tr><th scope="row">JavaScript</th><td class="num good">79 ms</td><td class="num bad">464 ms</td></tr>
+            <tr><th scope="row">Trabajo de accesibilidad</th><td class="num">56 ms</td><td class="num">57 ms</td></tr>
+            <tr><th scope="row">Interacción más lenta</th><td class="num good">24 ms</td><td class="num bad">72 ms</td></tr>
+            <tr><th scope="row">LCP al cargar</th><td class="num good">176 ms</td><td class="num bad">484 ms</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Las trazas, para abrir en DevTools, están en el repositorio: <code>bench/traces/travel/</code>.</p>
+        <div class="notes">
+          <h3 id="travel-navegador-notas">Notas</h3>
+          <p>Aquí viene un matiz importante. Con una página realista, el trabajo del árbol de accesibilidad es prácticamente el mismo en las dos versiones: 56 milisegundos frente a 57 en toda la tarea. Los nodos que llegan al lector de pantalla son casi los mismos, unos 1.480 en cada versión; los más de 500 nodos de más de la legacy son nodos ignorados, que nunca llegan al lector de pantalla.</p>
+          <p>Lo que cambia es todo lo que pasa alrededor de cada pulsación. La versión legacy ocupa el hilo principal casi cuatro veces más tiempo, ejecuta casi seis veces más JavaScript, y su interacción más lenta tarda 72 milisegundos frente a 24. Y la página tarda casi el triple en pintar el contenido principal.</p>
+          <p>Las trazas de cada versión están publicadas en el repositorio. Cada paso de la tarea aparece con su nombre en la pista Timings del panel Performance, y el resumen en texto del repositorio tiene las mismas cifras paso a paso.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-voiceover">
+        <h2 id="travel-voiceover-titulo">En VoiceOver: más lenta en los 14 pasos</h2>
+        <table>
+          <caption>Desde la pulsación hasta que VoiceOver responde. Mediana de 5 ejecuciones, CPU ×4</caption>
+          <thead><tr><th scope="col">Paso</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Tab entre los filtros de estrellas</th><td class="num good">18–21&nbsp;ms</td><td class="num">36–40&nbsp;ms</td></tr>
+            <tr><th scope="row">Marcar 4 estrellas hasta oír «6 hoteles encontrados»</th><td class="num">162&nbsp;ms</td><td class="num">200&nbsp;ms</td></tr>
+            <tr><th scope="row">Cambiar el régimen con las flechas</th><td class="num good">50–52&nbsp;ms</td><td class="num">81–92&nbsp;ms</td></tr>
+            <tr><th scope="row">Abrir el detalle del hotel</th><td class="num good">70&nbsp;ms</td><td class="num">93&nbsp;ms</td></tr>
+            <tr><th scope="row">Cerrar con Escape y volver al botón</th><td class="num good">59&nbsp;ms</td><td class="num">88&nbsp;ms</td></tr>
+            <tr><th scope="row">La tarea completa</th><td class="num good">648&nbsp;ms</td><td class="num bad">959&nbsp;ms</td></tr>
+          </tbody>
+        </table>
+        <p>No son los 2 segundos de los 1000 radios: son decenas de milisegundos en <strong>cada</strong> pulsación.</p>
+        <div class="notes">
+          <h3 id="travel-voiceover-notas">Notas</h3>
+          <p>Y lo que oye la persona. Con VoiceOver automatizado, la versión legacy es más lenta en los catorce pasos de la tarea, sin excepción. Moverse con Tab entre los filtros tarda el doble: unos 20 milisegundos frente a unos 40. Cambiar el régimen con las flechas, entre 50 y 92. Abrir el detalle del hotel, 70 frente a 93. Cerrar el modal y volver al botón, 59 frente a 88.</p>
+          <p>El paso de marcar un filtro es el más parecido, 162 frente a 200, porque la mayor parte de ese tiempo es la propia espera de VoiceOver antes de leer la región que anuncia los resultados.</p>
+          <p>En total, la tarea suma 648 milisegundos de espera en la nativa y 959 en la legacy: una vez y media más. No es el silencio de dos segundos de los mil radios. Son decenas de milisegundos en cada pulsación, que se suman a lo largo de una tarea, de una página y de un día entero navegando con un lector de pantalla.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-ripple">
+        <h2 id="travel-ripple-titulo">Lo que solo se ve en la traza</h2>
+        <p>En la versión legacy, mientras un control tiene el foco del teclado, MUI anima un «ripple» que late sin parar: 2,5 segundos por ciclo, en bucle infinito.</p>
+        <p>Sigue latiendo aunque el sistema pida <code>prefers-reduced-motion: reduce</code>.</p>
+        <p><strong>Quien navega con el teclado o con un lector de pantalla paga un repintado continuo que nadie ha pedido.</strong></p>
+        <div class="notes">
+          <h3 id="travel-ripple-notas">Notas</h3>
+          <p>Al abrir la traza de la versión legacy en DevTools apareció algo que no esperaba: una pista de animaciones casi continua y trabajo de renderizado entre pulsación y pulsación, cuando la persona no está haciendo nada.</p>
+          <p>Es el efecto de foco de Material UI. Cuando un botón, un checkbox o un radio recibe el foco con el teclado, MUI dibuja un círculo que late en bucle infinito, con ciclos de dos segundos y medio, mientras el foco siga ahí. Y lo comprobé: sigue latiendo aunque el sistema operativo pida reducir el movimiento.</p>
+          <p>Es decir, justo las personas que navegan con el teclado o con un lector de pantalla son las que pagan ese trabajo de renderizado continuo. Se puede desactivar en la configuración de MUI, pero viene activado por defecto.</p>
         </div>
       </section>
 
@@ -479,12 +580,13 @@ updateTabIndices() {
           <li>Un portátil rápido con la CPU ralentizada no es un móvil de gama baja.</li>
           <li>Servidor local, sin limitar la red.</li>
           <li>1000 opciones es un caso extremo; 100 ya es realista en formularios largos.</li>
+          <li>A11yConf Travel es una maqueta: sin red real, sin anuncios ni scripts de terceros.</li>
           <li>En algunas pruebas con el radio nativo, la primera pulsación no movió la selección y VoiceOver quedó una opción por detrás; esos pasos se excluyen.</li>
         </ul>
         <p>Todo el código y los datos están en el repositorio para quien quiera repetirlo.</p>
         <div class="notes">
           <h3 id="limitaciones-notas">Notas</h3>
-          <p>Y lo que estos datos no dicen. Solo he probado Chrome y VoiceOver. Un portátil con la CPU ralentizada es una aproximación, no un móvil real. Y mil opciones es un caso extremo, aunque cien ya aparece en formularios de verdad, como un selector de países. Todo el código está publicado para que cualquiera pueda repetirlo con otros navegadores y lectores de pantalla, y me encantaría que lo hicierais.</p>
+          <p>Y lo que estos datos no dicen. Solo he probado Chrome y VoiceOver. Un portátil con la CPU ralentizada es una aproximación, no un móvil real. Y mil opciones es un caso extremo, aunque cien ya aparece en formularios de verdad, como un selector de países. La web de viajes se acerca más a la realidad, pero sigue siendo una maqueta: no tiene red real, ni anuncios, ni scripts de terceros, que en una web de verdad suelen pesar todavía más. Todo el código está publicado para que cualquiera pueda repetirlo con otros navegadores y lectores de pantalla, y me encantaría que lo hicierais.</p>
         </div>
       </section>
 
@@ -670,7 +772,7 @@ updateTabIndices() {
 
       <section class="slide" id="gracias">
         <h2 id="gracias-titulo">Gracias</h2>
-        <p>Código, datos y referencias: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a></p>
+        <p>Código, datos y referencias: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a> · <a href="https://joanleon.dev">joanleon.dev</a></p>
         <h3>Créditos</h3>
         <ul>
           <li>Eric Bailey, <cite>Accessible is Performant</cite> (2024).</li>
@@ -679,7 +781,6 @@ updateTabIndices() {
           <li>Marco Zehe, trabajo de rendimiento del árbol de accesibilidad de Firefox.</li>
           <li>Scott O'Hara, <cite>a11y_styled_form_controls</cite>.</li>
         </ul>
-        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
         <div class="notes">
           <h3 id="gracias-notas">Notas</h3>
           <p>Muchas gracias. Todo el código del banco de pruebas, el experimento con agentes, los datos y las referencias están en el repositorio. Gracias especialmente a Eric Bailey, Marcy Sutton, Scott Jehl, Marco Zehe y Scott O'Hara, sobre cuyo trabajo está construida esta charla. ¿Preguntas?</p>
