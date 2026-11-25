@@ -89,7 +89,10 @@ async function measure(targetName, n, mode) {
   const target = TARGETS[targetName];
   const browser = await chromium.launch({
     channel: 'chrome',
-    args: mode === 'on' ? ['--force-renderer-accessibility'] : [],
+    // Mode "off" also ignores assistive technology the OS reports as active:
+    // macOS can keep VoiceOver flagged as on after it quits, and Chrome then
+    // enables accessibility for every page.
+    args: mode === 'on' ? ['--force-renderer-accessibility'] : ['--disable-platform-accessibility-integration'],
   });
   try {
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });

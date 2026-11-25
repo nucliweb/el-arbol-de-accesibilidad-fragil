@@ -11,3 +11,11 @@ export const TARGETS = {
 // The first radio of the group, whatever element each implementation uses.
 export const FIRST_RADIO_SELECTOR =
   '#bench input[type=radio]:not([aria-hidden=true]), #bench [role=radio], #bench md-radio';
+
+// The "A11yConf Travel" pages (shared/travel.js): the same hotel search built
+// with native HTML, and with React, MUI, react-select, react-datepicker and
+// react-modal.
+export const TRAVEL_TARGETS = {
+  'travel-native': { dir: 'apps/travel-native/dist', page: () => 'index.html' },
+  'travel-legacy': { dir: 'apps/travel-legacy/dist', page: () => 'index.html', marksRendered: true },
+};

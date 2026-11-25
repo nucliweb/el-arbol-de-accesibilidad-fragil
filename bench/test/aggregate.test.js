@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { aggregate, median } from '../scripts/lib/aggregate.js';
+import { aggregate, median, medianRun } from '../scripts/lib/aggregate.js';
 
 test('median of odd and even lists, ignoring nulls', () => {
   assert.equal(median([5, 1, 3]), 3);
@@ -52,4 +52,16 @@ test('counts timed-out runs and leaves them out of the medians', () => {
     { target: 'material-web', n: 1000, mode: 'off', runs: 1, timeouts: 1, scriptMs: 900 },
     { target: 'material-web', n: 1000, mode: 'on', runs: 0, timeouts: 1, scriptMs: null },
   ]);
+});
+
+test('picks the run closest to the median, as the representative one', () => {
+  const rows = [
+    { run: 1, ms: 300 },
+    { run: 2, ms: 100 },
+    { run: 3, ms: 210 },
+    { run: 4, ms: 900 },
+    { run: 5, ms: 180 },
+  ];
+  assert.equal(medianRun(rows, (r) => r.ms).run, 3);
+  assert.equal(medianRun([], (r) => r.ms), null);
 });

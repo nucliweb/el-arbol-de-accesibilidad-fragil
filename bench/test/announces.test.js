@@ -18,3 +18,7 @@ test('does not match a different option or an empty phrase', () => {
   assert.equal(announces('', 'Europa'), false);
   assert.equal(announces(null, 'Europa'), false);
 });
+
+test('ignores letter case, since some libraries uppercase their buttons', () => {
+  assert.equal(announces('VER DETALLES DE CASA DIAGONAL button', 'Ver detalles de Casa Diagonal'), true);
+});

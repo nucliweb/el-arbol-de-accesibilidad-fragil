@@ -2,19 +2,20 @@
 
 ## Benchmark realista en tres niveles
 
-El benchmark actual (un grupo de 1, 10, 100 o 1000 radio buttons) demuestra el mecanismo, pero una página con 1000 radios no es lo que encontramos en un sitio habitual. El objetivo es un benchmark más realista que compare **librerías pesadas (legacy)** con una **aplicación moderna construida con Modern Web Guidance**.
+El benchmark sintético (un grupo de 1, 10, 100 o 1000 radio buttons) demuestra el mecanismo, pero una página con 1000 radios no es lo que encontramos en un sitio habitual. El benchmark realista compara **librerías pesadas (legacy)** con una **aplicación con HTML nativo, siguiendo Modern Web Guidance**.
 
 ### Niveles
 
-1. **Sintético** (el actual): un grupo de radio buttons con N opciones. Se mantiene como prueba del mecanismo.
-2. **Blog**: una página de contenido tipo blog con un formulario de comentarios.
-3. **«A11yConf Travel»**: una web de viajes con filtros, selectores, radio buttons, desplegables, modales y otros controles habituales.
+1. **Sintético**: un grupo de radio buttons con N opciones. Hecho.
+2. **«A11yConf Travel»**: una web de viajes con filtros, selectores, radio buttons, desplegables y un modal. Hecho: versión nativa frente a React, MUI, react-select, react-datepicker y react-modal; medida en Chrome (trazas publicadas en `bench/traces/`) y con VoiceOver. Ver `bench/README.md`.
+3. **Blog**: una página de contenido tipo blog con un formulario de comentarios. Pendiente.
 
-En cada nivel, medir lo mismo que hoy: DOM, CSS y JavaScript; trazas de Chrome con la accesibilidad desactivada y activada; respuesta a la interacción; y latencia de VoiceOver.
+### Pendiente del nivel Blog
 
-### Preguntas abiertas para la próxima sesión
+- Mismas versiones que Travel (nativa frente a la misma pila legacy) y el mismo método: DOM, CSS y JavaScript; trazas de Chrome con la accesibilidad desactivada y activada; respuesta a la interacción; y latencia de VoiceOver.
+- Recorrido de usuario: llegar al formulario, escribir y enviar un comentario.
 
-- Qué librerías representan la versión «legacy» (¿MUI, shadcn/ui con Radix, otra?) y si se escriben a mano o las genera un agente sin Modern Web Guidance.
-- Si la versión moderna la genera un agente con Modern Web Guidance y `AGENTS.md`, o se escribe a mano siguiendo sus guías.
-- Qué recorridos de usuario se automatizan en cada nivel (por ejemplo, escribir y enviar un comentario; filtrar, elegir fechas y abrir un modal en la web de viajes), y cómo se mide VoiceOver en ellos.
-- Cuánto cabe antes de la charla del sábado 28 de noviembre de 2026 y qué se deja para una versión posterior.
+## Prueba con VoiceOver
+
+- Al cerrar VoiceOver por AppleScript, macOS puede dejar `voiceOverOnOffKey` a 1 y Chrome sigue creyendo que hay un lector de pantalla activo. Valorar avisar al terminar la prueba (sin tocar la configuración del sistema) y pedir Cmd+F5 dos veces.
+- La elección de destino (react-select frente a `<select>` nativo) no se mide: escribir en el `<select>` no produce anuncio de VoiceOver. Buscar una forma comparable de medirla.

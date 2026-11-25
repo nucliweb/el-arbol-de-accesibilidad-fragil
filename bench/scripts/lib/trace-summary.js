@@ -39,15 +39,31 @@ const unionMs = (intervals) => {
 
 const round = (value) => Math.round(value * 100) / 100;
 
-export function summarizeTrace(trace) {
-  const events = Array.isArray(trace) ? trace : trace.traceEvents;
+const eventsOf = (trace) => (Array.isArray(trace) ? trace : trace.traceEvents);
+
+// User timing marks (performance.mark) whose name starts with `prefix`, as
+// { name: timestamp in microseconds }, to cut a trace into steps.
+export function findMarks(trace, prefix) {
+  const marks = {};
+  for (const e of eventsOf(trace)) {
+    if (e.cat?.includes('blink.user_timing') && ['R', 'I', 'i'].includes(e.ph) && e.name.startsWith(prefix)) {
+      marks[e.name] = e.ts;
+    }
+  }
+  return marks;
+}
+
+// With `from` and `to` (trace microseconds), only events that start inside
+// that window count, so one trace can be summarized step by step.
+export function summarizeTrace(trace, { from = -Infinity, to = Infinity } = {}) {
+  const events = eventsOf(trace);
 
   const mainThreads = new Set(
     events
       .filter((e) => e.ph === 'M' && e.name === 'thread_name' && e.args?.name === 'CrRendererMain')
       .map((e) => `${e.pid}:${e.tid}`),
   );
-  const slices = events.filter((e) => e.ph === 'X' && typeof e.dur === 'number');
+  const slices = events.filter((e) => e.ph === 'X' && typeof e.dur === 'number' && e.ts >= from && e.ts < to);
   const onMain = slices.filter((e) => mainThreads.has(`${e.pid}:${e.tid}`));
   const interval = (e) => [e.ts, e.ts + e.dur];
   const timeOf = (predicate) => round(unionMs(onMain.filter(predicate).map(interval)));

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeTrace } from '../scripts/lib/trace-summary.js';
+import { findMarks, summarizeTrace } from '../scripts/lib/trace-summary.js';
 
 // Trace timestamps and durations are in microseconds.
 const ms = (value) => value * 1000;
@@ -59,4 +59,28 @@ test('collects accessibility work on every thread, by event name', () => {
 
 test('accepts a bare array of events', () => {
   assert.equal(summarizeTrace(trace.traceEvents).mainThreadBusyMs, 130);
+});
+
+test('limits the summary to the events that start inside a time window', () => {
+  // Window from 150 to 260 ms: only the short task and its accessibility work.
+  const summary = summarizeTrace(trace, { from: ms(150), to: ms(260) });
+
+  assert.equal(summary.mainThreadBusyMs, 30);
+  assert.equal(summary.longTasks, 0);
+  assert.equal(summary.accessibility.mainThreadMs, 20);
+  assert.equal(summary.accessibility.totalMs, 20);
+});
+
+test('finds user timing marks by prefix, with their trace timestamps', () => {
+  const marks = findMarks(
+    [
+      { ph: 'R', cat: 'blink.user_timing', name: 'step:1:start', ts: ms(150) },
+      { ph: 'I', cat: 'blink.user_timing', name: 'step:1:end', ts: ms(260) },
+      { ph: 'R', cat: 'blink.user_timing', name: 'other', ts: ms(1) },
+      { ph: 'X', cat: 'devtools.timeline', name: 'step:1:start', ts: ms(9), dur: 1 },
+    ],
+    'step:',
+  );
+
+  assert.deepEqual(marks, { 'step:1:start': ms(150), 'step:1:end': ms(260) });
 });

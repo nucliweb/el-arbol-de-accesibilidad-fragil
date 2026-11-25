@@ -26,3 +26,11 @@ export function aggregate(rows, metrics) {
     return result;
   });
 }
+
+// The row whose metric is closest to the median: a real run that represents
+// the group, e.g. the trace to open in DevTools.
+export function medianRun(rows, pick) {
+  const target = median(rows.map(pick));
+  if (target === null) return null;
+  return rows.reduce((best, row) => (Math.abs(pick(row) - target) < Math.abs(pick(best) - target) ? row : best));
+}
