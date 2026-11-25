@@ -24,7 +24,18 @@ El resumen en texto de cada traza, paso a paso, está en [`results/travel-summar
 | `travel/travel-legacy-a11y-on-run3-load.json.gz` | Legacy | Activada | 518 | 299 | 50 | Carga; LCP 432 ms, TBT 223 ms |
 | `travel/travel-legacy-a11y-on-run3-task.json.gz` | Legacy | Activada | 991 | 457 | 62 | Tarea de 14 pasos; TBT 40 ms; INP en DevTools 75 ms |
 
-Lo que se ve en las trazas de la tarea de la versión legacy y no aparece en las tablas: una pista Animations casi continua y trabajo de renderizado entre pulsaciones. Es el efecto de foco de MUI (`MuiTouchRipple-childPulsate`), que late en bucle infinito, con ciclos de 2,5 s, mientras un control tiene el foco del teclado, también con `prefers-reduced-motion: reduce`.
+Lo que se ve en las trazas de la tarea de la versión legacy y no aparece en las tablas: frames y animaciones entre pulsaciones. Es el efecto de foco de MUI (`MuiTouchRipple-childPulsate`), que late en bucle infinito, con ciclos de 2,5 s, mientras un control tiene el foco del teclado, también con `prefers-reduced-motion: reduce`. Las trazas de `focus-idle/` lo muestran aislado.
+
+## Foco de teclado en reposo (`focus-idle/`)
+
+Las dos versiones con el foco de teclado en el checkbox «4 estrellas» y 5 segundos sin tocar nada, con la accesibilidad activada y `prefers-reduced-motion: reduce` (CPU ×4, ejecución representativa de 3). En la traza, el paso aparece en la pista Timings como «Foco de teclado en «4 estrellas», sin tocar nada (5 s)».
+
+| Archivo | Animaciones en marcha | Frames | GPU (ms) | Tareas del compositor | Hilo principal del renderer (ms) | Recálculos de estilo |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| `focus-idle/travel-native.json.gz` | Ninguna | 30 | 10 | 2 | 2 | 0 |
+| `focus-idle/travel-legacy.json.gz` | Ripple de foco de MUI, 2,5 s, infinito | 299 | 74 | 1.719 | 21 | 13 |
+
+Qué buscar en DevTools: en la legacy, la pista Frames es una banda continua de frames durante los 5 segundos (unos 60 por segundo); en la nativa apenas aparecen frames (30 en total). La animación corre en el compositor, así que el hilo principal casi no trabaja, pero la GPU y el compositor no paran. Resumen completo: [`results/focus-idle-2026-11-25T23-50-39-283Z.md`](../results/focus-idle-2026-11-25T23-50-39-283Z.md); se genera con `npm run trace:focus-idle`.
 
 ## Cómo se generan
 

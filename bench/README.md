@@ -88,5 +88,7 @@ npm run voiceover:travel:summary
 
 `measure-travel.js` guarda dos trazas por ejecución, la carga y la tarea, que se abren en el panel Performance de DevTools; cada paso de la tarea es una medida de user timing con nombre. `summarize-travel.js` escribe las tablas en texto, incluidas las cifras paso a paso de la traza representativa de cada versión y modo. Las trazas representativas están publicadas en [`traces/`](traces/README.md).
 
+`npm run trace:focus-idle` graba las dos versiones con el foco de teclado en un checkbox y 5 segundos sin tocar nada, con `prefers-reduced-motion: reduce`: muestra el ripple de foco de MUI, que genera unos 60 frames por segundo, frente a 30 frames en total en la versión nativa. Ver [`traces/`](traces/README.md#foco-de-teclado-en-reposo-focus-idle).
+
 Resultados del 25 de noviembre de 2026: [Chrome](results/travel-summary-2026-11-25T23-09-58-772Z.md) y [VoiceOver](results/voiceover-travel-summary-2026-11-25T22-04-58-137Z.md).
 

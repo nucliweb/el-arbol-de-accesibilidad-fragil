@@ -562,14 +562,23 @@ updateTabIndices() {
 
       <section class="slide" id="travel-ripple">
         <h2 id="travel-ripple-titulo">Lo que solo se ve en la traza</h2>
-        <p>En la versión legacy, mientras un control tiene el foco del teclado, MUI anima un «ripple» que late sin parar: 2,5 segundos por ciclo, en bucle infinito.</p>
-        <p>Sigue latiendo aunque el sistema pida <code>prefers-reduced-motion: reduce</code>.</p>
-        <p><strong>Quien navega con el teclado o con un lector de pantalla paga un repintado continuo que nadie ha pedido.</strong></p>
+        <p>Con el foco del teclado en un control, MUI anima un «ripple» en bucle infinito, también con <code>prefers-reduced-motion: reduce</code>.</p>
+        <table>
+          <caption>Foco de teclado en «4 estrellas» y 5 segundos sin tocar nada. Mediana de 3 ejecuciones, CPU ×4</caption>
+          <thead><tr><th scope="col">Medida</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Frames generados</th><td class="num good">30</td><td class="num bad">299</td></tr>
+            <tr><th scope="row">Trabajo de la GPU</th><td class="num good">10&nbsp;ms</td><td class="num bad">74&nbsp;ms</td></tr>
+            <tr><th scope="row">Tareas del compositor</th><td class="num good">2</td><td class="num bad">1.719</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Traza para DevTools: <code>bench/traces/focus-idle/</code>. En la legacy, la pista Frames es una banda continua.</p>
         <div class="notes">
           <h3 id="travel-ripple-notas">Notas</h3>
-          <p>Al abrir la traza de la versión legacy en DevTools apareció algo que no esperaba: una pista de animaciones casi continua y trabajo de renderizado entre pulsación y pulsación, cuando la persona no está haciendo nada.</p>
-          <p>Es el efecto de foco de Material UI. Cuando un botón, un checkbox o un radio recibe el foco con el teclado, MUI dibuja un círculo que late en bucle infinito, con ciclos de dos segundos y medio, mientras el foco siga ahí. Y lo comprobé: sigue latiendo aunque el sistema operativo pida reducir el movimiento.</p>
-          <p>Es decir, justo las personas que navegan con el teclado o con un lector de pantalla son las que pagan ese trabajo de renderizado continuo. Se puede desactivar en la configuración de MUI, pero viene activado por defecto.</p>
+          <p>Al abrir la traza de la versión legacy en DevTools apareció algo que no esperaba: frames y animaciones entre pulsación y pulsación, cuando la persona no está haciendo nada.</p>
+          <p>Es el efecto de foco de Material UI. Cuando un botón, un checkbox o un radio recibe el foco con el teclado, MUI dibuja un círculo que late en bucle infinito, con ciclos de dos segundos y medio, mientras el foco siga ahí. Y sigue latiendo aunque el sistema operativo pida reducir el movimiento.</p>
+          <p>Para verlo aislado, grabé las dos versiones con el foco de teclado en el checkbox de cuatro estrellas, cinco segundos sin tocar nada, con la accesibilidad activada y la preferencia de reducir el movimiento. La versión nativa genera 30 frames en esos cinco segundos. La legacy, 299: unos sesenta por segundo, sin parar. La GPU trabaja 74 milisegundos frente a 10, y el compositor hace más de 1.700 tareas frente a 2. El hilo principal apenas se entera, porque la animación corre en el compositor, pero el dispositivo no descansa.</p>
+          <p>Es decir, justo las personas que navegan con el teclado o con un lector de pantalla, y que además han pedido menos movimiento, son las que pagan ese trabajo continuo. Se puede desactivar en la configuración de MUI, pero viene activado por defecto.</p>
         </div>
       </section>
 

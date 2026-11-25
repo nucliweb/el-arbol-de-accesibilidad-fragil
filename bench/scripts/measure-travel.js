@@ -19,28 +19,10 @@ import { collectCssStats, collectDomStats } from './lib/page-stats.js';
 import { startStaticServer } from './lib/static-server.js';
 import { TRAVEL_TARGETS } from './lib/targets.js';
 import { findMarks, summarizeTrace } from './lib/trace-summary.js';
+import { TRACE_CATEGORIES } from './lib/trace-categories.js';
 import { TRAVEL_TASK } from './lib/travel-task.js';
 
 const ROOT = resolve(import.meta.dirname, '..');
-
-// What the DevTools Performance panel needs (frames, screenshots, JavaScript
-// samples, user timing), plus the categories of the accessibility work.
-const TRACE_CATEGORIES = [
-  'devtools.timeline',
-  'disabled-by-default-devtools.timeline',
-  'disabled-by-default-devtools.timeline.frame',
-  'disabled-by-default-devtools.timeline.stack',
-  'disabled-by-default-v8.cpu_profiler',
-  'v8.execute',
-  'toplevel',
-  'blink',
-  'blink.user_timing',
-  'blink.console',
-  'latencyInfo',
-  'loading',
-  'accessibility',
-  'disabled-by-default-accessibility',
-];
 
 const SETTLE_MS = 1000;
 const STEP_SETTLE_MS = 500;

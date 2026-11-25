@@ -1,0 +1,216 @@
+{
+  "throttle": 4,
+  "runs": 3,
+  "rows": [
+    {
+      "target": "travel-native",
+      "run": 1,
+      "file": "travel-native-run1.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 3.51,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0,
+        "Commit": 85
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 1,
+      "file": "travel-legacy-run1.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 28.21,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 1.12,
+        "styleMs": 1.31,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.2,
+          "mainThreadMs": 0.2,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.19,
+            "Blink.Accessibility.UpdateTime": 0.19
+          }
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0,
+        "Commit": 13
+      }
+    },
+    {
+      "target": "travel-native",
+      "run": 2,
+      "file": "travel-native-run2.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 1.57,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0,
+        "Commit": 97
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 2,
+      "file": "travel-legacy-run2.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 24.93,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0.14,
+        "styleMs": 1.83,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.92,
+          "mainThreadMs": 0.92,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.94,
+            "Blink.Accessibility.UpdateTime": 0.93
+          }
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0,
+        "Commit": 13
+      }
+    },
+    {
+      "target": "travel-native",
+      "run": 3,
+      "file": "travel-native-run3.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 1.88,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0,
+        "Commit": 94
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 3,
+      "file": "travel-legacy-run3.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 24.97,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0.14,
+        "styleMs": 1.28,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.15,
+          "mainThreadMs": 0.15,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.18,
+            "Blink.Accessibility.UpdateTime": 0.18
+          }
+        }
+      },
+      "counts": {
+        "Animation": 0,
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0,
+        "Commit": 13
+      }
+    }
+  ]
+}

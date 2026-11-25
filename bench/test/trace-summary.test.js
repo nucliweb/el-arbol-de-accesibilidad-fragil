@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { findMarks, summarizeTrace } from '../scripts/lib/trace-summary.js';
+import { busyByThread, countEvents, findMarks, summarizeTrace } from '../scripts/lib/trace-summary.js';
 
 // Trace timestamps and durations are in microseconds.
 const ms = (value) => value * 1000;
@@ -83,4 +83,26 @@ test('finds user timing marks by prefix, with their trace timestamps', () => {
   );
 
   assert.deepEqual(marks, { 'step:1:start': ms(150), 'step:1:end': ms(260) });
+});
+
+test('counts events by name on every thread, inside an optional window', () => {
+  assert.deepEqual(countEvents(trace, ['RunTask', 'Paint', 'Missing']), { RunTask: 3, Paint: 1, Missing: 0 });
+  assert.deepEqual(countEvents(trace, ['RunTask'], { from: ms(150), to: ms(260) }), { RunTask: 1 });
+});
+
+test('counts only the given phase when asked, e.g. the begin of async frame events', () => {
+  const frames = [
+    { ph: 'b', name: 'PipelineReporter', ts: ms(1) },
+    { ph: 'e', name: 'PipelineReporter', ts: ms(2) },
+    { ph: 'b', name: 'PipelineReporter', ts: ms(3) },
+  ];
+  assert.deepEqual(countEvents(frames, ['PipelineReporter'], { phase: 'b' }), { PipelineReporter: 2 });
+});
+
+test('adds up task time per thread name, inside an optional window', () => {
+  assert.deepEqual(busyByThread(trace), {
+    CrRendererMain: { tasks: 2, ms: 130 },
+    CrBrowserMain: { tasks: 1, ms: 40 },
+  });
+  assert.deepEqual(busyByThread(trace, { from: ms(150), to: ms(260) }), { CrRendererMain: { tasks: 1, ms: 30 } });
 });

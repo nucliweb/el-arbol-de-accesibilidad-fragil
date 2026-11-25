@@ -1,0 +1,486 @@
+{
+  "throttle": 4,
+  "runs": 3,
+  "rows": [
+    {
+      "target": "travel-native",
+      "run": 1,
+      "file": "travel-native-run1.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 2.7,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0
+      },
+      "frames": 30,
+      "threads": {
+        "PerfettoTrace": {
+          "tasks": 69,
+          "ms": 0.76
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 10,
+          "ms": 0.06
+        },
+        "Chrome_IOThread": {
+          "tasks": 112,
+          "ms": 0.47
+        },
+        "CrBrowserMain": {
+          "tasks": 606,
+          "ms": 21.72
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 2,
+          "ms": 0.03
+        },
+        "VizCompositorThread": {
+          "tasks": 161,
+          "ms": 2.1
+        },
+        "CrGpuMain": {
+          "tasks": 171,
+          "ms": 9.6
+        },
+        "CrRendererMain": {
+          "tasks": 9,
+          "ms": 2.7
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 14,
+          "ms": 0.13
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.21
+        },
+        "Compositor": {
+          "tasks": 1,
+          "ms": 0.02
+        }
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 1,
+      "file": "travel-legacy-run1.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 26.81,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 2.52,
+        "styleMs": 1.1,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.11,
+          "mainThreadMs": 0.11,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.1,
+            "Blink.Accessibility.UpdateTime": 0.1
+          }
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0
+      },
+      "frames": 299,
+      "threads": {
+        "Chrome_IOThread": {
+          "tasks": 22,
+          "ms": 0.34
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 13,
+          "ms": 0.09
+        },
+        "PerfettoTrace": {
+          "tasks": 81,
+          "ms": 0.83
+        },
+        "CrRendererMain": {
+          "tasks": 353,
+          "ms": 26.81
+        },
+        "CrBrowserMain": {
+          "tasks": 385,
+          "ms": 137.41
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 1,
+          "ms": 0.01
+        },
+        "VizCompositorThread": {
+          "tasks": 2050,
+          "ms": 26.43
+        },
+        "Compositor": {
+          "tasks": 1719,
+          "ms": 9.99
+        },
+        "CrGpuMain": {
+          "tasks": 1472,
+          "ms": 74.32
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 13,
+          "ms": 0.11
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.36
+        }
+      }
+    },
+    {
+      "target": "travel-native",
+      "run": 2,
+      "file": "travel-native-run2.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 1.71,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0
+      },
+      "frames": 30,
+      "threads": {
+        "PerfettoTrace": {
+          "tasks": 68,
+          "ms": 0.71
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 12,
+          "ms": 0.06
+        },
+        "Chrome_IOThread": {
+          "tasks": 117,
+          "ms": 0.53
+        },
+        "CrBrowserMain": {
+          "tasks": 621,
+          "ms": 18.53
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 2,
+          "ms": 0.02
+        },
+        "VizCompositorThread": {
+          "tasks": 167,
+          "ms": 2
+        },
+        "CrGpuMain": {
+          "tasks": 184,
+          "ms": 10.05
+        },
+        "CrRendererMain": {
+          "tasks": 9,
+          "ms": 1.71
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 13,
+          "ms": 0.12
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.26
+        },
+        "Compositor": {
+          "tasks": 2,
+          "ms": 0.02
+        }
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 2,
+      "file": "travel-legacy-run2.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 14.07,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0.42,
+        "styleMs": 1.05,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.21,
+          "mainThreadMs": 0.21,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.2,
+            "Blink.Accessibility.UpdateTime": 0.2
+          }
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0
+      },
+      "frames": 299,
+      "threads": {
+        "Chrome_IOThread": {
+          "tasks": 24,
+          "ms": 0.19
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 13,
+          "ms": 0.07
+        },
+        "CrBrowserMain": {
+          "tasks": 386,
+          "ms": 133.49
+        },
+        "CrRendererMain": {
+          "tasks": 354,
+          "ms": 14.07
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 2,
+          "ms": 0.03
+        },
+        "PerfettoTrace": {
+          "tasks": 82,
+          "ms": 0.86
+        },
+        "VizCompositorThread": {
+          "tasks": 2051,
+          "ms": 24.8
+        },
+        "Compositor": {
+          "tasks": 1713,
+          "ms": 8.82
+        },
+        "CrGpuMain": {
+          "tasks": 1462,
+          "ms": 70.51
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 13,
+          "ms": 0.16
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.27
+        }
+      }
+    },
+    {
+      "target": "travel-native",
+      "run": 3,
+      "file": "travel-native-run3.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [],
+      "summary": {
+        "mainThreadBusyMs": 2,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0,
+        "styleMs": 0,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0,
+          "mainThreadMs": 0,
+          "byName": {}
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 0,
+        "Layout": 0
+      },
+      "frames": 31,
+      "threads": {
+        "PerfettoTrace": {
+          "tasks": 68,
+          "ms": 0.65
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 12,
+          "ms": 0.07
+        },
+        "Chrome_IOThread": {
+          "tasks": 115,
+          "ms": 0.51
+        },
+        "CrBrowserMain": {
+          "tasks": 625,
+          "ms": 20.5
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 2,
+          "ms": 0.02
+        },
+        "VizCompositorThread": {
+          "tasks": 164,
+          "ms": 2.24
+        },
+        "CrGpuMain": {
+          "tasks": 177,
+          "ms": 10.92
+        },
+        "CrRendererMain": {
+          "tasks": 9,
+          "ms": 2
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 13,
+          "ms": 0.16
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.25
+        },
+        "Compositor": {
+          "tasks": 2,
+          "ms": 0.02
+        }
+      }
+    },
+    {
+      "target": "travel-legacy",
+      "run": 3,
+      "file": "travel-legacy-run3.json.gz",
+      "focused": "4 estrellas",
+      "reducedMotion": true,
+      "runningAnimations": [
+        {
+          "name": "animation-f6tr5a",
+          "durationMs": 2500,
+          "infinite": true,
+          "target": "MuiTouchRipple-child"
+        }
+      ],
+      "summary": {
+        "mainThreadBusyMs": 20.46,
+        "longTasks": 0,
+        "totalBlockingTimeMs": 0,
+        "parseHtmlMs": 0,
+        "scriptMs": 0.67,
+        "styleMs": 1.53,
+        "layoutMs": 0,
+        "paintMs": 0,
+        "accessibility": {
+          "totalMs": 0.12,
+          "mainThreadMs": 0.12,
+          "byName": {
+            "LocalFrameView::RunAccessibilitySteps": 0.11,
+            "Blink.Accessibility.UpdateTime": 0.11
+          }
+        }
+      },
+      "counts": {
+        "Paint": 0,
+        "UpdateLayoutTree": 13,
+        "Layout": 0
+      },
+      "frames": 299,
+      "threads": {
+        "Chrome_IOThread": {
+          "tasks": 24,
+          "ms": 0.2
+        },
+        "Chrome_ChildIOThread": {
+          "tasks": 14,
+          "ms": 0.1
+        },
+        "CrBrowserMain": {
+          "tasks": 382,
+          "ms": 173.64
+        },
+        "PerfettoTrace": {
+          "tasks": 84,
+          "ms": 1.18
+        },
+        "CrRendererMain": {
+          "tasks": 354,
+          "ms": 20.46
+        },
+        "DevToolsPipeHandlerWriteThread": {
+          "tasks": 2,
+          "ms": 0.03
+        },
+        "VizCompositorThread": {
+          "tasks": 2053,
+          "ms": 35.54
+        },
+        "Compositor": {
+          "tasks": 1799,
+          "ms": 12.35
+        },
+        "CrGpuMain": {
+          "tasks": 1471,
+          "ms": 91.18
+        },
+        "ThreadPoolServiceThread": {
+          "tasks": 13,
+          "ms": 0.13
+        },
+        "MemoryInfra": {
+          "tasks": 12,
+          "ms": 0.24
+        }
+      }
+    }
+  ]
+}

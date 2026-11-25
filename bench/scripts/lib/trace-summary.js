@@ -93,3 +93,33 @@ export function summarizeTrace(trace, { from = -Infinity, to = Infinity } = {}) 
     },
   };
 }
+
+// How many times each named event happens (any thread; any phase except
+// metadata, or only `phase`), e.g. Paint, or 'b' of PipelineReporter for
+// frames, to describe a trace in words.
+export function countEvents(trace, names, { from = -Infinity, to = Infinity, phase } = {}) {
+  const counts = Object.fromEntries(names.map((name) => [name, 0]));
+  for (const e of eventsOf(trace)) {
+    const phaseMatches = phase ? e.ph === phase : e.ph !== 'M';
+    if (phaseMatches && e.name in counts && e.ts >= from && e.ts < to) counts[e.name] += 1;
+  }
+  return counts;
+}
+
+// Task count and busy time (RunTask) per thread name, e.g. CrGpuMain or
+// VizCompositorThread, for work that happens off the renderer main thread.
+export function busyByThread(trace, { from = -Infinity, to = Infinity } = {}) {
+  const events = eventsOf(trace);
+  const names = new Map(
+    events.filter((e) => e.ph === 'M' && e.name === 'thread_name').map((e) => [`${e.pid}:${e.tid}`, e.args?.name]),
+  );
+  const intervals = {};
+  for (const e of events) {
+    if (e.ph !== 'X' || e.name !== 'RunTask' || e.ts < from || e.ts >= to) continue;
+    const name = names.get(`${e.pid}:${e.tid}`) ?? 'unknown';
+    (intervals[name] ??= []).push([e.ts, e.ts + e.dur]);
+  }
+  return Object.fromEntries(
+    Object.entries(intervals).map(([name, list]) => [name, { tasks: list.length, ms: round(unionMs(list)) }]),
+  );
+}

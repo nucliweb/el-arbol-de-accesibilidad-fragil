@@ -8,7 +8,8 @@
     "voiceover:pilot": "node scripts/voiceover.js --runs=1 --n=10 --steps=3 --targets=native,shadcn-radix",
     "voiceover:travel": "node scripts/voiceover-travel.js",
     "voiceover:travel:pilot": "node scripts/voiceover-travel.js --runs=1",
-    "voiceover:travel:summary": "node scripts/summarize-voiceover-travel.js"
+    "voiceover:travel:summary": "node scripts/summarize-voiceover-travel.js",
+    "trace:focus-idle": "node scripts/trace-focus-idle.js"
   },
   "devDependencies": {
     "playwright": "^1.65.1"
