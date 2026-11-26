@@ -612,6 +612,29 @@ updateTabIndices() {
         </div>
       </section>
 
+      <section class="slide" id="iphone">
+        <h2 id="iphone-titulo">Un iPhone 16 Pro y 1000 radio buttons</h2>
+        <table>
+          <caption>Tiempo que Safari queda bloqueado, medido en el propio iPhone con el benchmark en el navegador</caption>
+          <thead>
+            <tr><th scope="col">Implementación</th><th scope="col" class="num">Clic, sin VoiceOver</th><th scope="col" class="num">Clic, con VoiceOver</th><th scope="col" class="num">Carga, sin VoiceOver</th><th scope="col" class="num">Carga, con VoiceOver</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">HTML nativo</th><td class="num good">0&nbsp;ms</td><td class="num good">0&nbsp;ms</td><td class="num good">43&nbsp;ms</td><td class="num good">83&nbsp;ms</td></tr>
+            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num">68–74&nbsp;ms</td><td class="num">63–68&nbsp;ms</td><td class="num">214&nbsp;ms</td><td class="num">228&nbsp;ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad">4,8–5,0&nbsp;s</td><td class="num bad">5,1&nbsp;s</td><td class="num">556&nbsp;ms</td><td class="num">552&nbsp;ms</td></tr>
+          </tbody>
+        </table>
+        <p>Con MUI, <strong>cada clic congela Safari 5 segundos</strong>, con o sin VoiceOver. Con HTML nativo, 0.</p>
+        <div class="notes">
+          <h3 id="iphone-notas">Notas</h3>
+          <p>Este es el primer resultado de un dispositivo real, enviado con la versión del benchmark para el navegador: un iPhone 16 Pro, con Safari, una vez con VoiceOver encendido y otra con VoiceOver apagado. Los números son el tiempo que Safari queda bloqueado después de cada acción, la mediana de tres repeticiones.</p>
+          <p>Con HTML nativo, elegir uno de mil radio buttons no bloquea Safari nada: cero milisegundos, con y sin VoiceOver. Con shadcn, unos setenta milisegundos. Y con MUI, entre cuatro coma ocho y cinco coma uno segundos. Cinco segundos de móvil congelado por cada clic, en un iPhone de gama alta. En mi portátil, con Chrome, ese mismo clic eran menos de doscientos milisegundos.</p>
+          <p>Mi primera hipótesis era que esos cinco segundos serían el árbol de accesibilidad, y me equivoqué: sin VoiceOver tarda casi lo mismo. Es un problema de rendimiento de MUI en Safari para iPhone que paga todo el mundo, use o no un lector de pantalla. Lo que sí añade VoiceOver se ve en la carga: con HTML nativo, la página tarda 83 milisegundos en lugar de 43.</p>
+          <p>Por eso importa medir en dispositivos reales. Ni mi portátil ni la emulación de un iPhone en el portátil mostraban nada parecido.</p>
+        </div>
+      </section>
+
       <section class="slide" id="limitaciones">
         <h2 id="limitaciones-titulo">Lo que estos datos no dicen</h2>
         <ul>

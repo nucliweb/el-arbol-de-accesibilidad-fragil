@@ -30,7 +30,7 @@
       <form id="setup">
         <fieldset>
           <legend data-i18n="readerLegend">¿Tienes un lector de pantalla encendido ahora mismo?</legend>
-          <label><input type="radio" name="reader" value="none" checked> <span data-i18n="readerNone">No</span></label>
+          <label><input type="radio" name="reader" value="none" required> <span data-i18n="readerNone">No</span></label>
           <label><input type="radio" name="reader" value="VoiceOver"> VoiceOver</label>
           <label><input type="radio" name="reader" value="TalkBack"> TalkBack</label>
           <label><input type="radio" name="reader" value="NVDA"> NVDA</label>
@@ -61,6 +61,7 @@
       <section aria-labelledby="results-heading" id="results-section" hidden>
         <h2 id="results-heading" tabindex="-1" data-i18n="resultsHeading">Tus resultados</h2>
         <p data-i18n="resultsHint">Tiempo, en milisegundos, que el navegador estuvo bloqueado después de cada paso (mediana de 3 repeticiones). Menos es mejor.</p>
+        <p data-i18n="sessionsHint">Cada prueba se añade como una sesión nueva, para comparar con y sin lector de pantalla. «Borrar mis resultados» empieza de cero.</p>
         <div id="results"></div>
         <h3 data-i18n="shareHeading">Compartir los resultados</h3>
         <p data-i18n="shareHint">El enlace abre el formulario del repositorio en GitHub con tus resultados ya escritos; necesitas una cuenta de GitHub. Si prefieres otro medio, copia el informe o descarga los datos.</p>

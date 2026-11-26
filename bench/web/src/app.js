@@ -34,6 +34,7 @@ const TEXT = {
     frameTitle: 'Test page, controlled by the test',
     resultsHeading: 'Your results',
     resultsHint: 'Time, in milliseconds, that the browser stayed blocked after each step (median of 3 repetitions). Lower is better.',
+    sessionsHint: 'Each test is added as a new session, to compare with and without a screen reader. "Clear my results" starts over.',
     shareHeading: 'Share the results',
     shareHint: 'The link opens the repository form on GitHub with your results already filled in; you need a GitHub account. If you prefer another way, copy the report or download the data.',
     shareLink: 'Send to GitHub',
@@ -331,6 +332,9 @@ $('#setup').addEventListener('submit', async (event) => {
     const sessions = [...loadSessions(), { screenReader, device, interrupted, createdAt: new Date().toISOString(), summary: summarizeSession(samples), samples }];
     saveSessions(sessions);
     renderResults(sessions);
+    // No answer carries over: the next run must say again whether a screen
+    // reader is on, so a session is never saved under the wrong label.
+    for (const radio of document.querySelectorAll('input[name=reader]')) radio.checked = false;
     $('#progress-section').hidden = true;
     $('#results-heading').focus();
     announce(interrupted ? `${ui.done} ${ui.interrupted}` : ui.done);

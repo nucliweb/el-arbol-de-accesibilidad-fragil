@@ -14,3 +14,14 @@ El benchmark sintético (un grupo de 1, 10, 100 o 1000 radio buttons) demuestra 
 
 - Al cerrar VoiceOver por AppleScript, macOS puede dejar `voiceOverOnOffKey` a 1 y Chrome sigue creyendo que hay un lector de pantalla activo. Valorar avisar al terminar la prueba (sin tocar la configuración del sistema) y pedir Cmd+F5 dos veces.
 - La elección de destino (react-select frente a `<select>` nativo) no se mide: escribir en el `<select>` no produce anuncio de VoiceOver. Buscar una forma comparable de medirla.
+
+## Antes de la charla (28 de noviembre de 2026)
+
+- Comprobar con VoiceOver las diapositivas con QR («Sigue la charla», «Haz la prueba») y «Un iPhone 16 Pro y 1000 radio buttons».
+- Validar el segundo issue de resultados del iPhone 16 Pro (sesión sin VoiceOver) y, si hace falta, ajustar la diapositiva del iPhone con sus datos.
+- Averiguar por qué un clic en 1000 radios de MUI bloquea Safari unos 5 s en un iPhone real (con y sin VoiceOver) y solo 72–81 ms en WebKit emulado: grabar una línea de tiempo con el inspector web de Safari conectando el iPhone al Mac.
+
+## Benchmark en el navegador
+
+- Publicado en <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/> (diapositivas en la raíz). Los resultados llegan como issues con la etiqueta `benchmark-results`.
+
