@@ -6,7 +6,7 @@ This benchmark measures how much the accessibility tree costs depending on how a
 
 ## The easiest way: in your browser
 
-Open **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>** on your computer or your phone. Nothing to install, and it takes about 2 minutes. If you use a screen reader, run it twice, with the screen reader off and on: the page compares both and prepares the report to send.
+Open **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>** on your computer or your phone. Nothing to install, and it takes about 2 minutes. If you use a screen reader, run it twice, with the screen reader off and on: the page compares both and prepares the report to send.
 
 It measures something simpler than the terminal version: how long your browser stays blocked after each action. It does not measure how long your screen reader takes to speak, and it records no traces. In exchange, it works in any browser and with any screen reader, on your real device.
 

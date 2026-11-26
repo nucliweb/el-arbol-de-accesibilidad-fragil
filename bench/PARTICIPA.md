@@ -6,7 +6,7 @@ Este benchmark mide cuánto cuesta el árbol de accesibilidad según cómo se co
 
 ## La forma más fácil: en tu navegador
 
-Abre **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>** en tu ordenador o en tu móvil. No hay que instalar nada y tarda unos 2 minutos. Si usas un lector de pantalla, hazla dos veces, con el lector apagado y encendido: la página compara las dos y prepara el informe para enviarlo.
+Abre **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>** en tu ordenador o en tu móvil. No hay que instalar nada y tarda unos 2 minutos. Si usas un lector de pantalla, hazla dos veces, con el lector apagado y encendido: la página compara las dos y prepara el informe para enviarlo.
 
 Mide algo más sencillo que la versión de terminal: cuánto tiempo queda bloqueado tu navegador después de cada acción. No mide cuánto tarda tu lector de pantalla en hablar, ni guarda trazas. A cambio, funciona en cualquier navegador y con cualquier lector de pantalla, en tu dispositivo real.
 

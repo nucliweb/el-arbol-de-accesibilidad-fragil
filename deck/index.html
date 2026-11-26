@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>El árbol de accesibilidad frágil</title>
     <meta name="description" content="Por qué el HTML semántico es clave para el rendimiento web. Charla de Joan León en A11y Conf 2026.">
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="deck.css">
     <script src="deck.js" defer></script>
   </head>
@@ -26,17 +27,22 @@
 
       <section class="slide" id="sigue-la-charla">
         <h2 id="sigue-la-charla-titulo">Sigue la charla desde tu dispositivo</h2>
-        <!-- PENDIENTE: confirmar la URL publicada y añadir el código QR con su alternativa textual. -->
-        <p class="statement"><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil</a></p>
-        <ul>
-          <li><kbd>N</kbd> muestra u oculta las notas de cada diapositiva.</li>
-          <li><kbd>D</kbd> muestra todas las diapositivas en una sola página.</li>
-          <li><kbd>?</kbd> abre la ayuda, donde puedes desactivar los atajos de una tecla.</li>
-          <li>Las flechas, o los botones Anterior y Siguiente, cambian de diapositiva.</li>
-        </ul>
+        <div class="columns qr-columns">
+          <figure class="qr">
+            <img src="assets/qr-slides.svg" width="240" height="240"
+                 alt="Código QR que abre las diapositivas en nucliweb.github.io/el-arbol-de-accesibilidad-fragil">
+            <figcaption><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil</a></figcaption>
+          </figure>
+          <ul>
+            <li><kbd>N</kbd> muestra u oculta las notas de cada diapositiva.</li>
+            <li><kbd>D</kbd> muestra todas las diapositivas en una sola página.</li>
+            <li><kbd>?</kbd> abre la ayuda, donde puedes desactivar los atajos de una tecla.</li>
+            <li>Las flechas, o los botones Anterior y Siguiente, cambian de diapositiva.</li>
+          </ul>
+        </div>
         <div class="notes">
           <h3 id="sigue-la-charla-notas">Notas</h3>
-          <p>Antes de empezar: estas diapositivas están publicadas en la dirección que veis en pantalla. Cada diapositiva tiene notas como estas, escritas para que podáis seguir la charla leyendo, con un lector de pantalla o más tarde, cuando la reviséis.</p>
+          <p>Antes de empezar: estas diapositivas están publicadas en la dirección que veis en pantalla, nucliweb punto github punto io, barra, el árbol de accesibilidad frágil, con guiones entre las palabras; también podéis escanear el código QR. Cada diapositiva tiene notas como estas, escritas para que podáis seguir la charla leyendo, con un lector de pantalla o más tarde, cuando la reviséis.</p>
           <p>Pulsad la tecla N para ver las notas o la D para leer todas las diapositivas seguidas como un documento. Si los atajos de una tecla os molestan con vuestro lector de pantalla, se pueden desactivar desde la ayuda, con la tecla de interrogación.</p>
           <p>Y gracias a la intérprete de lengua de signos por acompañarnos hoy.</p>
         </div>
@@ -808,8 +814,8 @@ updateTabIndices() {
         <div class="columns qr-columns">
           <figure class="qr">
             <img src="assets/qr-benchmark.svg" width="240" height="240"
-                 alt="Código QR que abre nucliweb.github.io/el-arbol-de-accesibilidad-fragil">
-            <figcaption><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil</a></figcaption>
+                 alt="Código QR que abre el benchmark en nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark">
+            <figcaption><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark</a></figcaption>
           </figure>
           <div>
             <p>Mide cuánto le cuesta a <strong>tu</strong> dispositivo el árbol de accesibilidad.</p>
@@ -822,7 +828,7 @@ updateTabIndices() {
         </div>
         <div class="notes">
           <h3 id="haz-la-prueba-notas">Notas</h3>
-          <p>Todo lo que os he enseñado sale de un solo portátil. Y me gustaría que saliera de vuestros dispositivos. Si abrís la dirección de la pantalla, o escaneáis el código QR, llegáis a una versión del benchmark que funciona en el navegador, también en el móvil, sin instalar nada. La dirección es nucliweb punto github punto io, barra, el árbol de accesibilidad frágil, con guiones entre las palabras.</p>
+          <p>Todo lo que os he enseñado sale de un solo portátil. Y me gustaría que saliera de vuestros dispositivos. Si abrís la dirección de la pantalla, o escaneáis el código QR, llegáis a una versión del benchmark que funciona en el navegador, también en el móvil, sin instalar nada. La dirección es la misma de las diapositivas, terminada en barra benchmark: nucliweb punto github punto io, barra, el árbol de accesibilidad frágil, barra, benchmark.</p>
           <p>La prueba carga las mismas páginas que habéis visto, el grupo de mil radio buttons y la web de viajes, hace clic en ellas y mide cuánto tiempo se queda bloqueado vuestro navegador después de cada acción. Tarda unos dos minutos.</p>
           <p>Si usáis un lector de pantalla, os pido algo más: hacedla dos veces, una con el lector apagado y otra con el lector encendido. La página compara las dos, y la diferencia es lo que el árbol de accesibilidad le cuesta a vuestro dispositivo. Al final veréis vuestros resultados en una tabla, y vosotros decidís si los compartís en el repositorio. Con VoiceOver en mi portátil, un clic en mil radio buttons bloquea el navegador 0 milisegundos con HTML nativo, 86 con shadcn y 98 con MUI. Tengo mucha curiosidad por saber cuánto es en vuestros móviles.</p>
         </div>

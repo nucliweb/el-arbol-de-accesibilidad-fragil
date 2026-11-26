@@ -1,11 +1,12 @@
-# Publishes the browser version of the benchmark (bench/web) to GitHub Pages:
-# builds every measured app, assembles the static site and deploys it.
-name: Publish the browser benchmark
+# Publishes the talk to GitHub Pages: the slides (deck/) at the root and the
+# browser version of the benchmark (bench/web) at /benchmark/.
+name: Publish the slides and the browser benchmark
 
 on:
   push:
     branches: [main]
     paths:
+      - 'deck/**'
       - 'bench/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
@@ -33,12 +34,17 @@ jobs:
       - name: Build every app (setup also checks Chrome, preinstalled on the runner)
         working-directory: bench
         run: npm run setup
-      - name: Assemble the site
+      - name: Build the browser benchmark
         working-directory: bench
         run: npm run web:build
+      - name: Assemble the site (slides at the root, benchmark at /benchmark/)
+        run: |
+          mkdir -p site/benchmark
+          cp -R deck/index.html deck/deck.css deck/deck.js deck/assets site/
+          cp -R bench/web/dist/. site/benchmark/
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: bench/web/dist
+          path: site
 
   deploy:
     needs: build

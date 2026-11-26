@@ -15,7 +15,7 @@ body:
     attributes:
       label: "Prueba / Test"
       options:
-        - "Navegador / Browser (https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/)"
+        - "Navegador / Browser (https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/)"
         - "Chrome (npm run participate)"
         - "VoiceOver (npm run participate:voiceover)"
     validations:

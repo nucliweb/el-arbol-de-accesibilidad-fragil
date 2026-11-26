@@ -41,6 +41,7 @@ const TEXT = {
     downloadData: 'Download the data',
     clearResults: 'Clear my results',
     footer: 'Part of the talk "El árbol de accesibilidad frágil" (A11y Conf 2026). Code, method and data on',
+    slidesLink: 'See the slides of the talk (in Spanish)',
   },
 };
 const UI = {
