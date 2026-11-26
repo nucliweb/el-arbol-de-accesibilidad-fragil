@@ -201,6 +201,22 @@ img {
   height: auto;
 }
 
+/* Thin DevTools track captures, each with a text label above it. */
+.trace-strips img {
+  display: block;
+  border: 1px solid var(--border);
+}
+
+.trace-strips figcaption {
+  margin-block-start: 0.5rem;
+}
+
+.trace-label {
+  margin: 0.5rem 0 0.15rem;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));

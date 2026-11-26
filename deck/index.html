@@ -582,6 +582,30 @@ updateTabIndices() {
         </div>
       </section>
 
+      <section class="slide" id="travel-ripple-devtools">
+        <h2 id="travel-ripple-devtools-titulo">La misma traza, en DevTools</h2>
+        <figure class="trace-strips">
+          <p class="trace-label">Legacy</p>
+          <picture>
+            <source srcset="assets/ripple-frames-legacy.avif" type="image/avif">
+            <img src="assets/ripple-frames-legacy.webp" width="1240" height="120" loading="lazy" decoding="async"
+                 alt="Pistas Frames y Timings de DevTools en la versión legacy, con una escala de 0 a 5 segundos. A partir de 1,6 segundos aproximadamente y hasta el final, la pista Frames es una banda continua de frames.">
+          </picture>
+          <p class="trace-label">Nativa</p>
+          <picture>
+            <source srcset="assets/ripple-frames-native.avif" type="image/avif">
+            <img src="assets/ripple-frames-native.webp" width="1240" height="120" loading="lazy" decoding="async"
+                 alt="Pistas Frames y Timings de DevTools en la versión nativa, con la misma escala de 0 a 5 segundos. La pista Frames está vacía.">
+          </picture>
+          <figcaption>Pistas Frames y Timings del panel Performance de Chrome DevTools, con el foco de teclado en «4 estrellas» y 5 segundos sin tocar nada. Traza: <code>bench/traces/focus-idle/</code>.</figcaption>
+        </figure>
+        <div class="notes">
+          <h3 id="travel-ripple-devtools-notas">Notas</h3>
+          <p>En las dos capturas del panel Performance de DevTools se ve la diferencia. Arriba, la versión legacy: a partir de 1,6 segundos aproximadamente, la pista Frames se llena de frames, uno detrás de otro, hasta el final. Abajo, la versión nativa: la pista Frames está vacía durante los cinco segundos.</p>
+          <p>Las dos trazas están en el repositorio, en la carpeta bench/traces/focus-idle, y se abren arrastrándolas al panel Performance de Chrome DevTools.</p>
+        </div>
+      </section>
+
       <section class="slide" id="limitaciones">
         <h2 id="limitaciones-titulo">Lo que estos datos no dicen</h2>
         <ul>
