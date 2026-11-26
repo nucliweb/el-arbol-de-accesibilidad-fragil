@@ -223,6 +223,29 @@ img {
   gap: 1.5rem;
 }
 
+/* QR codes stay dark on white in every theme, so phones can scan them. */
+.qr-columns {
+  align-items: center;
+}
+
+.qr {
+  margin: 0;
+  text-align: center;
+
+  & img {
+    width: min(40dvh, 100%);
+    height: auto;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 0.5rem;
+  }
+
+  & figcaption {
+    font-size: 0.75em;
+    overflow-wrap: anywhere;
+  }
+}
+
 .steps {
   display: flex;
   flex-wrap: wrap;
