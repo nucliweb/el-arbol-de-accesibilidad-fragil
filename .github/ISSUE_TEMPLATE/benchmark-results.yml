@@ -15,6 +15,7 @@ body:
     attributes:
       label: "Prueba / Test"
       options:
+        - "Navegador / Browser (https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/)"
         - "Chrome (npm run participate)"
         - "VoiceOver (npm run participate:voiceover)"
     validations:
@@ -35,7 +36,7 @@ body:
     id: report
     attributes:
       label: "Informe / Report"
-      description: "Pega aquí el contenido del archivo participant-….md / Paste the content of the participant-….md file here"
+      description: "Desde el navegador ya viene escrito. Desde la terminal, pega el contenido de participant-….md / From the browser it is already filled in. From the terminal, paste the content of participant-….md"
       render: markdown
     validations:
       required: true
@@ -43,7 +44,7 @@ body:
     id: raw
     attributes:
       label: "Resultados en bruto / Raw results"
-      description: "Arrastra aquí el archivo participant-….json.gz / Drag the participant-….json.gz file here"
+      description: "Desde el navegador ya viene escrito (si falta, pega el contenido del archivo descargado). Desde la terminal, arrastra participant-….json.gz / From the browser it is already filled in (if missing, paste the downloaded file). From the terminal, drag participant-….json.gz"
     validations:
       required: true
   - type: textarea

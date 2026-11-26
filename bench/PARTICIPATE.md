@@ -4,6 +4,14 @@
 
 This benchmark measures how much the accessibility tree costs depending on how a page is built: with native HTML or with component libraries. My data comes from a single machine, an Apple M4 with the CPU throttled to resemble a modest phone. With your results, on your real device, the comparison no longer depends on one machine.
 
+## The easiest way: in your browser
+
+Open **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>** on your computer or your phone. Nothing to install, and it takes about 2 minutes. If you use a screen reader, run it twice, with the screen reader off and on: the page compares both and prepares the report to send.
+
+It measures something simpler than the terminal version: how long your browser stays blocked after each action. It does not measure how long your screen reader takes to speak, and it records no traces. In exchange, it works in any browser and with any screen reader, on your real device.
+
+## In the terminal
+
 There are two tests:
 
 - **Chrome** (`npm run participate`): any system (macOS, Windows or Linux). It measures the page load and a keyboard task on two levels, a radio button group and a realistic travel site (A11yConf Travel), with Chrome accessibility off and on. It takes 10 to 25 minutes, depending on the device, and you can keep using the computer, although heavy use makes the results noisier.

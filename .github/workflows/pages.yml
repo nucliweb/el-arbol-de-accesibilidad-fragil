@@ -1,0 +1,51 @@
+# Publishes the browser version of the benchmark (bench/web) to GitHub Pages:
+# builds every measured app, assembles the static site and deploys it.
+name: Publish the browser benchmark
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bench/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Install the benchmark tools
+        working-directory: bench
+        run: npm ci
+      - name: Build every app (setup also checks Chrome, preinstalled on the runner)
+        working-directory: bench
+        run: npm run setup
+      - name: Assemble the site
+        working-directory: bench
+        run: npm run web:build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: bench/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

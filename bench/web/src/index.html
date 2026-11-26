@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="pageTitle">Benchmark del árbol de accesibilidad, en tu navegador</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header>
+      <p class="language"><a id="language-link" href="?lang=en" lang="en" hreflang="en">English</a></p>
+    </header>
+    <main>
+      <h1 data-i18n="heading">¿Cuánto le cuesta a tu dispositivo el árbol de accesibilidad?</h1>
+      <p data-i18n="intro1">Esta prueba compara la misma página hecha con HTML nativo y con librerías de componentes, y mide cuánto tiempo queda bloqueado tu navegador después de cada acción: elegir un radio button, filtrar hoteles, abrir un detalle.</p>
+      <p data-i18n="intro2">Si usas un lector de pantalla, la prueba más útil es ejecutarla dos veces: una con el lector apagado y otra con el lector encendido. La diferencia es lo que el árbol de accesibilidad le cuesta a tu dispositivo.</p>
+
+      <section aria-labelledby="before-heading">
+        <h2 id="before-heading" data-i18n="beforeHeading">Antes de empezar</h2>
+        <ul>
+          <li data-i18n="before1">Tarda unos 2 minutos en un ordenador y algo más en un móvil.</li>
+          <li data-i18n="before2">No toques nada ni cambies de pestaña hasta que termine: la página de prueba recibe clics y el foco puede moverse a ella. Tu lector de pantalla puede leer partes; es normal y forma parte de lo que se mide.</li>
+          <li data-i18n="before3">Si es un portátil o un móvil, mejor con el cargador conectado.</li>
+          <li data-i18n="before4">No se envía nada automáticamente: al final verás tus resultados y decidirás si los compartes.</li>
+        </ul>
+      </section>
+
+      <form id="setup">
+        <fieldset>
+          <legend data-i18n="readerLegend">¿Tienes un lector de pantalla encendido ahora mismo?</legend>
+          <label><input type="radio" name="reader" value="none" checked> <span data-i18n="readerNone">No</span></label>
+          <label><input type="radio" name="reader" value="VoiceOver"> VoiceOver</label>
+          <label><input type="radio" name="reader" value="TalkBack"> TalkBack</label>
+          <label><input type="radio" name="reader" value="NVDA"> NVDA</label>
+          <label><input type="radio" name="reader" value="JAWS"> JAWS</label>
+          <label><input type="radio" name="reader" value="Narrator"> <span data-i18n="readerNarrator">Narrador</span></label>
+          <label><input type="radio" name="reader" value="other"> <span data-i18n="readerOther">Otro</span></label>
+        </fieldset>
+        <p class="field">
+          <label for="device" data-i18n="deviceLabel">¿Qué dispositivo usas? (opcional)</label>
+          <input type="text" id="device" name="device" autocomplete="off" aria-describedby="device-hint">
+          <span id="device-hint" class="hint" data-i18n="deviceHint">Por ejemplo: móvil Android de gama media de 2021, o portátil Windows de 2019.</span>
+        </p>
+        <button type="submit" id="start" data-i18n="start">Empezar la prueba</button>
+      </form>
+
+      <section aria-labelledby="progress-heading" id="progress-section" hidden>
+        <h2 id="progress-heading" tabindex="-1" data-i18n="progressHeading">Midiendo</h2>
+        <p><label for="progress" data-i18n="progressLabel">Progreso</label> <progress id="progress" max="1" value="0"></progress></p>
+        <p id="progress-text"></p>
+      </section>
+
+      <section aria-labelledby="test-heading">
+        <h2 id="test-heading" data-i18n="testHeading">Página de prueba</h2>
+        <p data-i18n="testHint">Aquí se cargan las páginas que se miden. Permanece visible porque el navegador solo construye el árbol de accesibilidad de lo que se muestra.</p>
+        <iframe id="test-frame" title="Página de prueba, controlada por el test" data-i18n-title="frameTitle" src="about:blank"></iframe>
+      </section>
+
+      <section aria-labelledby="results-heading" id="results-section" hidden>
+        <h2 id="results-heading" tabindex="-1" data-i18n="resultsHeading">Tus resultados</h2>
+        <p data-i18n="resultsHint">Tiempo, en milisegundos, que el navegador estuvo bloqueado después de cada paso (mediana de 3 repeticiones). Menos es mejor.</p>
+        <div id="results"></div>
+        <h3 data-i18n="shareHeading">Compartir los resultados</h3>
+        <p data-i18n="shareHint">El enlace abre el formulario del repositorio en GitHub con tus resultados ya escritos; necesitas una cuenta de GitHub. Si prefieres otro medio, copia el informe o descarga los datos.</p>
+        <p class="actions">
+          <a id="share-link" class="button" href="#" data-i18n="shareLink">Enviar a GitHub</a>
+          <button type="button" id="copy-report" data-i18n="copyReport">Copiar el informe</button>
+          <button type="button" id="download-data" data-i18n="downloadData">Descargar los datos</button>
+          <button type="button" id="clear-results" data-i18n="clearResults">Borrar mis resultados</button>
+        </p>
+        <p id="action-status" role="status"></p>
+      </section>
+
+      <div id="announcer" class="visually-hidden" aria-live="polite"></div>
+    </main>
+    <footer>
+      <p><span data-i18n="footer">Parte de la charla «El árbol de accesibilidad frágil» (A11y Conf 2026). Código, método y datos en</span> <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">GitHub</a>.</p>
+    </footer>
+  </body>
+</html>

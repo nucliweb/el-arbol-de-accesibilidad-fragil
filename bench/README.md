@@ -96,6 +96,18 @@ node scripts/summarize-voiceover.js
 
 Mientras se ejecuta, VoiceOver habla y controla el foco: no uses el equipo. Los pasos en que VoiceOver quedó una opción por detrás (una pulsación previa no movió la selección) se cuentan como «desfasados» y se excluyen de la latencia.
 
+## Versión para el navegador
+
+`web/` es una versión del benchmark que funciona en cualquier navegador, publicada en <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/> con GitHub Pages (`.github/workflows/pages.yml`). Carga las apps ya compiladas en un iframe visible, repite 3 veces cada paso (1000 radios con HTML nativo, shadcn/ui con Radix y MUI; y A11yConf Travel) y mide, desde la propia página, el tiempo que el hilo principal queda bloqueado hasta que vuelve a estar en reposo: una cadena de tareas mínimas con `MessageChannel` en la que cada hueco de más de 8 ms es trabajo del navegador (`web/src/lib/busy.js`). Con el lector de pantalla apagado y encendido, la diferencia es el coste del árbol de accesibilidad en ese dispositivo. No puede medir cuándo habla el lector de pantalla.
+
+```sh
+npm run setup        # compila las apps
+npm run web:build    # monta el sitio en web/dist
+npx http-server web/dist   # o cualquier servidor estático
+```
+
+Validación: con la accesibilidad de Chrome forzada, un clic en 1000 radios pasa de 44–48 a 85–97 ms con shadcn/ui y de 58–71 a 80–97 ms con MUI; con VoiceOver real encendido, 86 y 98 ms; el nativo, 0 ms en todos los casos. Funciona en Chrome, WebKit y Firefox (probados con Playwright, también con perfiles de móvil); no se ha probado todavía en un móvil real.
+
 ## A11yConf Travel: una web realista
 
 Una búsqueda de hoteles ficticia con formulario de búsqueda, filtros (estrellas, precio, régimen, servicios, cancelación gratuita), 30 resultados, orden y un modal de detalle. Los datos y la lógica de filtrado y orden son comunes (`shared/travel.js`), así que las dos versiones muestran el mismo contenido con los mismos nombres accesibles.

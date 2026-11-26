@@ -24,4 +24,6 @@ Para ejecutar los tests de la presentación (navegación, notas, atajos y audito
 
 ## Participa en el benchmark
 
-Si sabes usar la terminal, puedes ejecutar el banco de pruebas en tu propio equipo y compartir los resultados: en Chrome con cualquier sistema operativo y, opcionalmente, con VoiceOver en macOS. La guía está en [bench/PARTICIPA.md](bench/PARTICIPA.md) ([in English](bench/PARTICIPATE.md)).
+Desde cualquier navegador, también en el móvil y con tu lector de pantalla: **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>**. Tarda unos 2 minutos y no hay que instalar nada.
+
+Si sabes usar la terminal, también puedes ejecutar el banco de pruebas completo en tu equipo: en Chrome con cualquier sistema operativo y, opcionalmente, con VoiceOver en macOS. La guía está en [bench/PARTICIPA.md](bench/PARTICIPA.md) ([in English](bench/PARTICIPATE.md)).

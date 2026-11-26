@@ -12,7 +12,8 @@
     "trace:focus-idle": "node scripts/trace-focus-idle.js",
     "setup": "node scripts/setup.js",
     "participate": "node scripts/participate.js",
-    "participate:voiceover": "node scripts/participate-voiceover.js"
+    "participate:voiceover": "node scripts/participate-voiceover.js",
+    "web:build": "node web/build.js"
   },
   "devDependencies": {
     "playwright": "^1.65.1"
