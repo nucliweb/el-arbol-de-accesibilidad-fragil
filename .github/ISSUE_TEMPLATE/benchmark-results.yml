@@ -1,0 +1,60 @@
+name: "Resultados del benchmark / Benchmark results"
+description: "Comparte los resultados de npm run participate o npm run participate:voiceover / Share the results of npm run participate or npm run participate:voiceover"
+title: "Resultados / Results: "
+labels: ["benchmark-results"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por ejecutar el benchmark. La guía está en [bench/PARTICIPA.md](https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil/blob/main/bench/PARTICIPA.md).
+        Thanks for running the benchmark. The guide is in [bench/PARTICIPATE.md](https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil/blob/main/bench/PARTICIPATE.md).
+
+        Este issue es público. / This issue is public.
+  - type: dropdown
+    id: test
+    attributes:
+      label: "Prueba / Test"
+      options:
+        - "Chrome (npm run participate)"
+        - "VoiceOver (npm run participate:voiceover)"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: "Dispositivo / Device"
+      description: "Por ejemplo: portátil de gama baja de 2019, Windows 11 / For example: 2019 budget laptop, Windows 11"
+    validations:
+      required: true
+  - type: input
+    id: assistive-technology
+    attributes:
+      label: "Tecnología de asistencia que usas a diario (opcional) / Assistive technology you use daily (optional)"
+      description: "Solo si quieres contarlo / Only if you want to share it"
+  - type: textarea
+    id: report
+    attributes:
+      label: "Informe / Report"
+      description: "Pega aquí el contenido del archivo participant-….md / Paste the content of the participant-….md file here"
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: raw
+    attributes:
+      label: "Resultados en bruto / Raw results"
+      description: "Arrastra aquí el archivo participant-….json.gz / Drag the participant-….json.gz file here"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notas (opcional) / Notes (optional)"
+      description: "Cualquier cosa que haya podido afectar a la medición / Anything that may have affected the measurement"
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: "Consentimiento / Consent"
+      options:
+        - label: "Acepto que estos resultados, con los datos del equipo que incluyen (sistema, CPU, memoria, versiones de Node y Chrome), se publiquen en este repositorio y se usen en la charla. / I agree that these results, with the machine details they include (OS, CPU, memory, Node and Chrome versions), are published in this repository and used in the talk."
+          required: true

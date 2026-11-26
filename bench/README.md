@@ -1,5 +1,7 @@
 # Banco de pruebas: un radio button, seis implementaciones
 
+¿Quieres ejecutarlo en tu equipo y compartir los resultados? Sigue la guía [PARTICIPA.md](PARTICIPA.md) ([in English](PARTICIPATE.md)).
+
 Mide cuánto cuesta un grupo de radio buttons según cómo se construya: DOM, CSS, JavaScript, trabajo del hilo principal y trabajo del árbol de accesibilidad.
 
 ## Implementaciones
@@ -25,24 +27,57 @@ Cada una es una app independiente, montada siguiendo su documentación oficial, 
 
 Limitaciones: servidor local sin limitar la red, un Apple M4 con la CPU ralentizada como aproximación a un dispositivo de gama baja, y solo Chrome.
 
-## Cómo ejecutarlo
+## Requisitos
+
+- [Node.js](https://nodejs.org/) 26 (la LTS activa) o posterior, y npm. El archivo `.nvmrc` de la raíz fija la versión para nvm y fnm.
+- [Google Chrome](https://www.google.com/chrome/) estable (las pruebas lo lanzan con Playwright, `channel: 'chrome'`). Si no lo tienes: `npx playwright install chrome`.
+- Git.
+- Unos 1,1 GB libres para las dependencias de las apps.
+- Para las pruebas con VoiceOver: macOS, y en Utilidad VoiceOver > General, «Permitir que VoiceOver se controle con AppleScript».
+
+Solo se ha probado en macOS. Las mediciones de Chrome deberían funcionar en Windows y Linux, pero no se han probado; las instrucciones para esos sistemas están en [PARTICIPA.md](PARTICIPA.md#windows-y-linux-sin-probar).
+
+## Instalación
 
 ```sh
-# Instalar y compilar cada app
-for app in apps/*/; do (cd "$app" && npm install && npm run build); done
-npm install
-
-# Tests de las utilidades de medición
-npm test
-
-# Medición completa (unos minutos) y resumen
-node scripts/measure.js --runs=5
-node scripts/summarize.js
+git clone https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil.git
+cd el-arbol-de-accesibilidad-fragil/bench
+npm ci            # Playwright, para controlar Chrome
+npm run setup     # instala y compila las 7 apps y comprueba Node y Chrome
+npm test          # tests de las utilidades de medición
 ```
 
-Opciones de `measure.js`: `--runs`, `--n=1,10`, `--targets=native,mui`, `--modes=off,on` y `--throttle=4`.
+## Uso
 
-Los resultados se guardan en `results/`: un `raw-*.jsonl` con cada ejecución y un `summary-*.md` y `summary-*.json` con las medianas.
+| Comando | Qué hace | Duración |
+| --- | --- | --- |
+| `npm run participate` | Mediciones de Chrome de los dos niveles con CPU ×4 y ×1, y un informe para compartir. Ver [PARTICIPA.md](PARTICIPA.md). | 10–25 min |
+| `npm run participate:voiceover` | Lo mismo con VoiceOver (solo macOS; ocupa el Mac). | unos 20 min |
+| `node scripts/measure.js --runs=5` y `node scripts/summarize.js` | Medición completa del grupo de radios (1, 10, 100 y 1000 opciones). | unos 35 min |
+| `node scripts/measure-travel.js --runs=5` y `node scripts/summarize-travel.js` | Medición completa de A11yConf Travel, con trazas para DevTools. | unos 5 min |
+| `npm run voiceover` y `node scripts/summarize-voiceover.js` | VoiceOver en el grupo de radios. | unos 25 min |
+| `npm run voiceover:travel` y `npm run voiceover:travel:summary` | VoiceOver en A11yConf Travel. | unos 4 min |
+| `npm run trace:focus-idle` | Trazas del foco de teclado en reposo (el ripple de MUI). | unos 2 min |
+
+Opciones de `measure.js`: `--runs`, `--n=1,10`, `--targets=native,mui`, `--modes=off,on` y `--throttle=4`. `measure-travel.js` acepta `--runs`, `--targets`, `--modes` y `--throttle`.
+
+Los resultados se guardan en `results/`: un `raw-*.jsonl` con cada ejecución y un `summary-*.md` y `summary-*.json` con las medianas (con el prefijo `travel-` para A11yConf Travel). Las trazas completas van a `results/traces/`, fuera del repositorio por tamaño.
+
+## Dependencias
+
+Lo que instala `npm run setup`, app por app. Las versiones exactas están en el `package-lock.json` de cada carpeta.
+
+| Carpeta | Dependencias de la página | Herramientas de build |
+| --- | --- | --- |
+| `bench` | — | Playwright |
+| `apps/native`, `apps/travel-native` | Ninguna: HTML y CSS generados con Node | Ninguna |
+| `apps/shadcn` | React, Base UI, shadcn, `cn`, Tailwind CSS, lucide-react, Geist | Vite, TypeScript, oxlint |
+| `apps/shadcn-radix` | React, Radix UI, shadcn, `cn`, Tailwind CSS, lucide-react, Geist | Vite, TypeScript, oxlint |
+| `apps/mui` | React, MUI, Emotion, Roboto | Vite, TypeScript, oxlint |
+| `apps/material-web` | Material Web (Lit), Roboto | Vite, TypeScript |
+| `apps/travel-legacy` | React, MUI, MUI Icons, Emotion, react-select, react-datepicker, react-modal, date-fns, Roboto | Vite, TypeScript, oxlint |
+
+Las apps se sirven desde un servidor local en `127.0.0.1`; las pruebas no se conectan a internet.
 
 ## Prueba con VoiceOver
 
@@ -80,7 +115,7 @@ La tarea medida (`scripts/lib/travel-task.js`) son 14 pasos con teclado, iguales
 node scripts/measure-travel.js --runs=5
 node scripts/summarize-travel.js
 
-# VoiceOver: la misma tarea, unos 6 minutos (toma el control del Mac)
+# VoiceOver: la misma tarea, unos 4 minutos (toma el control del Mac)
 npm run voiceover:travel:pilot
 npm run voiceover:travel
 npm run voiceover:travel:summary

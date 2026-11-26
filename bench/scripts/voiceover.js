@@ -40,6 +40,9 @@ const LOAD_TIMEOUT_MS = 180000;
 const SETTLE_MS = 1000;
 const READY_TIMEOUT_MS = 10000;
 
+const QUIET_MS = 1500;
+const QUIET_TIMEOUT_MS = 15000;
+
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 async function measurePage(origin, targetName, n, listener) {
@@ -74,6 +77,9 @@ async function measurePage(origin, targetName, n, listener) {
     }
     if (!ready) throw new Error('VoiceOver never announced the first option');
     await sleep(SETTLE_MS);
+    // VoiceOver may keep reading the new page on its own (window, heading,
+    // group); key presses made meanwhile get lost, so wait until it is quiet.
+    await listener.waitForQuiet(QUIET_MS, QUIET_TIMEOUT_MS);
 
     const results = [];
     for (let step = 1; step <= steps; step += 1) {

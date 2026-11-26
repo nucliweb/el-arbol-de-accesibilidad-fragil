@@ -35,6 +35,9 @@ const LOAD_TIMEOUT_MS = 60000;
 const SETUP_TIMEOUT_MS = 10000;
 const SETTLE_MS = 1000;
 
+const QUIET_MS = 1500;
+const QUIET_TIMEOUT_MS = 15000;
+
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 // Moves focus to a control and waits until VoiceOver announces it. If the
@@ -79,6 +82,9 @@ async function measureRun(origin, targetName, listener) {
     }
     if (!ready) throw new Error('VoiceOver never announced the first control');
     await sleep(SETTLE_MS);
+    // VoiceOver may keep reading the new page on its own (window, heading,
+    // group); key presses made meanwhile get lost, so wait until it is quiet.
+    await listener.waitForQuiet(QUIET_MS, QUIET_TIMEOUT_MS);
 
     const steps = [];
     for (const step of rest) {

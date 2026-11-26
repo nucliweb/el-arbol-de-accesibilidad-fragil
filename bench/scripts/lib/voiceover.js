@@ -35,6 +35,13 @@ export async function stopVoiceOver() {
   return !isRunning();
 }
 
+// Whether VoiceOver said nothing during the last `quietMs` (events carry the
+// epoch time of each change of the last spoken phrase).
+export function isQuiet(events, now, quietMs) {
+  const last = events.at(-1);
+  return !last || now - last.t >= quietMs;
+}
+
 // Records every change of VoiceOver's last spoken phrase with its epoch time.
 export function listenToVoiceOver() {
   const events = [];
@@ -64,6 +71,16 @@ export function listenToVoiceOver() {
         await sleep(5);
       }
       return null;
+    },
+    // Waits until VoiceOver has said nothing for `quietMs`, e.g. after it
+    // reads a new page on its own; gives up after `timeoutMs`.
+    async waitForQuiet(quietMs, timeoutMs) {
+      const deadline = Date.now() + timeoutMs;
+      while (Date.now() < deadline) {
+        if (isQuiet(events, Date.now(), quietMs)) return true;
+        await sleep(50);
+      }
+      return false;
     },
     phrasesSince: (since) => events.filter((e) => e.t >= since).map((e) => e.phrase),
     lastPollMs: () => events.at(-1)?.avgPollMs ?? null,
