@@ -1,6 +1,7 @@
 // The browser version of the benchmark: runs every scenario in the visible
 // test iframe, keeps each session (screen reader off or on) in
 // sessionStorage, shows the medians as tables and prepares the report.
+import { LANGUAGES, pickLanguage, slidesUrl } from './lib/language.js';
 import { measure } from './lib/measure.js';
 import { buildIssueUrl, buildWebReport, summarizeSession } from './lib/report.js';
 import { REPETITIONS, SCENARIOS } from './scenarios.js';
@@ -42,7 +43,43 @@ const TEXT = {
     downloadData: 'Download the data',
     clearResults: 'Clear my results',
     footer: 'Part of the talk "El árbol de accesibilidad frágil" (A11y Conf 2026). Code, method and data on',
-    slidesLink: 'See the slides of the talk (in Spanish)',
+    slidesLink: 'See the slides of the talk',
+    languageNav: 'Language',
+  },
+  ca: {
+    pageTitle: "Benchmark de l'arbre d'accessibilitat, al teu navegador",
+    heading: "Quant li costa al teu dispositiu l'arbre d'accessibilitat?",
+    intro1: 'Aquesta prova compara la mateixa pàgina feta amb HTML natiu i amb llibreries de components, i mesura quant de temps queda bloquejat el teu navegador després de cada acció: triar un radio button, filtrar hotels, obrir un detall.',
+    intro2: "Si fas servir un lector de pantalla, la prova més útil és executar-la dues vegades: una amb el lector apagat i una altra amb el lector encès. La diferència és el que l'arbre d'accessibilitat li costa al teu dispositiu.",
+    beforeHeading: 'Abans de començar',
+    before1: 'Triga uns 2 minuts en un ordinador i una mica més en un mòbil.',
+    before2: "No toquis res ni canviïs de pestanya fins que acabi: la pàgina de prova rep clics i el focus s'hi pot moure. El teu lector de pantalla en pot llegir parts; és normal i forma part del que es mesura.",
+    before3: "Si és un portàtil o un mòbil, millor amb el carregador connectat.",
+    before4: "No s'envia res automàticament: al final veuràs els teus resultats i decidiràs si els comparteixes.",
+    readerLegend: 'Tens un lector de pantalla encès ara mateix?',
+    readerNone: 'No',
+    readerNarrator: 'Narrador',
+    readerOther: 'Un altre',
+    deviceLabel: 'Quin dispositiu fas servir? (opcional)',
+    deviceHint: 'Per exemple: mòbil Android de gamma mitjana del 2021, o portàtil Windows del 2019.',
+    start: 'Comença la prova',
+    progressHeading: 'Mesurant',
+    progressLabel: 'Progrés',
+    testHeading: 'Pàgina de prova',
+    testHint: "Aquí es carreguen les pàgines que es mesuren. Es manté visible perquè el navegador només construeix l'arbre d'accessibilitat del que es mostra.",
+    frameTitle: 'Pàgina de prova, controlada pel test',
+    resultsHeading: 'Els teus resultats',
+    resultsHint: 'Temps, en mil·lisegons, que el navegador va estar bloquejat després de cada pas (mediana de 3 repeticions). Com menys, millor.',
+    sessionsHint: 'Cada prova s\'afegeix com una sessió nova, per comparar amb lector de pantalla i sense. «Esborra els meus resultats» torna a començar de zero.',
+    shareHeading: 'Compartir els resultats',
+    shareHint: "L'enllaç obre el formulari del repositori a GitHub amb els teus resultats ja escrits; necessites un compte de GitHub. Si prefereixes un altre mitjà, copia l'informe o descarrega les dades.",
+    shareLink: 'Envia a GitHub',
+    copyReport: "Copia l'informe",
+    downloadData: 'Descarrega les dades',
+    clearResults: 'Esborra els meus resultats',
+    footer: "Part de la xerrada «El árbol de accesibilidad frágil» (A11y Conf 2026). Codi, mètode i dades a",
+    slidesLink: 'Mira les diapositives de la xerrada',
+    languageNav: 'Idioma',
   },
 };
 const UI = {
@@ -84,10 +121,29 @@ const UI = {
     cleared: 'Results cleared.',
     unknownDevice: 'unspecified device',
   },
+  ca: {
+    measuring: (target, step, rep) => `Mesurant ${target}: ${step}, repetició ${rep} de ${REPETITIONS}.`,
+    load: 'Càrrega',
+    done: 'Prova acabada. Els resultats són més avall.',
+    interrupted: 'La pestanya va deixar de ser visible durant la prova: els resultats poden no ser fiables. La pots repetir.',
+    failed: (message) => `La prova s'ha aturat per un error: ${message}`,
+    session: (reader) => (reader === 'none' ? 'Sense lector de pantalla' : `Amb ${reader}`),
+    difference: (reader) => `Diferència amb ${reader} (amb lector menys sense lector)`,
+    step: 'Pas',
+    elements: 'Elements de la pàgina',
+    nextRun: (reader) =>
+      reader === 'none'
+        ? 'Si fas servir un lector de pantalla, engega\'l, tria quin és a dalt i repeteix la prova per veure la diferència.'
+        : 'Si encara no ho has fet, apaga el lector, marca «No» a dalt i repeteix la prova per veure la diferència.',
+    copied: 'Informe copiat.',
+    copyFailed: "No s'ha pogut copiar. Descarrega les dades en lloc d'això.",
+    cleared: 'Resultats esborrats.',
+    unknownDevice: 'dispositiu sense indicar',
+  },
 };
 
 const params = new URLSearchParams(location.search);
-const lang = params.get('lang') === 'en' || (!params.get('lang') && !navigator.language.startsWith('es')) ? 'en' : 'es';
+const lang = pickLanguage(params.get('lang'), navigator.language);
 const ui = UI[lang];
 const $ = (selector) => document.querySelector(selector);
 
@@ -101,12 +157,23 @@ function applyLanguage() {
     const text = TEXT[lang][el.dataset.i18nTitle];
     if (text) el.title = text;
   }
-  const link = $('#language-link');
-  const other = lang === 'es' ? 'en' : 'es';
-  link.href = `?lang=${other}`;
-  link.lang = other;
-  link.hreflang = other;
-  link.textContent = other === 'en' ? 'English' : 'Español';
+  for (const el of document.querySelectorAll('[data-i18n-label]')) {
+    const text = TEXT[lang][el.dataset.i18nLabel];
+    if (text) el.setAttribute('aria-label', text);
+  }
+  $('#language-links').replaceChildren(
+    ...LANGUAGES.filter(({ code }) => code !== lang).map(({ code, name }) => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `?lang=${code}`;
+      link.lang = code;
+      link.hreflang = code;
+      link.textContent = name;
+      item.append(link);
+      return item;
+    }),
+  );
+  $('#slides-link').href = slidesUrl(lang);
 }
 
 const announce = (message) => {

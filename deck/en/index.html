@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The fragile accessibility tree</title>
+    <meta name="description" content="Why semantic HTML is key to web performance. A talk by Joan León at A11y Conf 2026.">
+    <link rel="icon" href="data:,">
+    <link rel="alternate" hreflang="es" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">
+    <link rel="alternate" hreflang="en" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/en/">
+    <link rel="alternate" hreflang="ca" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/ca/">
+    <link rel="stylesheet" href="../deck.css">
+    <script src="../deck.js" defer></script>
+  </head>
+  <body>
+    <main id="deck">
+
+      <!-- ====================================================== Opening (2 min) -->
+
+      <section class="slide" id="portada">
+        <h1 id="portada-titulo">The fragile accessibility tree</h1>
+        <p class="subtitle">Why semantic HTML is key to web performance</p>
+        <p>Joan León · A11y Conf 2026</p>
+        <div class="notes">
+          <h2 id="portada-notas">Notes</h2>
+          <p>Hello, everyone. I'm Joan León, and this talk is about a tree that almost nobody sees, but that millions of people use every day: the accessibility tree.</p>
+          <p>We'll look at why it is fragile, what breaks it, and why taking care of it makes the web both more accessible and faster.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="sigue-la-charla">
+        <h2 id="sigue-la-charla-titulo">Follow the talk on your device</h2>
+        <div class="columns qr-columns">
+          <figure class="qr">
+            <img src="../assets/qr-slides.svg" width="240" height="240"
+                 alt="QR code that opens the slides at nucliweb.github.io/el-arbol-de-accesibilidad-fragil">
+            <figcaption><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil</a></figcaption>
+          </figure>
+          <ul>
+            <li><kbd>N</kbd> shows or hides the notes for each slide.</li>
+            <li><kbd>D</kbd> shows all the slides on a single page.</li>
+            <li><kbd>T</kbd> switches between the light and the dark theme.</li>
+            <li><kbd>L</kbd> switches the language: <span lang="es">español</span>, English, <span lang="ca">català</span>.</li>
+            <li><kbd>?</kbd> opens help and settings, where you can turn off single-key shortcuts.</li>
+            <li>The arrow keys, or the Previous and Next buttons, change slides.</li>
+          </ul>
+        </div>
+        <div class="notes">
+          <h3 id="sigue-la-charla-notas">Notes</h3>
+          <p>Before we start: these slides are published at the address you see on the screen, nucliweb dot github dot io, slash, <span lang="es">el árbol de accesibilidad frágil</span>, which is the Spanish title of the talk, with hyphens between the words. The English version is at the same address followed by slash en. You can also scan the QR code. Every slide has notes like these, written so you can follow the talk by reading, with a screen reader, or later, when you look back at it.</p>
+          <p>Press N to see the notes, or D to read all the slides one after another as a document. T switches between the light and the dark theme, and L switches the language: the slides and the notes are also available in Spanish and Catalan. If single-key shortcuts get in the way of your screen reader, you can turn them off in help and settings, with the question mark key.</p>
+          <p>And thank you to the sign language interpreter for being with us today.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="sobre-mi">
+        <h2 id="sobre-mi-titulo">Joan León</h2>
+        <p>Web Performance Artisan at <a href="https://perf.reviews/">PerfReviews</a>.</p>
+        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
+        <div class="notes">
+          <h3 id="sobre-mi-notas">Notes</h3>
+          <p>I work on web performance. At PerfReviews we help companies make their websites load and respond faster. Last year I gave a lightning talk here on this topic, and I was left wanting to say much more: this is the long version, with new data.</p>
+        </div>
+      </section>
+
+      <!-- ================================ Performance is already accessibility (4 min) -->
+
+      <section class="slide" id="web-lenta">
+        <h2 id="web-lenta-titulo">A slow website is a less accessible website</h2>
+        <p class="statement">Web performance is accessibility: it decides who can use your website and who can't.</p>
+        <div class="notes">
+          <h3 id="web-lenta-notas">Notes</h3>
+          <p>I'll start with an idea we sometimes forget: web performance isn't only a business or SEO concern. A website that takes ten seconds to respond on a cheap phone with a bad connection isn't slow for that person: it's unusable. Optimizing performance means opening the door to people with the worst connections or low-end devices.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="quien-tiene-el-dispositivo-lento">
+        <h2 id="quien-titulo">Who has the slowest device?</h2>
+        <ul>
+          <li>Disabled people face more barriers to entering and staying in the job market, and so they have less access to recent technology.</li>
+          <li>Many people who use assistive technology avoid updating: a change can break the only way they have to use their computer.</li>
+          <li>A cheap Android phone with TalkBack is the gateway to the internet for many people.</li>
+        </ul>
+        <p class="source">Source: Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
+        <!-- TODO: add a citable data point (for example, the WebAIM screen reader survey or CrUX by device type). -->
+        <div class="notes">
+          <h3 id="quien-notas">Notes</h3>
+          <p>And here is the connection I care about most. Who has the slowest device? As Eric Bailey explains, disabled people face more barriers to employment, and therefore to recent technology. On top of that, many people who use assistive technology don't update their operating system or their browser, out of a justified fear of breaking the one thing that works for them.</p>
+          <p>In other words: the people who depend most on the web working well are often the ones using it in the worst conditions.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="traza-renfe">
+        <h2 id="traza-renfe-titulo">This is what a website that blocks the main thread looks like</h2>
+        <figure>
+          <picture>
+            <source srcset="../assets/renfe-performance.avif" type="image/avif">
+            <img src="../assets/renfe-performance.webp" width="1600" height="877" loading="lazy" decoding="async"
+                 alt="Chrome DevTools Performance panel recording the load of renfe.com. The main thread is busy almost without a break for more than 6 seconds with long JavaScript tasks, style calculation and painting; LCP arrives after 5.9 seconds.">
+          </picture>
+          <figcaption>Loading renfe.com/es/es in the Chrome DevTools Performance panel.</figcaption>
+        </figure>
+        <div class="notes">
+          <h3 id="traza-renfe-notas">Notes</h3>
+          <p>This is a recording from the Chrome Performance panel while loading the website of Renfe, the Spanish railway company. At the top is the network, with lots of requests in parallel. Below it, the browser's main thread: for more than six seconds it is busy almost without a break, with yellow blocks of JavaScript and purple blocks of styles and layout.</p>
+          <p>While the main thread is busy, the browser can't respond to anyone: not to someone clicking, not to someone pressing a key, and not to the assistive technology asking it what's on the screen. The largest element on the page doesn't appear until almost six seconds in.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="cada-milisegundo">
+        <h2 id="cada-milisegundo-titulo">You can hear milliseconds too</h2>
+        <p>Time from a key press until the screen reader starts speaking, on a slow machine:</p>
+        <p class="statement">230–250 ms → 190–200 ms</p>
+        <p class="source">Marco Zehe, accessibility tree optimization in Firefox 67 (2019), cited by Eric Bailey.</p>
+        <div class="notes">
+          <h3 id="cada-milisegundo-notas">Notes</h3>
+          <p>If you use a screen reader, you can hear performance. In 2019, Marco Zehe, who worked on Firefox accessibility, managed to cut the time from a key press until the screen reader starts speaking: on a slow machine, from about 240 milliseconds to about 195.</p>
+          <p>How did he do it? By creating fewer accessible objects for the divs that add nothing. Fewer nodes, less work, less waiting. Keep this idea in mind, because it's the thesis of this talk.</p>
+        </div>
+      </section>
+
+      <!-- ============================== The browser and the accessibility tree (4 min) -->
+
+      <section class="slide" id="como-pinta">
+        <h2 id="como-pinta-titulo">How a browser paints</h2>
+        <ol class="steps">
+          <li>HTML → DOM</li>
+          <li>CSS → CSSOM</li>
+          <li>Style calculation</li>
+          <li class="highlight">Accessibility tree</li>
+          <li>Layout</li>
+          <li>Paint</li>
+          <li>Composite</li>
+        </ol>
+        <p>The accessibility tree is built from the DOM <strong>after styles are calculated</strong>: <code>display: none</code> or a pseudo-element's <code>content</code> changes it.</p>
+        <div class="notes">
+          <h3 id="como-pinta-notas">Notes</h3>
+          <p>Let's go very quickly through what the browser does. It downloads the HTML and builds the DOM. It downloads the CSS and builds the CSSOM. It calculates which styles apply to each element, works out where everything goes, which is the layout, and then paints and composites the final image.</p>
+          <p>And in parallel, when there's an assistive technology listening, it builds the accessibility tree. Notice the order: it's built after styles are calculated, because CSS changes it too. An element with display none disappears from the tree, and the text of a before or after pseudo-element shows up in it. So no, CSS is not just presentation.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="dom-mas-aria">
+        <h2 id="dom-mas-aria-titulo">DOM + ARIA → accessibility tree</h2>
+        <div class="columns">
+          <div>
+            <h3>HTML</h3>
+<pre><code>&lt;fieldset&gt;
+  &lt;legend&gt;Ringtone&lt;/legend&gt;
+  &lt;input type="radio" id="calisto"
+         name="ringtone" checked&gt;
+  &lt;label for="calisto"&gt;Calisto&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+          </div>
+          <div>
+            <h3>Accessibility tree</h3>
+<pre><code>group "Ringtone"
+  radio "Calisto"  checked: true</code></pre>
+          </div>
+        </div>
+        <p>Each node has a <strong>name</strong>, a <strong>role</strong>, a <strong>state</strong> and, when needed, a <strong>description</strong>. With semantic HTML, the browser fills them in for you.</p>
+        <div class="notes">
+          <h3 id="dom-mas-aria-notas">Notes</h3>
+          <p>On the left, a group of radio buttons in HTML: a fieldset with its legend, an input of type radio and its label. On the right, what the browser hands to assistive technology: a group called “Ringtone” and, inside it, a radio called “Calisto” that is checked.</p>
+          <p>Every object in the tree has a name, a role, a state and, optionally, a description. With semantic HTML you get all of that for free, without writing a single line of ARIA or JavaScript.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="un-bosque">
+        <h2 id="un-bosque-titulo">It's not a tree: it's a forest</h2>
+        <ul>
+          <li>Each operating system has its own API: NSAccessibility on macOS, UI Automation and IAccessible2 on Windows, AT-SPI on Linux.</li>
+          <li>The tree lives outside the page: the browser sends it to another process, and assistive technology queries it through the system.</li>
+          <li>If the page changes faster than the tree is updated, what the person hears no longer matches what's on the screen.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="un-bosque-notas">Notes</h3>
+          <p>We talk about the accessibility tree as if there were only one, but it's really a forest. Each operating system has its own accessibility API, and the browser translates the page into each of them.</p>
+          <p>On top of that, the tree lives outside the page: it has to be sent to another process. The bigger and more changeable the DOM, the more data travels and the longer it takes to update. And if the page changes faster than the tree is synchronized, a person who can't see the screen may activate a control that is no longer there, or that is in a different state. That's why we say it's fragile.</p>
+        </div>
+      </section>
+
+      <!-- ================================================= One radio button (8 min) -->
+
+      <section class="slide" id="voiceover-se-cae">
+        <h2 id="voiceover-se-cae-titulo">The day VoiceOver stopped talking</h2>
+        <p>An audit of a medical training app built with Material Design. VoiceOver always hung on the same screen: a huge list of radio buttons.</p>
+        <blockquote>
+          <p>Prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening.</p>
+        </blockquote>
+        <p class="source">Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
+        <div class="notes">
+          <h3 id="voiceover-se-cae-notas">Notes</h3>
+          <p>This talk was born from a story Eric Bailey told in 2024. He was auditing a medical training app built with Material Design and, on one screen, VoiceOver stopped talking. He restarted Safari, cleared the cache, restarted the computer: always the same. The culprit was a pile of Material radio buttons injected into the page. When they replaced them with native radios, VoiceOver stopped hanging.</p>
+          <p>In his words: <q>prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. I wanted to know whether that still happens today, in 2026, with the components we use now.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-nativo">
+        <h2 id="radio-nativo-titulo">A native radio button</h2>
+<pre><code>&lt;div class="radio"&gt;
+  &lt;input type="radio" name="ringtone" id="moon-0" value="moon-0" checked&gt;
+  &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        <p>131 characters. 0 bytes of JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-nativo-notas">Notes</h3>
+          <p>I built a test bench with six implementations of the same group of radio buttons: a heading, “<span lang="es">Ajustes</span>” (Settings), a group, “<span lang="es">Tono de llamada</span>” (Ringtone), and N options. All the code is in the talk's repository. Each implementation was built following its official documentation.</p>
+          <p>This is the baseline: the native radio. A div, an input and a label. One hundred and thirty-one characters and not a single byte of JavaScript.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-shadcn">
+        <h2 id="radio-shadcn-titulo">shadcn/ui with Radix</h2>
+<pre><code>&lt;div role="group" data-slot="field" data-orientation="horizontal" class="…"&gt;
+  &lt;button type="button" role="radio" aria-checked="true"
+          data-state="checked" value="moon-0" data-slot="radio-group-item"
+          id="moon-0" tabindex="-1" data-radix-collection-item class="…"&gt;
+    &lt;span data-state="checked" data-slot="radio-group-indicator" class="…"&gt;
+      &lt;span class="…"&gt;&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/button&gt;
+  &lt;label data-slot="field-label" for="moon-0" class="…"&gt;Calisto&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        <p>2,475 characters (the classes are trimmed with “…”). 275 KB of JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-shadcn-notas">Notes</h3>
+          <p>Now shadcn/ui with Radix, probably the most widely used option in React projects today. There's no input here: there's a button that gets the radio role through ARIA, an aria-checked state kept in sync by JavaScript, and two spans to draw the circle. I've trimmed the Tailwind classes with ellipses; untrimmed, a single option takes up almost two thousand five hundred characters.</p>
+          <p>A curious detail: the current version of shadcn no longer uses Radix by default, but Base UI, which instead of a button generates a span with the radio role and a hidden input. It's in the test bench too.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-mui">
+        <h2 id="radio-mui-titulo">MUI</h2>
+<pre><code>&lt;label class="MuiFormControlLabel-root …"&gt;
+  &lt;span class="MuiButtonBase-root MuiRadio-root … Mui-checked …"&gt;
+    &lt;input class="PrivateSwitchBase-input …" type="radio"
+           value="moon-0" checked name="ringtone"&gt;
+    &lt;span class="…"&gt;
+      &lt;svg … aria-hidden="true" viewBox="0 0 24 24"&gt;&lt;path d="…"&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;svg … aria-hidden="true" viewBox="0 0 24 24"&gt;&lt;path d="…"&gt;&lt;/path&gt;&lt;/svg&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="MuiTypography-root … MuiFormControlLabel-label …"&gt;Calisto&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+        <p>1,119 characters. 329 KB of JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-mui-notas">Notes</h3>
+          <p>MUI does use a native input, and that's good for accessibility. But it wraps it in spans, hides it visually and draws the circle with two SVGs. And every time you click, it adds elements for the ripple effect. That's 329 kilobytes of JavaScript for the sample page.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="radio-material-web">
+        <h2 id="radio-material-web-titulo">Material Web</h2>
+<pre><code>&lt;md-radio id="moon-0" name="ringtone" value="moon-0" checked tabindex="0"&gt;
+  #shadow-root
+    &lt;div aria-hidden="true" class="container checked"&gt;
+      &lt;md-ripple aria-hidden="true"&gt;#shadow-root &lt;div class="surface"&gt;&lt;/div&gt;&lt;/md-ripple&gt;
+      &lt;md-focus-ring aria-hidden="true"&gt;&lt;/md-focus-ring&gt;
+      &lt;svg class="icon" viewBox="0 0 20 20"&gt;… a mask and three circles …&lt;/svg&gt;
+      &lt;div class="touch-target"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/md-radio&gt;
+&lt;label for="moon-0"&gt;Calisto&lt;/label&gt;</code></pre>
+        <p>821 characters, including its shadow DOM. 41 KB of JavaScript.</p>
+        <div class="notes">
+          <h3 id="radio-material-web-notas">Notes</h3>
+          <p>And Material Web, Google's web components, the successors of the library Eric audited. An md-radio element with its own shadow DOM, which contains two other web components with their own shadow DOM, an SVG and several divs. It sets the radio role with JavaScript, through ElementInternals. It's the lightest in JavaScript, 41 kilobytes, but you'll see that weight isn't everything.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="una-opcion">
+        <h2 id="una-opcion-titulo">What one option costs</h2>
+        <table>
+          <caption>Page with 1 radio button, median of 5 runs</caption>
+          <thead>
+            <tr>
+              <th scope="col">Implementation</th>
+              <th scope="col" class="num">Elements</th>
+              <th scope="col" class="num">Attributes</th>
+              <th scope="col" class="num">Depth</th>
+              <th scope="col" class="num">CSS selectors</th>
+              <th scope="col" class="num">JavaScript</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Native</th><td class="num">5</td><td class="num">7</td><td class="num">3</td><td class="num">5</td><td class="num">0 KB</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">9</td><td class="num">36</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">8</td><td class="num">33</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">12</td><td class="num">25</td><td class="num">7</td><td class="num">35</td><td class="num">329 KB</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">16</td><td class="num">36</td><td class="num">7</td><td class="num">45</td><td class="num">41 KB</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Elements, attributes and depth of the measured block, including the shadow DOM. Uncompressed JavaScript for the whole page.</p>
+        <div class="notes">
+          <h3 id="una-opcion-notas">Notes</h3>
+          <p>With a single option, the differences look small: the native one uses five elements and seven attributes; the rest, between eight and sixteen elements and between twenty-five and thirty-six attributes. The big difference is in the JavaScript: zero versus between 41 and 329 kilobytes.</p>
+          <p>But nobody builds a form with one option. Let's see what happens when there are many.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="cien-opciones">
+        <h2 id="cien-opciones-titulo">With 100 options</h2>
+        <table>
+          <caption>100 radio buttons, CPU slowed down ×4, median of 5 runs</caption>
+          <thead>
+            <tr>
+              <th scope="col">Implementation</th>
+              <th scope="col" class="num">Elements</th>
+              <th scope="col" class="num">Blocking time (TBT)</th>
+              <th scope="col" class="num">Click response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Native</th><td class="num">302</td><td class="num good">0 ms</td><td class="num good">&lt; 16 ms</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">405</td><td class="num">160 ms</td><td class="num">120 ms</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">305</td><td class="num">150 ms</td><td class="num">112 ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">903</td><td class="num">139 ms</td><td class="num bad">208 ms</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">1,402</td><td class="num bad">283 ms</td><td class="num">104 ms</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Click response is measured with Event Timing, which doesn't record events shorter than 16 ms. Above 200 ms, INP is no longer considered good.</p>
+        <div class="notes">
+          <h3 id="cien-opciones-notas">Notes</h3>
+          <p>With a hundred options, and the CPU slowed down four times to simulate an ordinary phone, the native radio doesn't block the main thread for a single millisecond, and the click responds in under sixteen milliseconds, which is the smallest amount that can be measured.</p>
+          <p>The framework components block for between 139 and 283 milliseconds while loading. And the MUI click takes 208 milliseconds: that's already over the 200 threshold Google considers good for INP, just because of the radio buttons on the page.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="trabajo-de-accesibilidad">
+        <h2 id="trabajo-de-accesibilidad-titulo">One click, with a screen reader listening</h2>
+        <table class="bars">
+          <caption>Accessibility work on the main thread after a click. 1,000 radio buttons, accessibility on, CPU ×4</caption>
+          <thead>
+            <tr><th scope="col">Implementation</th><th scope="col" class="num">Milliseconds</th><th scope="col"><span class="visually-hidden">Proportional bar</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Native</th><td class="num">2.6</td><td class="bar-cell"><span class="bar" style="--value: 0.002"></span></td></tr>
+            <tr><th scope="row">Styled native</th><td class="num">3.2</td><td class="bar-cell"><span class="bar" style="--value: 0.003"></span></td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">185</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.156"></span></td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">446</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.375"></span></td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">453</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.381"></span></td></tr>
+            <tr><th scope="row">MUI</th><td class="num">1,189</td><td class="bar-cell"><span class="bar is-bad" style="--value: 1"></span></td></tr>
+          </tbody>
+        </table>
+        <p class="source">Chrome with <code>--force-renderer-accessibility</code>, which is what happens when a screen reader is running. With 100 options: 1 ms for native versus 36 ms for MUI.</p>
+        <div class="notes">
+          <h3 id="trabajo-de-accesibilidad-notas">Notes</h3>
+          <p>For me, this is the most important figure in the talk. Chrome only builds the accessibility tree when it detects an assistive technology. You can force it with a startup flag, and then the performance traces show the accessibility work under its own name.</p>
+          <p>We measured a single click on a page with a thousand radio buttons. With the native radio, the browser spends 2.6 milliseconds updating the accessibility tree. With shadcn, between 185 and 446. With Material Web, 453. And with MUI, almost 1.2 seconds. More than a second of accessibility work for pressing a radio button, on top of everything else. With a hundred options the difference is one millisecond versus thirty-six.</p>
+          <p>Why? With a native radio, a click changes the state of two inputs. With a React component, the click re-renders the group, attributes change on many elements, and every change in the DOM is a change the accessibility tree has to process.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="mil-opciones-material">
+        <h2 id="mil-opciones-material-titulo">Material Web with 1,000 options: 108 seconds</h2>
+<pre><code>// @material/web 2.5.0 · radio/internal/single-selection-controller.js
+updateTabIndices() {
+  const siblings = this.controls;  // querySelectorAll of every radio in the group
+  …
+  for (const sibling of siblings) {
+    if (sibling !== focusable) sibling.tabIndex = -1;
+  }
+}</code></pre>
+        <table>
+          <caption>Time until the page finishes rendering (no CPU slowdown)</caption>
+          <thead><tr><th scope="col">Options</th><th scope="col" class="num">100</th><th scope="col" class="num">300</th><th scope="col" class="num">1,000</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Time</th><td class="num">0.1 s</td><td class="num">0.8 s</td><td class="num bad">24 s</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <h3 id="mil-opciones-material-notas">Notes</h3>
+          <p>Material Web has an extra problem. Each radio, when it connects to the page, looks up every radio in its group and rewrites their tabindex. With N radios, that's N squared writes to the DOM. With a hundred options you barely notice; with three hundred it takes almost a second; with a thousand, twenty-four seconds on my laptop, and a hundred and eight seconds with the CPU of an ordinary phone.</p>
+          <p>And all of that to reimplement in JavaScript something the browser already does on its own with a group of native radios: a single tab stop and arrow key navigation.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="gratis">
+        <h2 id="gratis-titulo">What the browser gives you for free</h2>
+        <ul>
+          <li>A single tab stop per group and navigation with the arrow keys.</li>
+          <li>The right name, role and state in the accessibility tree.</li>
+          <li>Form submission, validation with <code>required</code>, and autofill.</li>
+          <li>The system's high contrast mode (<code>forced-colors</code>).</li>
+          <li>It works before the JavaScript loads, and if it never loads.</li>
+        </ul>
+        <p>And with <code>accent-color</code> or <code>appearance: none</code>, your brand's styling.</p>
+        <div class="notes">
+          <h3 id="gratis-notas">Notes</h3>
+          <p>All of this comes built into an input of type radio: focus, arrow keys, the name and state in the accessibility tree, form submission, validation, Windows high contrast mode, and the fact that it works even if the JavaScript fails.</p>
+          <p>And the design? With the accent-color property you apply the brand color in one line. And if you need a completely custom design, appearance none lets you draw it with CSS without losing any of the above. In the test bench, the native radio with custom styles costs practically the same as the untouched native one.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="matiz-tamano-dom">
+        <h2 id="matiz-tamano-dom-titulo">An honest caveat: DOM size matters too</h2>
+        <table>
+          <caption>Native radio with 1,000 options, CPU ×4</caption>
+          <thead><tr><th scope="col">Accessibility</th><th scope="col" class="num">Blocking time on load</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Off</th><td class="num">16 ms</td></tr>
+            <tr><th scope="row">On</th><td class="num bad">479 ms</td></tr>
+          </tbody>
+        </table>
+        <p>Semantic HTML reduces the cost, but doesn't remove it: <strong>less DOM means less work for the accessibility tree</strong>.</p>
+        <div class="notes">
+          <h3 id="matiz-tamano-dom-notas">Notes</h3>
+          <p>I want to be honest with the data. With a thousand options, even the native radio pays: without accessibility, loading blocks for 16 milliseconds; with a screen reader listening, 479. Building the accessibility tree for a large page is expensive, however you build the page.</p>
+          <p>The conclusion isn't “native is free”, but that every DOM node has an extra cost for people who use assistive technology. Less DOM, and simpler DOM, means less work, and that's where semantic HTML wins by a long way.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="chrome-accessibility">
+        <h2 id="chrome-accessibility-titulo">The switch you don't see</h2>
+        <table>
+          <caption>Accessibility modes in <code>chrome://accessibility</code></caption>
+          <thead><tr><th scope="col">Mode</th><th scope="col">What Chrome adds</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Native accessibility API support</th><td>Responds to the operating system's accessibility APIs</td></tr>
+            <tr><th scope="row">Web accessibility</th><td>The page's tree: the role, name, value, state and position of every node</td></tr>
+            <tr><th scope="row">Text metrics</th><td>Line breaks and word boundaries in the text</td></tr>
+            <tr><th scope="row">Extended properties</th><td>Text styles, table cells, live regions, ranges and relations</td></tr>
+            <tr><th scope="row">Screen reader</th><td>What only a detected screen reader needs</td></tr>
+            <tr><th scope="row">HTML</th><td>Every HTML attribute of every node</td></tr>
+          </tbody>
+        </table>
+        <p>They turn on on demand: a screen reader asks for the full tree; dictation, the basic one; a password manager, the forms.</p>
+        <div class="notes">
+          <h3 id="chrome-accessibility-notas">Notes</h3>
+          <p>If you type chrome://accessibility in the address bar, Chrome shows you something you normally don't see: which parts of the accessibility tree it is building and why. By default everything is off. Chrome turns it on on demand, when an application on the system asks it about the page.</p>
+          <p>And it isn't all or nothing. There are modes. One connects Chrome to the system's accessibility APIs. Another builds the page's tree, with the role, name, value, state and position of every node. Others add the line breaks in the text, extended properties such as live regions or table cells, what only a screen reader needs, or every HTML attribute.</p>
+          <p>According to the Chromium source code, a screen reader turns on the full mode; a dictation tool, the basic one; and a password manager, a mode that only builds the forms. In other words, the cost of the accessibility tree isn't paid only by people who use a screen reader.</p>
+          <p>I found this out by accident while preparing this talk. After the VoiceOver tests, macOS kept flagging VoiceOver as active even though it was off. This page listed VoiceOver as an active assistive technology, and Chrome was building the full tree on every page I opened. I noticed because the test bench, with accessibility turned off, started measuring accessibility work: between 30 and 50 extra milliseconds on every load of the travel website, with the CPU slowed down like a modest phone's. That's the tax that people who use assistive technology pay on every page. The lighter the page, the smaller the tax.</p>
+          <p>The mode descriptions come from the Chromium source code, from the file ui/accessibility/ax_mode.h, and from the page itself in Chrome 158.</p>
+          <p>For the measurements, Chrome has two startup flags: force-renderer-accessibility, which turns on the tree the way a screen reader would, and disable-platform-accessibility-integration, which ignores whatever the operating system says.</p>
+        </div>
+      </section>
+
+      <!-- ========================================== What about the screen reader? (5 min) -->
+
+      <section class="slide" id="diez-anos">
+        <h2 id="diez-anos-titulo">Ten years asking the same question</h2>
+        <ol>
+          <li><strong>2016</strong>: Marcy Sutton: <q>you can't optimize what you can't measure</q>. She proposes an “Accessibility Tree Ready” metric.</li>
+          <li><strong>2020</strong>: Scott Jehl asks Lighthouse for metrics that include assistive technology (issue #11049). It's still open.</li>
+          <li><strong>2024</strong>: Eric Bailey asks for it again at performance.now().</li>
+          <li><strong>2026</strong>: here we are.</li>
+        </ol>
+        <div class="notes">
+          <h3 id="diez-anos-notas">Notes</h3>
+          <p>This isn't a new idea, and I think it's important to say so. In 2016, Marcy Sutton was already giving talks about accessibility and performance. She said you can't optimize what you can't measure, and that there was no way to measure the accessibility tree. She proposed a metric, an “Accessibility Tree Ready”.</p>
+          <p>In 2020, Scott Jehl opened an issue in Lighthouse asking for metrics that take assistive technology into account. It's still open. In 2024, Eric Bailey asked for it again. Ten years of the same question. And all of this before AI, back when we still did our own thinking.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="hipotesis">
+        <h2 id="hipotesis-titulo">The hypothesis</h2>
+        <p class="statement">Optimizing content for performance also makes screen readers faster.</p>
+        <h3>How I put it to the test</h3>
+        <ul>
+          <li>In the browser: Chrome traces with accessibility turned on (<code>--force-renderer-accessibility</code>).</li>
+          <li>In the screen reader: automated VoiceOver, measuring how long it takes to announce each option.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="hipotesis-notas">Notes</h3>
+          <p>So in 2026 the question can be answered, at least in part. My hypothesis is that optimizing content for performance also makes screen readers faster.</p>
+          <p>I put it to the test at two levels. In the browser, with Chrome traces with accessibility turned on, which you've already seen. And in the screen reader itself, by automating VoiceOver to measure how long it takes to announce each option.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="resultado-navegador">
+        <h2 id="resultado-navegador-titulo">In the browser: confirmed</h2>
+        <ul>
+          <li>Accessibility work grows with the amount and complexity of the DOM.</li>
+          <li>After a click, with 1,000 options: <strong>2.6 ms</strong> with the native radio versus <strong>185–1,189 ms</strong> with framework components.</li>
+          <li>That work happens on the main thread: it competes with the response to the interaction.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="resultado-navegador-notas">Notes</h3>
+          <p>On the browser side, the hypothesis is confirmed: accessibility work grows with the size and complexity of the DOM, and with framework components it's between seventy and four hundred and fifty times higher after the same click. And it happens on the main thread, the same one that has to respond to the person.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="resultado-voiceover">
+        <h2 id="resultado-voiceover-titulo">In VoiceOver: you can hear it too</h2>
+        <table>
+          <caption>Time from pressing the arrow key until VoiceOver announces the option (median, ms). Chrome with CPU ×4</caption>
+          <thead>
+            <tr><th scope="col">Implementation</th><th scope="col" class="num">10 options</th><th scope="col" class="num">100 options</th><th scope="col" class="num">1,000 options</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Native</th><td class="num good">33</td><td class="num good">64</td><td class="num">436</td></tr>
+            <tr><th scope="row">Styled native</th><td class="num good">32</td><td class="num good">67</td><td class="num">437</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num">47</td><td class="num">106</td><td class="num bad">1,063</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num">47</td><td class="num">99</td><td class="num bad">859</td></tr>
+            <tr><th scope="row">MUI</th><td class="num">57</td><td class="num bad">171</td><td class="num bad">1,973</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num">45</td><td class="num">79</td><td class="num bad">1,068</td></tr>
+          </tbody>
+        </table>
+        <p>With 1,000 options, MUI takes <strong>almost 2 s</strong> per option: 4.5 times as long as native.</p>
+        <div class="notes">
+          <h3 id="resultado-voiceover-notas">Notes</h3>
+          <p>And now, what a person actually hears. I automated VoiceOver on macOS: I open each page, put the focus on the first radio, press the down arrow twenty times and measure how long VoiceOver takes to say the next option. Three repetitions of each combination.</p>
+          <p>With ten options, everything is between 32 and 57 milliseconds. With a hundred, native stays at about 65 milliseconds, shadcn at about 100 and MUI at 171. With a thousand options, native takes 436 milliseconds, which is already a lot, and the framework components between 860 milliseconds and almost two seconds per option. Imagine going through a list of countries like that: two seconds of silence for every key press.</p>
+          <p>So the hypothesis is also confirmed where it matters: in what the person hears. And so is the caveat: DOM size penalizes everyone, but it penalizes components that rebuild the control much more.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-escenario">
+        <h2 id="travel-escenario-titulo">A real website: A11yConf Travel</h2>
+        <table>
+          <caption>The same hotel search, with the same content and the same accessible names</caption>
+          <thead><tr><th scope="col">Version</th><th scope="col">Built with</th><th scope="col" class="num">JavaScript</th><th scope="col" class="num">Elements</th><th scope="col" class="num">CSS selectors</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Native</th><td>HTML: <code>select</code>, dates, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good">10.6 KB</td><td class="num good">758</td><td class="num good">68</td></tr>
+            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad">785 KB</td><td class="num bad">2,041</td><td class="num bad">626</td></tr>
+          </tbody>
+        </table>
+        <p>The task: 14 keyboard steps. Filter by stars, price and meal plan, open a hotel, go through its rooms and close it.</p>
+        <div class="notes">
+          <h3 id="travel-escenario-notas">Notes</h3>
+          <p>A thousand radio buttons prove the mechanism, but they aren't the web we use every day. So I built a fictional travel website, A11yConf Travel, with a hotel search: a search form, filters for stars, price, meal plan and amenities, a list of thirty hotels, a sort selector and a modal with the details of each hotel.</p>
+          <p>I built it twice, with exactly the same content and the same accessible names. Once with native HTML and about 10 kilobytes of JavaScript for filtering. And once the way many websites with years behind them are built: React, Material UI with its icons, react-select for the destination, react-datepicker for the dates and react-modal for the details. The legacy version loads 785 kilobytes of JavaScript, almost three times as many elements and nine times as many CSS selectors.</p>
+          <p>And in both versions I measured the same keyboard task, fourteen steps: moving through the star filters, checking four stars, lowering the price, changing the meal plan, opening the first hotel, going through its rooms and closing it with Escape.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-navegador">
+        <h2 id="travel-navegador-titulo">In the browser: the tree costs the same; what surrounds it doesn't</h2>
+        <table>
+          <caption>The 14-step task with accessibility turned on. Median of 5 runs, CPU ×4</caption>
+          <thead><tr><th scope="col">Measure</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Main thread</th><td class="num good">255 ms</td><td class="num bad">991 ms</td></tr>
+            <tr><th scope="row">JavaScript</th><td class="num good">79 ms</td><td class="num bad">464 ms</td></tr>
+            <tr><th scope="row">Accessibility work</th><td class="num">56 ms</td><td class="num">57 ms</td></tr>
+            <tr><th scope="row">Slowest interaction</th><td class="num good">24 ms</td><td class="num bad">72 ms</td></tr>
+            <tr><th scope="row">LCP on load</th><td class="num good">176 ms</td><td class="num bad">484 ms</td></tr>
+          </tbody>
+        </table>
+        <p class="source">The traces, ready to open in DevTools, are in the repository: <code>bench/traces/travel/</code>.</p>
+        <div class="notes">
+          <h3 id="travel-navegador-notas">Notes</h3>
+          <p>Here comes an important caveat. With a realistic page, the accessibility tree work is practically the same in both versions: 56 milliseconds versus 57 across the whole task. The nodes that reach the screen reader are almost the same, about 1,480 in each version; the legacy version's more than 500 extra nodes are ignored nodes, which never reach the screen reader.</p>
+          <p>What changes is everything that happens around each key press. The legacy version keeps the main thread busy almost four times as long, runs almost six times as much JavaScript, and its slowest interaction takes 72 milliseconds versus 24. And the page takes almost three times as long to paint the main content.</p>
+          <p>The traces for each version are published in the repository. Each step of the task appears by name in the Timings track of the Performance panel, and the text summary in the repository has the same figures, step by step.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-voiceover">
+        <h2 id="travel-voiceover-titulo">In VoiceOver: slower in all 14 steps</h2>
+        <table>
+          <caption>From the key press until VoiceOver responds. Median of 5 runs, CPU ×4</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Tab between the star filters</th><td class="num good">18–21&nbsp;ms</td><td class="num">36–40&nbsp;ms</td></tr>
+            <tr><th scope="row">Check 4 stars until you hear “<span lang="es">6 hoteles encontrados</span>” (6 hotels found)</th><td class="num">162&nbsp;ms</td><td class="num">200&nbsp;ms</td></tr>
+            <tr><th scope="row">Change the meal plan with the arrow keys</th><td class="num good">50–52&nbsp;ms</td><td class="num">81–92&nbsp;ms</td></tr>
+            <tr><th scope="row">Open the hotel details</th><td class="num good">70&nbsp;ms</td><td class="num">93&nbsp;ms</td></tr>
+            <tr><th scope="row">Close with Escape and return to the button</th><td class="num good">59&nbsp;ms</td><td class="num">88&nbsp;ms</td></tr>
+            <tr><th scope="row">The whole task</th><td class="num good">648&nbsp;ms</td><td class="num bad">959&nbsp;ms</td></tr>
+          </tbody>
+        </table>
+        <p>It isn't the 2 seconds of the 1,000 radios: it's tens of milliseconds on <strong>every</strong> key press.</p>
+        <div class="notes">
+          <h3 id="travel-voiceover-notas">Notes</h3>
+          <p>And what the person hears. With automated VoiceOver, the legacy version is slower in all fourteen steps of the task, without exception. Moving with Tab between the filters takes twice as long: about 20 milliseconds versus about 40. Changing the meal plan with the arrow keys, between 50 and 92. Opening the hotel details, 70 versus 93. Closing the modal and returning to the button, 59 versus 88.</p>
+          <p>Checking a filter is the closest step, 162 versus 200, because most of that time is VoiceOver's own wait before it reads the region that announces the results.</p>
+          <p>In total, the task adds up to 648 milliseconds of waiting in the native version and 959 in the legacy one: one and a half times as much. It isn't the two-second silence of the thousand radios. It's tens of milliseconds on every key press, adding up over a task, a page and a whole day of browsing with a screen reader.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-ripple">
+        <h2 id="travel-ripple-titulo">What only shows up in the trace</h2>
+        <p>With keyboard focus on a control, MUI animates a “ripple” in an infinite loop, even with <code>prefers-reduced-motion: reduce</code>.</p>
+        <table>
+          <caption>Keyboard focus on “<span lang="es">4 estrellas</span>” (4 stars) and 5 seconds without touching anything. Median of 3 runs, CPU ×4</caption>
+          <thead><tr><th scope="col">Measure</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Frames generated</th><td class="num good">30</td><td class="num bad">299</td></tr>
+            <tr><th scope="row">GPU work</th><td class="num good">10&nbsp;ms</td><td class="num bad">74&nbsp;ms</td></tr>
+            <tr><th scope="row">Compositor tasks</th><td class="num good">2</td><td class="num bad">1,719</td></tr>
+          </tbody>
+        </table>
+        <p class="source">Trace for DevTools: <code>bench/traces/focus-idle/</code>. In the legacy version, the Frames track is one continuous band.</p>
+        <div class="notes">
+          <h3 id="travel-ripple-notas">Notes</h3>
+          <p>When I opened the legacy version's trace in DevTools, something showed up that I didn't expect: frames and animations between one key press and the next, while the person isn't doing anything.</p>
+          <p>It's Material UI's focus effect. When a button, a checkbox or a radio receives keyboard focus, MUI draws a circle that pulses in an infinite loop, in two-and-a-half-second cycles, for as long as the focus stays there. And it keeps pulsing even when the operating system asks for reduced motion.</p>
+          <p>To see it in isolation, I recorded both versions with keyboard focus on the four-star checkbox, five seconds without touching anything, with accessibility turned on and the reduced motion preference set. The native version generates 30 frames in those five seconds. The legacy one, 299: about sixty per second, nonstop. The GPU works for 74 milliseconds versus 10, and the compositor runs more than 1,700 tasks versus 2. The main thread barely notices, because the animation runs on the compositor, but the device never gets a rest.</p>
+          <p>In other words, precisely the people who navigate with the keyboard or a screen reader, and who have also asked for less motion, are the ones who pay for that continuous work. It can be turned off in the MUI configuration, but it's on by default.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="travel-ripple-devtools">
+        <h2 id="travel-ripple-devtools-titulo">The same trace, in DevTools</h2>
+        <figure class="trace-strips">
+          <p class="trace-label">Legacy</p>
+          <picture>
+            <source srcset="../assets/ripple-frames-legacy.avif" type="image/avif">
+            <img src="../assets/ripple-frames-legacy.webp" width="1240" height="120" loading="lazy" decoding="async"
+                 alt="DevTools Frames and Timings tracks for the legacy version, on a scale from 0 to 5 seconds. From about 1.6 seconds until the end, the Frames track is one continuous band of frames.">
+          </picture>
+          <p class="trace-label">Native</p>
+          <picture>
+            <source srcset="../assets/ripple-frames-native.avif" type="image/avif">
+            <img src="../assets/ripple-frames-native.webp" width="1240" height="120" loading="lazy" decoding="async"
+                 alt="DevTools Frames and Timings tracks for the native version, on the same scale from 0 to 5 seconds. The Frames track is empty.">
+          </picture>
+          <figcaption>Frames and Timings tracks in the Chrome DevTools Performance panel, with keyboard focus on “<span lang="es">4 estrellas</span>” and 5 seconds without touching anything. Trace: <code>bench/traces/focus-idle/</code>.</figcaption>
+        </figure>
+        <div class="notes">
+          <h3 id="travel-ripple-devtools-notas">Notes</h3>
+          <p>The two captures from the DevTools Performance panel show the difference. At the top, the legacy version: from about 1.6 seconds on, the Frames track fills up with frames, one after another, until the end. At the bottom, the native version: the Frames track stays empty for the whole five seconds.</p>
+          <p>Both traces are in the repository, in the bench/traces/focus-idle folder, and you can open them by dragging them into the Performance panel in Chrome DevTools.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="iphone">
+        <h2 id="iphone-titulo">An iPhone 16 Pro and 1,000 radio buttons</h2>
+        <table>
+          <caption>Time Safari stays blocked, measured on the iPhone itself with the in-browser benchmark</caption>
+          <thead>
+            <tr><th scope="col">Implementation</th><th scope="col" class="num">Click, without VoiceOver</th><th scope="col" class="num">Click, with VoiceOver</th><th scope="col" class="num">Load, without VoiceOver</th><th scope="col" class="num">Load, with VoiceOver</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Native HTML</th><td class="num good">0&nbsp;ms</td><td class="num good">0&nbsp;ms</td><td class="num good">43&nbsp;ms</td><td class="num good">83&nbsp;ms</td></tr>
+            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num">68–74&nbsp;ms</td><td class="num">63–68&nbsp;ms</td><td class="num">214&nbsp;ms</td><td class="num">228&nbsp;ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad">4.8–5.0&nbsp;s</td><td class="num bad">5.1&nbsp;s</td><td class="num">556&nbsp;ms</td><td class="num">552&nbsp;ms</td></tr>
+          </tbody>
+        </table>
+        <p>With MUI, <strong>every click freezes Safari for 5 seconds</strong>, with or without VoiceOver. With native HTML, 0.</p>
+        <div class="notes">
+          <h3 id="iphone-notas">Notes</h3>
+          <p>This is the first result from a real device, submitted with the in-browser version of the benchmark: an iPhone 16 Pro, with Safari, once with VoiceOver on and once with VoiceOver off. The numbers are the time Safari stays blocked after each action, the median of three repetitions.</p>
+          <p>With native HTML, choosing one of a thousand radio buttons doesn't block Safari at all: zero milliseconds, with and without VoiceOver. With shadcn, about seventy milliseconds. And with MUI, between four point eight and five point one seconds. Five seconds of frozen phone for every click, on a high-end iPhone. On my laptop, with Chrome, that same click took less than two hundred milliseconds.</p>
+          <p>My first hypothesis was that those five seconds would be the accessibility tree, and I was wrong: without VoiceOver it takes almost the same time. It's an MUI performance problem in Safari on iPhone that everyone pays for, whether or not they use a screen reader. What VoiceOver does add shows up in the load: with native HTML, the page takes 83 milliseconds instead of 43.</p>
+          <p>That's why measuring on real devices matters. Neither my laptop nor iPhone emulation on the laptop showed anything like this.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="limitaciones">
+        <h2 id="limitaciones-titulo">What this data doesn't tell us</h2>
+        <ul>
+          <li>Only Chrome and only VoiceOver on macOS: no NVDA, no JAWS, no TalkBack, no braille displays.</li>
+          <li>A fast laptop with a slowed-down CPU isn't a low-end phone.</li>
+          <li>Local server, with no network throttling.</li>
+          <li>1,000 options is an extreme case; 100 is already realistic in long forms.</li>
+          <li>A11yConf Travel is a mock-up: no real network, no ads and no third-party scripts.</li>
+          <li>In some tests with the native radio, the first key press didn't move the selection and VoiceOver ended up one option behind; those steps are excluded.</li>
+        </ul>
+        <p>All the code and data are in the repository for anyone who wants to repeat the tests.</p>
+        <div class="notes">
+          <h3 id="limitaciones-notas">Notes</h3>
+          <p>And what this data doesn't tell us. I've only tested Chrome and VoiceOver. A laptop with a slowed-down CPU is an approximation, not a real phone. And a thousand options is an extreme case, although a hundred already shows up in real forms, such as a country picker. The travel website is closer to reality, but it's still a mock-up: it has no real network, no ads and no third-party scripts, which on a real website usually weigh even more. All the code is published so anyone can repeat the tests with other browsers and screen readers, and I'd love for you to do it.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== AI chooses for you (10 min) -->
+
+      <section class="slide" id="el-mismo-patron">
+        <h2 id="el-mismo-patron-titulo">The same pattern, decade after decade</h2>
+        <ol>
+          <li><strong>2016</strong>, Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
+          <li><strong>2024</strong>, Material Components Web: the radio that hung VoiceOver.</li>
+          <li><strong>2026</strong>, shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+        </ol>
+        <p>And now an AI writes it.</p>
+        <div class="notes">
+          <h3 id="el-mismo-patron-notas">Notes</h3>
+          <p>Look at the pattern. In 2016, Marcy Sutton's example was an Angular Material checkbox, a custom element with its role and tabindex set by hand. In 2024, the Material radio that hung VoiceOver. In 2026, the shadcn radio: a button with the radio role.</p>
+          <p>The frameworks change, but the pattern stays the same: rebuilding with divs, ARIA and JavaScript what the browser already provides. And today, more and more, we don't write that code ourselves: an AI agent writes it. So I wanted to check what it chooses.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="experimento">
+        <h2 id="experimento-titulo">The experiment</h2>
+        <blockquote>
+          <p>Create a settings page with a ringtone picker. The options are: Callisto, Ganymede, Luna and Europa.</p>
+        </blockquote>
+        <ul>
+          <li>Claude Code (Claude Opus 5.5) and Antigravity (default model).</li>
+          <li>Clean profiles: no skills, memory or personal configuration.</li>
+          <li>Two scenarios: an empty folder and an existing React project with shadcn/ui.</li>
+          <li>3 runs per combination.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="experimento-notas">Notes</h3>
+          <p>The experiment is simple. This is the prompt: create a settings page with a ringtone picker, with these four options. It doesn't mention any technology. I gave it to the agents in Spanish, word for word: <q lang="es">Crea una página de ajustes con un selector de tono de llamada. Las opciones son: Calisto, Ganímedes, Luna y Europa.</q> The slide shows it translated into English.</p>
+          <p>I ran it with Claude Code and with Google's Antigravity, with clean profiles, without my skills or my configuration, to see what anyone would get. In two scenarios: an empty folder, and an existing React project that uses shadcn, which is how we almost always work. Three runs of each, because agents aren't deterministic.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="carpeta-vacia">
+        <h2 id="carpeta-vacia-titulo">In an empty folder: semantic HTML</h2>
+        <table>
+          <caption>Empty folder, no technology specified</caption>
+          <thead><tr><th scope="col">Agent</th><th scope="col">What it generated</th><th scope="col" class="num">Native radio</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td>A single <code>index.html</code></td><td class="num good">3 of 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td>HTML, CSS and JavaScript without a framework</td><td class="num good">3 of 3</td></tr>
+          </tbody>
+        </table>
+        <p>With <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, a skip link and an <code>aria-live</code> region.</p>
+        <div class="notes">
+          <h3 id="carpeta-vacia-notas">Notes</h3>
+          <p>And here I got my first surprise. I expected the AI to generate React and shadcn by default. It didn't: in an empty folder, both agents, all six times, generated semantic HTML. Native radios, fieldset and legend, labels, a skip link and even an aria-live region to announce that the settings were saved. No framework.</p>
+          <p>When nothing steers them, the agents choose the platform.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="proyecto-react">
+        <h2 id="proyecto-react-titulo">In a React project with shadcn: the project's pattern</h2>
+        <table>
+          <caption>Existing React + shadcn/ui project, without the radio-group component installed</caption>
+          <thead><tr><th scope="col">Agent</th><th scope="col" class="num">Radix <code>RadioGroup</code></th><th scope="col" class="num">Native radio</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td class="num bad">3 of 3</td><td class="num">0 of 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td class="num bad">3 of 3</td><td class="num">0 of 3</td></tr>
+          </tbody>
+        </table>
+        <p>The component wasn't installed: the agents <strong>wrote it by hand</strong>, imitating the shadcn one.</p>
+        <div class="notes">
+          <h3 id="proyecto-react-notas">Notes</h3>
+          <p>Second scenario: the same prompt, but inside a React project with shadcn that already has buttons, cards and text fields, but doesn't have the radio component. All six times, both agents hand-wrote a Radix RadioGroup, imitating the shadcn one: buttons with the radio role, and JavaScript. Not once did they use the native radio they had chosen in the empty folder.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="la-ia-amplifica">
+        <h2 id="la-ia-amplifica-titulo">AI amplifies what you already have</h2>
+        <p class="statement">The same agent, with the same prompt, writes semantic HTML in an empty folder and reproduces your project's pattern when there is one.</p>
+        <div class="notes">
+          <h3 id="la-ia-amplifica-notas">Notes</h3>
+          <p>This is the conclusion of the experiment. AI doesn't make bad choices on its own: it amplifies what you already have. If your project is full of components that rebuild native controls, the agent will follow that path, even though it knows how to do better. And since we almost never start from an empty folder, that's the real-world case.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="modern-web-guidance">
+        <h2 id="modern-web-guidance-titulo">Modern Web Guidance</h2>
+        <ul>
+          <li>Skills and a CLI that give agents up-to-date knowledge of the web platform.</li>
+          <li>Published by Google Chrome, with Microsoft Edge, Mozilla Firefox and MDN. Apache 2.0 license.</li>
+          <li>By default, it only recommends what is Baseline Widely available.</li>
+        </ul>
+        <blockquote>
+          <p>Adapt checkboxes, radio buttons, sliders and progress bars to your palette without replacing them with custom components.</p>
+        </blockquote>
+        <p class="source"><code>brand-consistent-forms</code> guide (my own summary). <a href="https://github.com/GoogleChrome/modern-web-guidance">github.com/GoogleChrome/modern-web-guidance</a></p>
+        <div class="notes">
+          <h3 id="modern-web-guidance-notas">Notes</h3>
+          <p>How do we change that? This is where Modern Web Guidance comes in. It's a set of skills and a command line tool that gives agents up-to-date knowledge of the web platform. It's published by the Chrome team, together with Edge, Firefox and MDN, and by default it only recommends features that already work in every browser.</p>
+          <p>And it has a guide that seems written for this talk: adapting form controls to your brand without replacing them with custom components.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="instalado-no-basta">
+        <h2 id="instalado-no-basta-titulo">Installing it isn't always enough: the agent has to consult it</h2>
+        <table>
+          <caption>Native radio in the React + shadcn project (in parentheses, how many times it consulted Modern Web Guidance)</caption>
+          <thead><tr><th scope="col">Condition</th><th scope="col" class="num">Claude Code</th><th scope="col" class="num">Antigravity</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Without Modern Web Guidance</th><td class="num">0 of 3</td><td class="num">0 of 3</td></tr>
+            <tr><th scope="row">Installed</th><td class="num">1 of 3 (1)</td><td class="num good">3 of 3 (3)</td></tr>
+            <tr><th scope="row">Installed + <code>AGENTS.md</code></th><td class="num good">3 of 3 (3)</td><td class="num good">3 of 3 (3)</td></tr>
+          </tbody>
+        </table>
+        <div class="notes">
+          <h3 id="instalado-no-basta-notas">Notes</h3>
+          <p>I installed it and repeated the experiment in the React project. Antigravity always consulted it, and all three times it used the native radio. Claude only consulted it one time out of three. And look: that time, and only that time, it used the native radio. The other two times it didn't even look at it, and it wrote the Radix component again.</p>
+          <p>So installing it isn't always enough: it depends on the agent deciding to consult it. I added a two-line AGENTS.md file to the project, the one the documentation itself recommends, and the result was three out of three for both agents: they always consulted it and always used the native radio, inside the same React project.</p>
+          <p>A note on method: for Claude, I checked whether it consulted the guide in the tool log; for Antigravity, I relied on what the agent itself says in its reply.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="agents-md">
+        <h2 id="agents-md-titulo">Two lines that change the result</h2>
+<pre><code># AGENTS.md
+
+## Web development
+
+- Before implementing or changing any interface, consult
+  Modern Web Guidance (skill `modern-web-guidance`) and follow its
+  recommendations.
+- This project's Baseline target is Baseline Widely available.</code></pre>
+        <p>What Claude generated, inside the React project with Tailwind:</p>
+<pre><code>&lt;fieldset&gt;
+  &lt;legend&gt;<span lang="es">Tono de llamada</span>&lt;/legend&gt;
+  &lt;input type="radio" className="size-4 accent-primary …" /&gt;</code></pre>
+        <div class="notes">
+          <h3 id="agents-md-notas">Notes</h3>
+          <p>This is the whole file. The AGENTS.md in the experiment was written in Spanish; the slide shows it translated into English. It doesn't say “use native radios”: that would be giving it the answer. It only says to consult Modern Web Guidance before touching the interface, and what the compatibility target is.</p>
+          <p>And this is the result: a fieldset, a legend and an input of type radio with accent-color and the primary color of the shadcn theme. The legend reads “<span lang="es">Tono de llamada</span>”, Ringtone, because the prompt was in Spanish. Inside the same React project, and with Tailwind. It's exactly the native variant from my test bench.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="coste-del-agente">
+        <h2 id="coste-del-agente-titulo">And how much does it cost?</h2>
+        <table>
+          <caption>Cost per Claude Code generation</caption>
+          <thead><tr><th scope="col">Condition</th><th scope="col" class="num">Cost</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Without Modern Web Guidance</th><td class="num">$0.32–0.37</td></tr>
+            <tr><th scope="row">With Modern Web Guidance</th><td class="num">$0.46–0.71</td></tr>
+          </tbody>
+        </table>
+        <p>A few cents more, once, versus hundreds of milliseconds on every click of every visit.</p>
+        <div class="notes">
+          <h3 id="coste-del-agente-notas">Notes</h3>
+          <p>Consulting the guide has a cost: each generation goes from about 35 cents to between 46 and 71. We pay it once, when we write the code. The heavy component is paid for by everyone who uses the website, on every visit and every click. And the people who pay the most are those using a screen reader on a modest device.</p>
+        </div>
+      </section>
+
+      <!-- ================================================================ Closing (2 min) -->
+
+      <section class="slide" id="dx-ux">
+        <h2 id="dx-ux-titulo">Developer experience has a cost</h2>
+        <p class="statement">When we put the developer experience ahead of the user experience, someone pays the difference. And it can be measured.</p>
+        <div class="notes">
+          <h3 id="dx-ux-notas">Notes</h3>
+          <p>I'll close with the idea from last year's lightning talk, now with data. We choose components because they're comfortable for developers. That comfort has a cost, and we're not the ones who pay it: users pay it, especially those who use assistive technology. Today we've seen that this cost can be measured.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="manana">
+        <h2 id="manana-titulo">What you can do tomorrow</h2>
+        <ol>
+          <li>Use semantic HTML first: it's your first accessibility and performance optimization.</li>
+          <li>Test with a screen reader: <kbd>Cmd</kbd> + <kbd>F5</kbd> turns on VoiceOver on macOS.</li>
+          <li>Measure with accessibility turned on: <code>--force-renderer-accessibility</code>.</li>
+          <li>Tell your agent to consult Modern Web Guidance from <code>AGENTS.md</code>.</li>
+          <li>Support <a href="https://github.com/GoogleChrome/lighthouse/issues/11049">Lighthouse issue #11049</a>.</li>
+        </ol>
+        <div class="notes">
+          <h3 id="manana-notas">Notes</h3>
+          <p>Five things you can do tomorrow. One: semantic HTML first. Two: test with a screen reader; on a Mac, Command plus F5 turns on VoiceOver, and it's enough to check that it doesn't hang. Three: when you measure performance, also measure with accessibility turned on. Four: if you work with agents, tell them in AGENTS.md to consult Modern Web Guidance. And five: drop by the Lighthouse issue that Scott Jehl opened in 2020; a bit of attention may help us finally get a metric.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="haz-la-prueba">
+        <h2 id="haz-la-prueba-titulo">Try it on your phone</h2>
+        <div class="columns qr-columns">
+          <figure class="qr">
+            <img src="../assets/qr-benchmark.svg" width="240" height="240"
+                 alt="QR code that opens the benchmark at nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark">
+            <figcaption><a href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/">nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark</a></figcaption>
+          </figure>
+          <div>
+            <p>Measure how much the accessibility tree costs <strong>your</strong> device.</p>
+            <ul>
+              <li>About 2 minutes, nothing to install.</li>
+              <li>If you use a screen reader, run it twice: with it off and with it on.</li>
+              <li>Nothing is sent unless you decide to send it.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="notes">
+          <h3 id="haz-la-prueba-notas">Notes</h3>
+          <p>Everything I've shown you comes from a single laptop. And I'd like it to come from your devices. If you open the address on the screen, or scan the QR code, you'll reach a version of the benchmark that runs in the browser, on your phone too, without installing anything. The address is the same as the slides, ending in slash benchmark: nucliweb dot github dot io, slash, <span lang="es">el árbol de accesibilidad frágil</span> with hyphens between the words, slash, benchmark.</p>
+          <p>The test loads the same pages you've seen, the group of a thousand radio buttons and the travel website, clicks on them and measures how long your browser stays blocked after each action. It takes about two minutes.</p>
+          <p>If you use a screen reader, I'd ask you for something more: run it twice, once with the screen reader off and once with it on. The page compares the two, and the difference is what the accessibility tree costs your device. At the end you'll see your results in a table, and you decide whether to share them in the repository. With VoiceOver on my laptop, a click on a thousand radio buttons blocks the browser for 0 milliseconds with native HTML, 86 with shadcn and 98 with MUI. I'm really curious to find out how much it is on your phones.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="gracias">
+        <h2 id="gracias-titulo">Thank you</h2>
+        <p>Code, data and references: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a> · <a href="https://joanleon.dev">joanleon.dev</a></p>
+        <h3>Credits</h3>
+        <ul>
+          <li>Eric Bailey, <cite>Accessible is Performant</cite> (2024).</li>
+          <li>Marcy Sutton, <cite>Accessibility and Performance</cite> (2016).</li>
+          <li>Scott Jehl, Lighthouse #11049 (2020).</li>
+          <li>Marco Zehe, performance work on the Firefox accessibility tree.</li>
+          <li>Scott O'Hara, <cite>a11y_styled_form_controls</cite>.</li>
+        </ul>
+        <div class="notes">
+          <h3 id="gracias-notas">Notes</h3>
+          <p>Thank you very much. All the test bench code, the agent experiment, the data and the references are in the repository. Special thanks to Eric Bailey, Marcy Sutton, Scott Jehl, Marco Zehe and Scott O'Hara, whose work this talk is built on. Questions?</p>
+        </div>
+      </section>
+
+    </main>
+
+    <nav id="deck-controls" aria-label="Presentation controls" hidden>
+      <button type="button" id="prev-slide">Previous</button>
+      <button type="button" id="next-slide">Next</button>
+      <button type="button" id="toggle-notes" aria-pressed="false">Notes</button>
+      <button type="button" id="toggle-document" aria-pressed="false">Document mode</button>
+      <button type="button" id="open-help">Help and settings</button>
+      <span id="slide-counter"></span>
+    </nav>
+
+    <div id="announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog id="help" aria-labelledby="help-titulo">
+      <h2 id="help-titulo">Help and settings</h2>
+      <h3>Keyboard shortcuts</h3>
+      <table>
+        <caption class="visually-hidden">Keyboard shortcuts</caption>
+        <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Page Down</kbd> or <kbd>Space</kbd></td><td>Next slide</td></tr>
+          <tr><td><kbd>←</kbd>, <kbd>↑</kbd> or <kbd>Page Up</kbd></td><td>Previous slide</td></tr>
+          <tr><td><kbd>Home</kbd> and <kbd>End</kbd></td><td>First and last slide</td></tr>
+          <tr><td><kbd>N</kbd></td><td>Show or hide the notes</td></tr>
+          <tr><td><kbd>D</kbd></td><td>Document mode: all the slides on one page</td></tr>
+          <tr><td><kbd>T</kbd></td><td>Switch between the light and the dark theme</td></tr>
+          <tr><td><kbd>L</kbd></td><td>Switch language, staying on the same slide</td></tr>
+          <tr><td><kbd>?</kbd></td><td>Open this help</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <label>
+          <input type="checkbox" id="single-key-shortcuts" checked>
+          Turn on single-key shortcuts (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>T</kbd>, <kbd>L</kbd> and <kbd>?</kbd>)
+        </label>
+      </p>
+      <p class="muted">If you use a screen reader, the arrow keys may not reach the page in browse mode. Use the Previous and Next buttons, or document mode.</p>
+      <h3>Settings</h3>
+      <fieldset>
+        <legend>Theme</legend>
+        <label><input type="radio" name="theme" value="system" checked> System theme</label>
+        <label><input type="radio" name="theme" value="light"> Light</label>
+        <label><input type="radio" name="theme" value="dark"> Dark</label>
+      </fieldset>
+      <h3 id="languages-titulo">Language</h3>
+      <ul class="languages" id="languages" aria-labelledby="languages-titulo">
+        <li><a href="../" hreflang="es" lang="es">Español</a></li>
+        <li><a href="./" hreflang="en" lang="en" aria-current="true">English</a></li>
+        <li><a href="../ca/" hreflang="ca" lang="ca">Català</a></li>
+      </ul>
+      <form method="dialog">
+        <button type="submit">Close</button>
+      </form>
+    </dialog>
+  </body>
+</html>

@@ -1,5 +1,6 @@
-# Publishes the talk to GitHub Pages: the slides (deck/) at the root and the
-# browser version of the benchmark (bench/web) at /benchmark/.
+# Publishes the talk to GitHub Pages: the slides (deck/) at the root, in
+# Spanish, with /en/ and /ca/ for English and Catalan, and the browser
+# version of the benchmark (bench/web) at /benchmark/.
 name: Publish the slides and the browser benchmark
 
 on:
@@ -40,7 +41,7 @@ jobs:
       - name: Assemble the site (slides at the root, benchmark at /benchmark/)
         run: |
           mkdir -p site/benchmark
-          cp -R deck/index.html deck/deck.css deck/deck.js deck/assets site/
+          cp -R deck/index.html deck/deck.css deck/deck.js deck/assets deck/en deck/ca site/
           cp -R bench/web/dist/. site/benchmark/
       - uses: actions/upload-pages-artifact@v5
         with:

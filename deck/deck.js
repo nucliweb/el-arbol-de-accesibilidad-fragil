@@ -13,12 +13,50 @@
   const helpButton = document.querySelector('#open-help');
   const help = document.querySelector('#help');
   const shortcutsCheckbox = document.querySelector('#single-key-shortcuts');
+  const themeRadios = [...document.querySelectorAll('input[name="theme"]')];
+  const languageLinks = [...document.querySelectorAll('#languages a[hreflang]')];
   const baseTitle = document.title;
+
+  // Every message the script writes, in each language of the deck. The rest
+  // of the interface is in the HTML of each translation.
+  const MESSAGES = {
+    es: {
+      slide: (n, total, title) => `Diapositiva ${n} de ${total}: ${title}`,
+      slideCount: (total) => `${total} diapositivas`,
+      notesOn: 'Notas visibles',
+      notesOff: 'Notas ocultas',
+      documentMode: 'Modo documento: todas las diapositivas en una sola página',
+      presentationMode: 'Modo presentación.',
+      theme: { system: 'Tema del sistema', light: 'Tema claro', dark: 'Tema oscuro' },
+      language: 'Español.',
+    },
+    en: {
+      slide: (n, total, title) => `Slide ${n} of ${total}: ${title}`,
+      slideCount: (total) => `${total} slides`,
+      notesOn: 'Notes shown',
+      notesOff: 'Notes hidden',
+      documentMode: 'Document mode: every slide on a single page',
+      presentationMode: 'Presentation mode.',
+      theme: { system: 'System theme', light: 'Light theme', dark: 'Dark theme' },
+      language: 'English.',
+    },
+    ca: {
+      slide: (n, total, title) => `Diapositiva ${n} de ${total}: ${title}`,
+      slideCount: (total) => `${total} diapositives`,
+      notesOn: 'Notes visibles',
+      notesOff: 'Notes amagades',
+      documentMode: 'Mode document: totes les diapositives en una sola pàgina',
+      presentationMode: 'Mode presentació.',
+      theme: { system: 'Tema del sistema', light: 'Tema clar', dark: 'Tema fosc' },
+      language: 'Català.',
+    },
+  };
+  const t = MESSAGES[root.lang] ?? MESSAGES.es;
 
   // Preferences survive reloads. Storage can be unavailable (private modes),
   // in which case the defaults simply apply.
   const STORAGE_KEY = 'deck-preferences';
-  const preferences = { notes: false, documentMode: false, singleKeyShortcuts: true };
+  const preferences = { notes: false, documentMode: false, singleKeyShortcuts: true, theme: 'system' };
   try {
     Object.assign(preferences, JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {});
   } catch {}
@@ -50,6 +88,9 @@
   };
 
   const render = () => {
+    if (preferences.theme === 'system') delete root.dataset.theme;
+    else root.dataset.theme = preferences.theme;
+    for (const radio of themeRadios) radio.checked = radio.value === preferences.theme;
     root.dataset.notes = preferences.notes ? 'visible' : 'hidden';
     root.dataset.mode = preferences.documentMode ? 'document' : 'slides';
     notesButton.setAttribute('aria-pressed', String(preferences.notes));
@@ -61,7 +102,7 @@
     });
     prevButton.disabled = preferences.documentMode || current === 0;
     nextButton.disabled = preferences.documentMode || current === slides.length - 1;
-    counter.textContent = preferences.documentMode ? `${slides.length} diapositivas` : `${current + 1} / ${slides.length}`;
+    counter.textContent = preferences.documentMode ? t.slideCount(slides.length) : `${current + 1} / ${slides.length}`;
     updateScrollFocus();
   };
 
@@ -81,8 +122,11 @@
       heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
     }
-    if (announceIt) announce(`Diapositiva ${current + 1} de ${slides.length}: ${titleOf(slide)}`);
+    for (const link of languageLinks) link.hash = slide.id;
+    if (announceIt) announce(slideMessage());
   };
+
+  const slideMessage = () => t.slide(current + 1, slides.length, titleOf(slides[current]));
 
   const indexFromHash = () => {
     const id = decodeURIComponent(location.hash.slice(1));
@@ -96,7 +140,7 @@
     preferences.notes = !preferences.notes;
     savePreferences();
     render();
-    announce(preferences.notes ? 'Notas visibles' : 'Notas ocultas');
+    announce(preferences.notes ? t.notesOn : t.notesOff);
   };
 
   const toggleDocumentMode = () => {
@@ -105,10 +149,41 @@
     render();
     if (preferences.documentMode) {
       slides[current].scrollIntoView();
-      announce('Modo documento: todas las diapositivas en una sola página');
+      announce(t.documentMode);
     } else {
-      announce(`Modo presentación. Diapositiva ${current + 1} de ${slides.length}: ${titleOf(slides[current])}`);
+      announce(`${t.presentationMode} ${slideMessage()}`);
     }
+  };
+
+  const setTheme = (theme) => {
+    preferences.theme = theme;
+    savePreferences();
+    render();
+    announce(t.theme[theme]);
+  };
+
+  // T switches to the opposite of the theme on screen, whether it comes from
+  // the system or from an earlier choice.
+  const toggleTheme = () => {
+    const dark =
+      preferences.theme === 'dark' ||
+      (preferences.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+    setTheme(dark ? 'light' : 'dark');
+  };
+
+  // The language links in the settings, in their order, are the languages
+  // of the deck; L opens the next one at the same slide. The flag lets the
+  // new page announce where the person landed.
+  const LANGUAGE_SWITCH_KEY = 'deck-language-switch';
+  const markLanguageSwitch = () => {
+    try {
+      sessionStorage.setItem(LANGUAGE_SWITCH_KEY, '1');
+    } catch {}
+  };
+  const nextLanguage = () => {
+    const index = languageLinks.findIndex((link) => link.hreflang === root.lang);
+    markLanguageSwitch();
+    location.assign(languageLinks[(index + 1) % languageLinks.length].href);
   };
 
   let returnFocusTo = null;
@@ -154,6 +229,10 @@
       N: toggleNotes,
       d: toggleDocumentMode,
       D: toggleDocumentMode,
+      t: toggleTheme,
+      T: toggleTheme,
+      l: nextLanguage,
+      L: nextLanguage,
       '?': openHelp,
     };
     if (shortcuts[event.key]) {
@@ -167,12 +246,19 @@
   notesButton.addEventListener('click', toggleNotes);
   documentButton.addEventListener('click', toggleDocumentMode);
   helpButton.addEventListener('click', openHelp);
+  for (const radio of themeRadios) radio.addEventListener('change', () => setTheme(radio.value));
+  for (const link of languageLinks) link.addEventListener('click', markLanguageSwitch);
   shortcutsCheckbox.addEventListener('change', () => {
     preferences.singleKeyShortcuts = shortcutsCheckbox.checked;
     savePreferences();
   });
   window.addEventListener('hashchange', () => goTo(indexFromHash()));
   window.addEventListener('resize', updateScrollFocus);
+  // A lazy image can make a slide taller after it is shown; load does not
+  // bubble, so listen in the capture phase.
+  document.addEventListener('load', (event) => {
+    if (event.target instanceof HTMLImageElement) updateScrollFocus();
+  }, true);
 
   // Switch from document to presentation.
   root.classList.add('js');
@@ -180,4 +266,12 @@
   current = indexFromHash();
   render();
   goTo(current, { announceIt: false });
+
+  // After a language change the page reloads; say where the person landed.
+  let switchedLanguage = false;
+  try {
+    switchedLanguage = sessionStorage.getItem(LANGUAGE_SWITCH_KEY) === '1';
+    sessionStorage.removeItem(LANGUAGE_SWITCH_KEY);
+  } catch {}
+  if (switchedLanguage) announce(`${t.language} ${slideMessage()}`);
 })();

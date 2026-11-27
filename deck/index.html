@@ -6,6 +6,9 @@
     <title>El árbol de accesibilidad frágil</title>
     <meta name="description" content="Por qué el HTML semántico es clave para el rendimiento web. Charla de Joan León en A11y Conf 2026.">
     <link rel="icon" href="data:,">
+    <link rel="alternate" hreflang="es" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/">
+    <link rel="alternate" hreflang="en" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/en/">
+    <link rel="alternate" hreflang="ca" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/ca/">
     <link rel="stylesheet" href="deck.css">
     <script src="deck.js" defer></script>
   </head>
@@ -36,21 +39,23 @@
           <ul>
             <li><kbd>N</kbd> muestra u oculta las notas de cada diapositiva.</li>
             <li><kbd>D</kbd> muestra todas las diapositivas en una sola página.</li>
-            <li><kbd>?</kbd> abre la ayuda, donde puedes desactivar los atajos de una tecla.</li>
+            <li><kbd>T</kbd> cambia entre el tema claro y el oscuro.</li>
+            <li><kbd>L</kbd> cambia de idioma: español, <span lang="en">English</span>, <span lang="ca">català</span>.</li>
+            <li><kbd>?</kbd> abre la ayuda y los ajustes, donde puedes desactivar los atajos de una tecla.</li>
             <li>Las flechas, o los botones Anterior y Siguiente, cambian de diapositiva.</li>
           </ul>
         </div>
         <div class="notes">
           <h3 id="sigue-la-charla-notas">Notas</h3>
           <p>Antes de empezar: estas diapositivas están publicadas en la dirección que veis en pantalla, nucliweb punto github punto io, barra, el árbol de accesibilidad frágil, con guiones entre las palabras; también podéis escanear el código QR. Cada diapositiva tiene notas como estas, escritas para que podáis seguir la charla leyendo, con un lector de pantalla o más tarde, cuando la reviséis.</p>
-          <p>Pulsad la tecla N para ver las notas o la D para leer todas las diapositivas seguidas como un documento. Si los atajos de una tecla os molestan con vuestro lector de pantalla, se pueden desactivar desde la ayuda, con la tecla de interrogación.</p>
+          <p>Pulsad la tecla N para ver las notas o la D para leer todas las diapositivas seguidas como un documento. La T cambia entre el tema claro y el oscuro, y la L cambia de idioma: las diapositivas y las notas también están en inglés y en catalán. Si los atajos de una tecla os molestan con vuestro lector de pantalla, se pueden desactivar desde la ayuda y los ajustes, con la tecla de interrogación.</p>
           <p>Y gracias a la intérprete de lengua de signos por acompañarnos hoy.</p>
         </div>
       </section>
 
       <section class="slide" id="sobre-mi">
         <h2 id="sobre-mi-titulo">Joan León</h2>
-        <p>Consultor de rendimiento web en <a href="https://perf.reviews/">PerfReviews</a>.</p>
+        <p><span lang="en">Web Performance Artisan</span> en <a href="https://perf.reviews/">PerfReviews</a>.</p>
         <p><a href="https://joanleon.dev">joanleon.dev</a></p>
         <div class="notes">
           <h3 id="sobre-mi-notas">Notas</h3>
@@ -187,7 +192,7 @@
         <div class="notes">
           <h3 id="voiceover-se-cae-notas">Notas</h3>
           <p>Esta charla nace de una historia que contó Eric Bailey en 2024. Estaba auditando una app de formación médica construida con Material Design y, en una pantalla, VoiceOver dejaba de hablar. Reinició Safari, limpió la caché, reinició el ordenador: siempre igual. El culpable era un montón de radio buttons de Material inyectados en la página. Cuando los cambiaron por radios nativos, VoiceOver dejó de colgarse.</p>
-          <p>La frase original es: "prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening". Yo quería saber si eso sigue pasando hoy, en 2026, con los componentes que usamos ahora.</p>
+          <p>La frase original es: <q lang="en">prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. Yo quería saber si eso sigue pasando hoy, en 2026, con los componentes que usamos ahora.</p>
         </div>
       </section>
 
@@ -437,7 +442,7 @@ updateTabIndices() {
       <section class="slide" id="diez-anos">
         <h2 id="diez-anos-titulo">Diez años haciendo la misma pregunta</h2>
         <ol>
-          <li><strong>2016</strong>: Marcy Sutton: <q>you can't optimize what you can't measure</q>. Propone una métrica «Accessibility Tree Ready».</li>
+          <li><strong>2016</strong>: Marcy Sutton: <q lang="en">you can't optimize what you can't measure</q>. Propone una métrica «Accessibility Tree Ready».</li>
           <li><strong>2020</strong>: Scott Jehl pide en Lighthouse métricas que incluyan a la tecnología de asistencia (issue #11049). Sigue abierto.</li>
           <li><strong>2024</strong>: Eric Bailey lo vuelve a pedir en performance.now().</li>
           <li><strong>2026</strong>: aquí estamos.</li>
@@ -881,14 +886,15 @@ updateTabIndices() {
       <button type="button" id="next-slide">Siguiente</button>
       <button type="button" id="toggle-notes" aria-pressed="false">Notas</button>
       <button type="button" id="toggle-document" aria-pressed="false">Modo documento</button>
-      <button type="button" id="open-help">Ayuda</button>
+      <button type="button" id="open-help">Ayuda y ajustes</button>
       <span id="slide-counter"></span>
     </nav>
 
     <div id="announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
     <dialog id="help" aria-labelledby="help-titulo">
-      <h2 id="help-titulo">Ayuda</h2>
+      <h2 id="help-titulo">Ayuda y ajustes</h2>
+      <h3>Atajos de teclado</h3>
       <table>
         <caption class="visually-hidden">Atajos de teclado</caption>
         <thead><tr><th scope="col">Tecla</th><th scope="col">Acción</th></tr></thead>
@@ -898,16 +904,31 @@ updateTabIndices() {
           <tr><td><kbd>Inicio</kbd> y <kbd>Fin</kbd></td><td>Primera y última diapositiva</td></tr>
           <tr><td><kbd>N</kbd></td><td>Mostrar u ocultar las notas</td></tr>
           <tr><td><kbd>D</kbd></td><td>Modo documento: todas las diapositivas en una página</td></tr>
+          <tr><td><kbd>T</kbd></td><td>Cambiar entre el tema claro y el oscuro</td></tr>
+          <tr><td><kbd>L</kbd></td><td>Cambiar de idioma, en la misma diapositiva</td></tr>
           <tr><td><kbd>?</kbd></td><td>Abrir esta ayuda</td></tr>
         </tbody>
       </table>
       <p>
         <label>
           <input type="checkbox" id="single-key-shortcuts" checked>
-          Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd> y <kbd>?</kbd>)
+          Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>T</kbd>, <kbd>L</kbd> y <kbd>?</kbd>)
         </label>
       </p>
       <p class="muted">Si usas un lector de pantalla, puede que las flechas no lleguen a la página en modo exploración. Usa los botones Anterior y Siguiente, o el modo documento.</p>
+      <h3>Ajustes</h3>
+      <fieldset>
+        <legend>Tema</legend>
+        <label><input type="radio" name="theme" value="system" checked> El del sistema</label>
+        <label><input type="radio" name="theme" value="light"> Claro</label>
+        <label><input type="radio" name="theme" value="dark"> Oscuro</label>
+      </fieldset>
+      <h3 id="languages-titulo">Idioma</h3>
+      <ul class="languages" id="languages" aria-labelledby="languages-titulo">
+        <li><a href="./" hreflang="es" lang="es" aria-current="true">Español</a></li>
+        <li><a href="en/" hreflang="en" lang="en">English</a></li>
+        <li><a href="ca/" hreflang="ca" lang="ca">Català</a></li>
+      </ul>
       <form method="dialog">
         <button type="submit">Cerrar</button>
       </form>

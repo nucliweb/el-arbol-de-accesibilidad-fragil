@@ -50,8 +50,14 @@ a {
   color: var(--accent);
 }
 
-.language {
-  text-align: end;
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1.25rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
 }
 
 h1 {

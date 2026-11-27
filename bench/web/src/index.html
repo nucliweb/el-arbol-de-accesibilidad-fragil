@@ -10,7 +10,12 @@
   </head>
   <body>
     <header>
-      <p class="language"><a id="language-link" href="?lang=en" lang="en" hreflang="en">English</a></p>
+      <nav aria-label="Idioma" data-i18n-label="languageNav">
+        <ul class="languages" id="language-links">
+          <li><a href="?lang=en" lang="en" hreflang="en">English</a></li>
+          <li><a href="?lang=ca" lang="ca" hreflang="ca">Català</a></li>
+        </ul>
+      </nav>
     </header>
     <main>
       <h1 data-i18n="heading">¿Cuánto le cuesta a tu dispositivo el árbol de accesibilidad?</h1>
@@ -78,7 +83,7 @@
     </main>
     <footer>
       <p><span data-i18n="footer">Parte de la charla «El árbol de accesibilidad frágil» (A11y Conf 2026). Código, método y datos en</span> <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">GitHub</a>.</p>
-      <p><a href="../" data-i18n="slidesLink">Ver las diapositivas de la charla</a></p>
+      <p><a id="slides-link" href="https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/" data-i18n="slidesLink">Ver las diapositivas de la charla</a></p>
     </footer>
   </body>
 </html>

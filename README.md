@@ -16,14 +16,14 @@ Saldrás con argumentos y ejemplos concretos para defender el HTML semántico co
 
 | Carpeta | Qué contiene | Cómo empezar |
 | --- | --- | --- |
-| `deck/` | La presentación: HTML, CSS y un poco de JavaScript, sin build. Atajos de teclado en el panel de ayuda (tecla <kbd>?</kbd>). | Publicada en <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>. En local: `cd deck && npm start` y abre <http://127.0.0.1:8000> (necesita Python 3; sin él, cualquier servidor estático sirve). |
+| `deck/` | La presentación: HTML, CSS y un poco de JavaScript, sin build. En español (`index.html`), inglés (`en/`) y catalán (`ca/`), con tema claro y oscuro. Atajos de teclado y ajustes en el panel de ayuda (tecla <kbd>?</kbd>): <kbd>T</kbd> cambia el tema y <kbd>L</kbd> el idioma. | Publicada en <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/> ([English](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/en/), [català](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/ca/)). En local: `cd deck && npm start` y abre <http://127.0.0.1:8000> (necesita Python 3; sin él, cualquier servidor estático sirve). |
 | `bench/` | El banco de pruebas: las apps comparadas, los scripts de medición, los resultados y las trazas para DevTools. | Requisitos, instalación, comandos y dependencias en [bench/README.md](bench/README.md). |
 | `docs/` | Referencias de la charla y tareas pendientes. | — |
 
-Para ejecutar los tests de la presentación (navegación, notas, atajos y auditoría axe en cada diapositiva): `cd deck && npm ci && npm test`.
+Para ejecutar los tests de la presentación (navegación, notas, atajos, tema, idiomas y auditoría axe en cada diapositiva de cada idioma, con los dos temas): `cd deck && npm ci && npm test`.
 
 ## Participa en el benchmark
 
-Desde cualquier navegador, también en el móvil y con tu lector de pantalla: **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>**. Tarda unos 2 minutos y no hay que instalar nada.
+Desde cualquier navegador, también en el móvil y con tu lector de pantalla: **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>**, en español, inglés o catalán. Tarda unos 2 minutos y no hay que instalar nada.
 
 Si sabes usar la terminal, también puedes ejecutar el banco de pruebas completo en tu equipo: en Chrome con cualquier sistema operativo y, opcionalmente, con VoiceOver en macOS. La guía está en [bench/PARTICIPA.md](bench/PARTICIPA.md) ([in English](bench/PARTICIPATE.md)).
