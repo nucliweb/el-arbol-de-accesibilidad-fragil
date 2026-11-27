@@ -39,6 +39,8 @@
           <ul>
             <li><kbd>N</kbd> mostra o amaga les notes de cada diapositiva.</li>
             <li><kbd>D</kbd> mostra totes les diapositives en una sola pàgina.</li>
+            <li><kbd>G</kbd> canvia entre la vista visual i la de text.</li>
+            <li><kbd>H</kbd> amaga la barra de controls per deixar més espai.</li>
             <li><kbd>T</kbd> canvia entre el tema clar i el fosc.</li>
             <li><kbd>L</kbd> canvia d'idioma: <span lang="es">español</span>, <span lang="en">English</span>, català.</li>
             <li><kbd>?</kbd> obre l'ajuda i la configuració, on pots desactivar les dreceres d'una tecla.</li>
@@ -47,19 +49,41 @@
         </div>
         <div class="notes">
           <h3 id="sigue-la-charla-notas">Notes</h3>
-          <p>Abans de començar: aquestes diapositives estan publicades a l'adreça que veieu a la pantalla, nucliweb punt github punt io, barra, el-arbol-de-accesibilidad-fragil, amb guions entre les paraules; també podeu escanejar el codi QR. Les diapositives en català són a la mateixa adreça seguida de barra ca. Cada diapositiva té notes com aquestes, escrites perquè pugueu seguir la xerrada llegint, amb un lector de pantalla o més endavant, quan la reviseu.</p>
-          <p>Premeu la tecla N per veure les notes o la D per llegir totes les diapositives seguides com un document. La T canvia entre el tema clar i el fosc, i la L canvia d'idioma: les diapositives i les notes també estan en castellà i en anglès. Si les dreceres d'una tecla us molesten amb el vostre lector de pantalla, es poden desactivar des de l'ajuda i la configuració, amb la tecla de l'interrogant.</p>
+          <p>Abans de començar: aquestes diapositives estan publicades a l'adreça que veieu a la pantalla, nucliweb punt github punt io, barra, <span lang="es">el árbol de accesibilidad frágil</span>, que és el títol de la xerrada en castellà, amb guions entre les paraules. La versió en català és a la mateixa adreça seguida de barra ca. També podeu escanejar el codi QR. Cada diapositiva té notes com aquestes, escrites perquè pugueu seguir la xerrada llegint, amb un lector de pantalla o més endavant, quan la reviseu.</p>
+          <p>Premeu la tecla N per veure les notes o la D per llegir totes les diapositives seguides com un document. La G canvia entre la vista visual, amb gràfics i diagrames, i la vista de text, amb les taules i les llistes; la T canvia entre el tema clar i el fosc, i la L canvia d'idioma: les diapositives i les notes també estan en castellà i en anglès. Si les dreceres d'una tecla us molesten amb el vostre lector de pantalla, es poden desactivar des de l'ajuda i la configuració, amb la tecla de l'interrogant.</p>
           <p>I gràcies a la intèrpret de llengua de signes per acompanyar-nos avui.</p>
         </div>
       </section>
 
       <section class="slide" id="sobre-mi">
-        <h2 id="sobre-mi-titulo">Joan León</h2>
-        <p><span lang="en">Web Performance Artisan</span> a <a href="https://perf.reviews/">PerfReviews</a>.</p>
-        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
+        <div class="speaker">
+          <picture>
+            <source type="image/avif" srcset="../assets/joan-leon-400.avif 400w, ../assets/joan-leon-800.avif 800w" sizes="(min-width: 48rem) 24rem, 80vw">
+            <img class="speaker-photo" src="../assets/joan-leon-800.webp" srcset="../assets/joan-leon-400.webp 400w, ../assets/joan-leon-800.webp 800w" sizes="(min-width: 48rem) 24rem, 80vw"
+                 width="800" height="1200" decoding="async"
+                 alt="Joan León, en blanc i negre, amb ulleres i barba, mirant una pantalla al Performance Help Desk de performance.now()">
+          </picture>
+          <div class="speaker-info">
+            <h2 id="sobre-mi-titulo">Joan León</h2>
+            <p class="subtitle"><span lang="en">Web Performance Artisan</span></p>
+            <ul class="logos">
+              <li><a href="https://perf.reviews/"><picture><source type="image/avif" srcset="../assets/logo-perfreviews.avif"><img src="../assets/logo-perfreviews.webp" width="240" height="120" alt="Fundador de PerfReviews"></picture></a></li>
+              <li><a href="https://developers.google.com/profile/u/nucliweb"><picture><source type="image/avif" srcset="../assets/logo-gde.avif"><img src="../assets/logo-gde.webp" width="240" height="120" alt="Google Developer Expert en Web Technologies"></picture></a></li>
+              <li><a href="https://gdg.community.dev/gdg-girona/"><picture><source type="image/avif" srcset="../assets/logo-gdg-girona.avif"><img src="../assets/logo-gdg-girona.webp" width="240" height="120" alt="Organitzador del GDG Girona"></picture></a></li>
+              <li><a href="https://geekscat.org/"><picture><source type="image/avif" srcset="../assets/logo-geekscat.avif"><img src="../assets/logo-geekscat.webp" width="240" height="120" alt="Soci de GeeksCAT"></picture></a></li>
+            </ul>
+            <ul class="profile-links">
+              <li><a href="https://joanleon.dev">joanleon.dev</a></li>
+              <li><a href="https://www.linkedin.com/in/joanleon/">LinkedIn</a></li>
+              <li><a href="https://x.com/nucliweb">X</a></li>
+              <li><a href="https://bsky.app/profile/nucliweb.net">Bluesky</a></li>
+            </ul>
+          </div>
+        </div>
         <div class="notes">
           <h3 id="sobre-mi-notas">Notes</h3>
-          <p>Em dedico al rendiment web. A PerfReviews ajudem empreses perquè els seus webs carreguin i responguin més de pressa. L'any passat vaig fer aquí una lightning talk sobre aquest tema i em vaig quedar amb ganes d'explicar-ne molt més: aquesta és la versió llarga, amb dades noves.</p>
+          <p>Soc <span lang="en">Web Performance Artisan</span>: em dedico al rendiment web, i m'agrada fer-ho amb la cura d'un artesà. Vaig fundar PerfReviews, on ajudem empreses perquè els seus webs carreguin i responguin més de pressa. Soc Google Developer Expert en tecnologies web, organitzo el GDG Girona i soc soci de GeeksCAT. Em trobareu a joanleon.dev, LinkedIn, X i Bluesky.</p>
+          <p>L'any passat vaig fer aquí una lightning talk sobre aquest tema i em vaig quedar amb ganes d'explicar-ne molt més: aquesta és la versió llarga, amb dades noves.</p>
         </div>
       </section>
 
@@ -92,6 +116,7 @@
 
       <section class="slide" id="traza-renfe">
         <h2 id="traza-renfe-titulo">Així es veu un web que bloqueja el fil principal</h2>
+        <div class="demo" data-demo-url="https://trace.cafe/t/HJIoDNe5hJ">
         <figure>
           <picture>
             <source srcset="../assets/renfe-performance.avif" type="image/avif">
@@ -100,10 +125,13 @@
           </picture>
           <figcaption>Càrrega de renfe.com/es/es al panell Performance de Chrome DevTools.</figcaption>
         </figure>
+        <button type="button" class="demo-open" hidden data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la traça de renfe.com a trace.cafe">Obre la demo</button>
+        </div>
         <div class="notes">
           <h3 id="traza-renfe-notas">Notes</h3>
-          <p>Aquesta és una gravació del panell Performance de Chrome carregant el web de Renfe. A dalt hi ha la xarxa, amb moltes peticions en paral·lel. A sota, el fil principal del navegador: durant més de sis segons està ocupat gairebé sense descans, amb blocs grocs de JavaScript i morats d'estils i layout.</p>
+          <p>Aquest és un enregistrament del panell Performance de Chrome carregant el web de Renfe. A dalt hi ha la xarxa, amb moltes peticions en paral·lel. A sota, el fil principal del navegador: durant més de sis segons està ocupat gairebé sense descans, amb blocs grocs de JavaScript i morats d'estils i layout.</p>
           <p>Mentre el fil principal està ocupat, el navegador no pot respondre a ningú: ni a qui fa clic, ni a qui prem una tecla, ni a la tecnologia d'assistència que li pregunta què hi ha a la pantalla. L'element més gran de la pàgina no apareix fins gairebé als sis segons.</p>
+          <p>En directe obro una altra traça de la mateixa pàgina, enregistrada com la veuria un mòbil Android de gamma mitjana: un Pixel 7 emulat, amb una xarxa 4G lenta i la CPU quatre vegades més lenta. Aquí el contingut principal triga 10,7 segons a aparèixer, sobretot per la xarxa, i el fil principal treballa uns 2,5 segons repartits al llarg de la càrrega. La traça és al repositori, a bench/traces/demos, per obrir-la al panell Performance de DevTools.</p>
         </div>
       </section>
 
@@ -168,7 +196,7 @@
 
       <section class="slide" id="un-bosque">
         <h2 id="un-bosque-titulo">No és un arbre: és un bosc</h2>
-        <ul>
+        <ul class="cards">
           <li>Cada sistema operatiu té la seva API: NSAccessibility a macOS, UI Automation i IAccessible2 a Windows, AT-SPI a Linux.</li>
           <li>L'arbre viu fora de la pàgina: el navegador l'envia a un altre procés, i la tecnologia d'assistència el consulta a través del sistema.</li>
           <li>Si la pàgina canvia més ràpid del que l'arbre s'actualitza, el que sent la persona ja no coincideix amb el que hi ha a la pantalla.</li>
@@ -180,19 +208,133 @@
         </div>
       </section>
 
+      <section class="slide" id="arbol-desfasado">
+        <h2 id="arbol-desfasado-titulo">Quan l'arbre arriba tard</h2>
+        <ol class="frames" data-build="replace">
+          <li>
+            <h3>Pas 1 de 4: tot sincronitzat</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Pantalla</p>
+                <p><span class="screen-button">Afegeix al carro</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button&gt;
+  Afegeix al carro
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Arbre d'accessibilitat</p>
+                <pre><code>button "Afegeix al carro"</code></pre>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Lector de pantalla</p>
+                <p>«Afegeix al carro, botó»</p>
+              </div>
+            </div>
+            <p class="frame-summary">La pantalla, el DOM i l'arbre d'accessibilitat diuen el mateix.</p>
+          </li>
+          <li>
+            <h3>Pas 2 de 4: clic, i React torna a renderitzar</h3>
+            <div class="frame-panels">
+              <div class="panel is-changed">
+                <p class="panel-title">Pantalla</p>
+                <p><span class="screen-button is-disabled">Afegit</span></p>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Afegit
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Arbre d'accessibilitat</p>
+                <pre><code>button "Afegeix al carro"</code></pre>
+                <span class="panel-state">Desactualitzat</span>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Lector de pantalla</p>
+                <p>Encara no ha preguntat.</p>
+              </div>
+            </div>
+            <p class="frame-summary">El DOM ja ha canviat, però l'arbre d'accessibilitat s'actualitza en el cicle de renderització, i el fil principal continua ocupat amb el JavaScript de la nova renderització i amb els scripts de tracking: analítica, màrqueting i tècnics.</p>
+          </li>
+          <li>
+            <h3>Pas 3 de 4: el lector de pantalla pregunta</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Pantalla</p>
+                <p><span class="screen-button is-disabled">Afegit</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Afegit
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Arbre d'accessibilitat</p>
+                <pre><code>button "Afegeix al carro"</code></pre>
+                <span class="panel-state">Desactualitzat</span>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Lector de pantalla</p>
+                <p>«Afegeix al carro, botó»</p>
+              </div>
+            </div>
+            <p class="frame-summary">La persona sent un botó que ja no és a la pantalla, i el pot tornar a activar.</p>
+          </li>
+          <li>
+            <h3>Pas 4 de 4: el fil principal queda lliure</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Pantalla</p>
+                <p><span class="screen-button is-disabled">Afegit</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Afegit
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">Arbre d'accessibilitat</p>
+                <pre><code>button "Afegit" disabled</code></pre>
+                <span class="panel-state">Actualitzat</span>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">Lector de pantalla</p>
+                <p>«Afegit, botó, atenuat»</p>
+              </div>
+            </div>
+            <p class="frame-summary">La informació arriba, però tard: com més feina té el fil principal, més dura el desfasament.</p>
+          </li>
+        </ol>
+        <p class="tip"><strong>Consell:</strong> divideix les tasques llargues i cedeix el fil principal (<span lang="en">yield to main</span>) perquè el navegador pugui actualitzar la pantalla i l'arbre entremig. <a href="https://web.dev/articles/optimize-long-tasks">web.dev: <span lang="en">Optimize long tasks</span></a></p>
+        <div class="notes">
+          <h3 id="arbol-desfasado-notas">Notes</h3>
+          <p>Vegem aquesta última idea pas a pas, amb un botó «Afegeix al carro» fet amb React. En el primer pas tot està sincronitzat: la pantalla, el DOM, l'arbre d'accessibilitat i el que diu el lector de pantalla coincideixen.</p>
+          <p>En el segon pas, la persona activa el botó. React torna a renderitzar el component i el DOM ja diu «Afegit», amb el botó desactivat. Però l'arbre d'accessibilitat no s'actualitza en aquell instant: Chrome l'actualitza en el seu cicle de renderització, després dels estils, i l'envia al procés amb què parla el lector de pantalla. Mentre el fil principal continuï ocupat amb el JavaScript de la nova renderització, i amb els scripts de tracking que carreguen gairebé tots els webs reals, d'analítica, de màrqueting i tècnics, l'arbre que veu el lector és el d'abans.</p>
+          <p>En el tercer pas, el lector de pantalla pregunta què hi ha, i li responen amb l'arbre antic: «Afegeix al carro, botó». La persona sent un botó que ja no és a la pantalla, i el pot tornar a prémer.</p>
+          <p>En el quart pas, el fil principal queda lliure, l'arbre s'actualitza i el lector diu «Afegit, botó, atenuat». La informació arriba, però tard. És una simplificació: el desfasament sol durar mil·lisegons, però com més feina hi ha al fil principal, i com més nodes canvien a cada renderització, més dura. I si React substitueix el node en lloc d'actualitzar-lo, a més es perd el focus.</p>
+          <p>Un consell: dividir les tasques llargues i cedir el fil principal, el que es coneix com a <span lang="en">yield to main</span>, dona al navegador marge per actualitzar la pantalla i l'arbre d'accessibilitat entre una tasca i la següent. A la diapositiva hi enllaço l'article de web.dev sobre com optimitzar les tasques llargues.</p>
+        </div>
+      </section>
+
       <!-- ============================================== Un radio button (8 min) -->
 
       <section class="slide" id="voiceover-se-cae">
         <h2 id="voiceover-se-cae-titulo">El dia que VoiceOver va deixar de parlar</h2>
         <p>Una auditoria d'una aplicació de formació mèdica, feta amb Material Design. VoiceOver es penjava sempre a la mateixa pantalla: una llista enorme de radio buttons.</p>
         <blockquote>
-          <p>Prioritzar l'ergonomia del desenvolupament sense tenir en compte l'HTML que genera pot acabar molt malament.</p>
+          <p>Prioritzar la <span lang="en">Developer Experience</span> sense tenir en compte l'HTML que genera pot acabar en una molt mala <span lang="en">User Experience</span>.</p>
         </blockquote>
-        <p class="source">Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024 (traducció pròpia).</p>
+        <p class="source">Adaptada d'Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
         <div class="notes">
           <h3 id="voiceover-se-cae-notas">Notes</h3>
           <p>Aquesta xerrada neix d'una història que va explicar l'Eric Bailey el 2024. Estava auditant una aplicació de formació mèdica construïda amb Material Design i, en una pantalla, VoiceOver deixava de parlar. Va reiniciar Safari, va buidar la memòria cau, va reiniciar l'ordinador: sempre igual. El culpable era un munt de radio buttons de Material injectats a la pàgina. Quan els van canviar per radios natius, VoiceOver va deixar de penjar-se.</p>
-          <p>La frase original és: <q lang="en">prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. Jo volia saber si això encara passa avui, el 2026, amb els components que fem servir ara.</p>
+          <p>La frase original és: <q lang="en">prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. A la diapositiva l'he adaptada per posar cara a cara l'experiència de desenvolupament, <span lang="en">Developer Experience</span>, i l'experiència de les persones usuàries, <span lang="en">User Experience</span>. Jo volia saber si això encara passa avui, el 2026, amb els components que fem servir ara.</p>
         </div>
       </section>
 
@@ -202,7 +344,7 @@
   &lt;input type="radio" name="ringtone" id="moon-0" value="moon-0" checked&gt;
   &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;
 &lt;/div&gt;</code></pre>
-        <p>131 caràcters. 0 bytes de JavaScript.</p>
+        <p><mark>131</mark> caràcters. <mark>0</mark> bytes de JavaScript.</p>
         <div class="notes">
           <h3 id="radio-nativo-notas">Notes</h3>
           <p>He muntat un banc de proves amb sis implementacions del mateix grup de radio buttons: un títol, "<span lang="es">Ajustes</span>", que vol dir configuració, un grup, "<span lang="es">Tono de llamada</span>", és a dir, to de trucada, i N opcions. Tot el codi és al repositori de la xerrada. Cada implementació s'ha muntat seguint la seva documentació oficial.</p>
@@ -222,7 +364,7 @@
   &lt;/button&gt;
   &lt;label data-slot="field-label" for="moon-0" class="…"&gt;Calisto&lt;/label&gt;
 &lt;/div&gt;</code></pre>
-        <p>2.475 caràcters (les classes estan retallades amb «…»). 275 KB de JavaScript.</p>
+        <p><mark>2.475</mark> caràcters (les classes estan retallades amb «…»). <mark>275</mark> KB de JavaScript.</p>
         <div class="notes">
           <h3 id="radio-shadcn-notas">Notes</h3>
           <p>Ara shadcn/ui amb Radix, probablement el més utilitzat avui en projectes React. Aquí no hi ha cap input: hi ha un botó al qual es posa el rol radio amb ARIA, un estat aria-checked que manté JavaScript, i dos spans per dibuixar el cercle. He retallat les classes de Tailwind amb punts suspensius; sense retallar, una sola opció ocupa gairebé dos mil cinc-cents caràcters.</p>
@@ -243,7 +385,7 @@
   &lt;/span&gt;
   &lt;span class="MuiTypography-root … MuiFormControlLabel-label …"&gt;Calisto&lt;/span&gt;
 &lt;/label&gt;</code></pre>
-        <p>1.119 caràcters. 329 KB de JavaScript.</p>
+        <p><mark>1.119</mark> caràcters. <mark>329</mark> KB de JavaScript.</p>
         <div class="notes">
           <h3 id="radio-mui-notas">Notes</h3>
           <p>MUI sí que fa servir un input natiu, i això és bo per a l'accessibilitat. Però l'embolcalla amb spans, l'amaga visualment i dibuixa el cercle amb dos SVG. I cada vegada que fas clic, afegeix elements per a l'efecte ripple. Són 329 kilobytes de JavaScript per a la pàgina d'exemple.</p>
@@ -262,7 +404,7 @@
     &lt;/div&gt;
 &lt;/md-radio&gt;
 &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;</code></pre>
-        <p>821 caràcters, amb el seu shadow DOM. 41 KB de JavaScript.</p>
+        <p><mark>821</mark> caràcters, amb el seu shadow DOM. <mark>41</mark> KB de JavaScript.</p>
         <div class="notes">
           <h3 id="radio-material-web-notas">Notes</h3>
           <p>I Material Web, els web components de Google, successors de la biblioteca que va auditar l'Eric. Un element md-radio amb el seu propi shadow DOM, que conté dos web components més amb el seu shadow DOM, un SVG i diversos divs. El rol de radio el posa amb JavaScript a través d'ElementInternals. És el més lleuger en JavaScript, 41 kilobytes, però ja veureu que el pes no ho és tot.</p>
@@ -271,7 +413,7 @@
 
       <section class="slide" id="una-opcion">
         <h2 id="una-opcion-titulo">El que costa una opció</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Pàgina amb 1 radio button, mediana de 5 execucions</caption>
           <thead>
             <tr>
@@ -284,11 +426,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Natiu</th><td class="num">5</td><td class="num">7</td><td class="num">3</td><td class="num">5</td><td class="num">0 KB</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">9</td><td class="num">36</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">8</td><td class="num">33</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">12</td><td class="num">25</td><td class="num">7</td><td class="num">35</td><td class="num">329 KB</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">16</td><td class="num">36</td><td class="num">7</td><td class="num">45</td><td class="num">41 KB</td></tr>
+            <tr class="native"><th scope="row">Natiu</th><td class="num" data-value="5">5</td><td class="num" data-value="7">7</td><td class="num" data-value="3">3</td><td class="num" data-value="5">5</td><td class="num" data-value="0">0 KB</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="9">9</td><td class="num" data-value="36">36</td><td class="num" data-value="6">6</td><td class="num" data-value="304">304</td><td class="num" data-value="275">275 KB</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="8">8</td><td class="num" data-value="33">33</td><td class="num" data-value="6">6</td><td class="num" data-value="304">304</td><td class="num" data-value="275">275 KB</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="12">12</td><td class="num" data-value="25">25</td><td class="num" data-value="7">7</td><td class="num" data-value="35">35</td><td class="num" data-value="329">329 KB</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="16">16</td><td class="num" data-value="36">36</td><td class="num" data-value="7">7</td><td class="num" data-value="45">45</td><td class="num" data-value="41">41 KB</td></tr>
           </tbody>
         </table>
         <p class="source">Elements, atributs i profunditat del bloc mesurat, inclòs el shadow DOM. JavaScript descomprimit de tota la pàgina.</p>
@@ -301,7 +443,7 @@
 
       <section class="slide" id="cien-opciones">
         <h2 id="cien-opciones-titulo">Amb 100 opcions</h2>
-        <table>
+        <table data-chart="bars">
           <caption>100 radio buttons, CPU alentida ×4, mediana de 5 execucions</caption>
           <thead>
             <tr>
@@ -312,11 +454,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Natiu</th><td class="num">302</td><td class="num good">0 ms</td><td class="num good">&lt; 16 ms</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">405</td><td class="num">160 ms</td><td class="num">120 ms</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">305</td><td class="num">150 ms</td><td class="num">112 ms</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">903</td><td class="num">139 ms</td><td class="num bad">208 ms</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">1.402</td><td class="num bad">283 ms</td><td class="num">104 ms</td></tr>
+            <tr class="native"><th scope="row">Natiu</th><td class="num" data-value="302">302</td><td class="num good" data-value="0">0 ms</td><td class="num good" data-value="16">&lt; 16 ms</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="405">405</td><td class="num" data-value="160">160 ms</td><td class="num" data-value="120">120 ms</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="305">305</td><td class="num" data-value="150">150 ms</td><td class="num" data-value="112">112 ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="903">903</td><td class="num" data-value="139">139 ms</td><td class="num bad" data-value="208">208 ms</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="1402">1.402</td><td class="num bad" data-value="283">283 ms</td><td class="num" data-value="104">104 ms</td></tr>
           </tbody>
         </table>
         <p class="source">La resposta al clic es mesura amb Event Timing, que no registra esdeveniments de menys de 16 ms. Per sobre de 200 ms, l'INP deixa de considerar-se bo.</p>
@@ -329,18 +471,18 @@
 
       <section class="slide" id="trabajo-de-accesibilidad">
         <h2 id="trabajo-de-accesibilidad-titulo">Un clic, amb un lector de pantalla escoltant</h2>
-        <table class="bars">
+        <table data-chart="bars">
           <caption>Feina d'accessibilitat al fil principal després d'un clic. 1000 radio buttons, accessibilitat activada, CPU ×4</caption>
           <thead>
-            <tr><th scope="col">Implementació</th><th scope="col" class="num">Mil·lisegons</th><th scope="col"><span class="visually-hidden">Barra proporcional</span></th></tr>
+            <tr><th scope="col">Implementació</th><th scope="col" class="num">Mil·lisegons</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Natiu</th><td class="num">2,6</td><td class="bar-cell"><span class="bar" style="--value: 0.002"></span></td></tr>
-            <tr><th scope="row">Natiu amb estils</th><td class="num">3,2</td><td class="bar-cell"><span class="bar" style="--value: 0.003"></span></td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">185</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.156"></span></td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">446</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.375"></span></td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">453</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.381"></span></td></tr>
-            <tr><th scope="row">MUI</th><td class="num">1.189</td><td class="bar-cell"><span class="bar is-bad" style="--value: 1"></span></td></tr>
+            <tr class="native"><th scope="row">Natiu</th><td class="num" data-value="2.6">2,6</td></tr>
+            <tr class="native"><th scope="row">Natiu amb estils</th><td class="num" data-value="3.2">3,2</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num bad" data-value="185">185</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num bad" data-value="446">446</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num bad" data-value="453">453</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad" data-value="1189">1.189</td></tr>
           </tbody>
         </table>
         <p class="source">Chrome amb <code>--force-renderer-accessibility</code>, que és el que passa quan hi ha un lector de pantalla en marxa. Amb 100 opcions: 1 ms en el natiu davant de 36 ms en MUI.</p>
@@ -362,11 +504,11 @@ updateTabIndices() {
     if (sibling !== focusable) sibling.tabIndex = -1;
   }
 }</code></pre>
-        <table>
+        <table data-chart="columns" data-chart-by="row">
           <caption>Temps fins que la pàgina acaba de renderitzar (sense alentir la CPU)</caption>
           <thead><tr><th scope="col">Opcions</th><th scope="col" class="num">100</th><th scope="col" class="num">300</th><th scope="col" class="num">1000</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Temps</th><td class="num">0,1 s</td><td class="num">0,8 s</td><td class="num bad">24 s</td></tr>
+            <tr><th scope="row">Temps</th><td class="num" data-value="0.1">0,1 s</td><td class="num" data-value="0.8">0,8 s</td><td class="num bad" data-value="24">24 s</td></tr>
           </tbody>
         </table>
         <div class="notes">
@@ -395,12 +537,12 @@ updateTabIndices() {
 
       <section class="slide" id="matiz-tamano-dom">
         <h2 id="matiz-tamano-dom-titulo">Un matís honest: la mida del DOM també compta</h2>
-        <table>
+        <table data-chart="columns">
           <caption>Radio natiu amb 1000 opcions, CPU ×4</caption>
           <thead><tr><th scope="col">Accessibilitat</th><th scope="col" class="num">Temps de bloqueig en carregar</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Desactivada</th><td class="num">16 ms</td></tr>
-            <tr><th scope="row">Activada</th><td class="num bad">479 ms</td></tr>
+            <tr><th scope="row">Desactivada</th><td class="num" data-value="16">16 ms</td></tr>
+            <tr><th scope="row">Activada</th><td class="num bad" data-value="479">479 ms</td></tr>
           </tbody>
         </table>
         <p>L'HTML semàntic redueix el cost, però no l'elimina: <strong>menys DOM és menys feina per a l'arbre d'accessibilitat</strong>.</p>
@@ -413,7 +555,15 @@ updateTabIndices() {
 
       <section class="slide" id="chrome-accessibility">
         <h2 id="chrome-accessibility-titulo">L'interruptor que no veus</h2>
-        <table>
+        <p class="demo-badge">Demo en directe: <code>chrome://accessibility</code></p>
+        <figure class="visual-only">
+          <picture>
+            <source srcset="../assets/chrome-accessibility.avif" type="image/avif">
+            <img src="../assets/chrome-accessibility.webp" width="1600" height="846" loading="lazy" decoding="async"
+                 alt="La pàgina chrome://accessibility de Chrome. A Accessibility modes hi ha marcats Native accessibility API support, Web accessibility, Text metrics, Extended properties i Screen reader, i sense marcar HTML. A Active assistive technology hi diu VoiceOver, i que és un lector de pantalla.">
+          </picture>
+        </figure>
+        <table data-visual="hidden">
           <caption>Modes d'accessibilitat a <code>chrome://accessibility</code></caption>
           <thead><tr><th scope="col">Mode</th><th scope="col">Què hi afegeix Chrome</th></tr></thead>
           <tbody>
@@ -428,7 +578,7 @@ updateTabIndices() {
         <p>S'encenen sota demanda: un lector de pantalla demana l'arbre complet; un dictat, el bàsic; un gestor de contrasenyes, els formularis.</p>
         <div class="notes">
           <h3 id="chrome-accessibility-notas">Notes</h3>
-          <p>Si escriviu chrome://accessibility a la barra d'adreces, Chrome us ensenya una cosa que normalment no es veu: quines parts de l'arbre d'accessibilitat està construint i per què. Per defecte tot està apagat. Chrome ho encén sota demanda, quan una aplicació del sistema li pregunta per la pàgina.</p>
+          <p>Això ho ensenyo en directe, a Chrome. Si escriviu chrome://accessibility a la barra d'adreces, Chrome us ensenya una cosa que normalment no es veu: quines parts de l'arbre d'accessibilitat està construint i per què. Per defecte tot està apagat. Chrome ho encén sota demanda, quan una aplicació del sistema li pregunta per la pàgina.</p>
           <p>I no s'encén tot o res. Hi ha modes. Un connecta Chrome amb les API d'accessibilitat del sistema. Un altre construeix l'arbre de la pàgina, amb el rol, el nom, el valor, l'estat i la posició de cada node. D'altres hi afegeixen els salts de línia del text, les propietats esteses, com les regions vives o les cel·les de les taules, el que només necessita un lector de pantalla, o tots els atributs HTML.</p>
           <p>Segons el codi de Chromium, un lector de pantalla activa el mode complet; una eina de dictat, el bàsic; i un gestor de contrasenyes, un mode que només construeix els formularis. És a dir, el cost de l'arbre d'accessibilitat no el paguen només les persones que fan servir un lector de pantalla.</p>
           <p>Ho vaig descobrir per accident preparant aquesta xerrada. Després de les proves amb VoiceOver, macOS es va quedar marcant VoiceOver com a actiu tot i que estava apagat. Aquesta pàgina deia «tecnologia d'assistència activa: VoiceOver», i Chrome construïa l'arbre complet a totes les pàgines que obria. Me'n vaig adonar perquè el banc de proves, amb l'accessibilitat desactivada, va començar a mesurar feina d'accessibilitat: entre 30 i 50 mil·lisegons més a cada càrrega del web de viatges, amb la CPU alentida com la d'un mòbil modest. Aquest és l'impost que paga, a cada pàgina, qui fa servir tecnologia d'assistència. Com més lleugera sigui la pàgina, més petit és l'impost.</p>
@@ -441,11 +591,11 @@ updateTabIndices() {
 
       <section class="slide" id="diez-anos">
         <h2 id="diez-anos-titulo">Deu anys fent la mateixa pregunta</h2>
-        <ol>
-          <li><strong>2016</strong>: Marcy Sutton: <q lang="en">you can't optimize what you can't measure</q>. Proposa una mètrica «Accessibility Tree Ready».</li>
-          <li><strong>2020</strong>: Scott Jehl demana a Lighthouse mètriques que incloguin la tecnologia d'assistència (issue #11049). Continua obert.</li>
-          <li><strong>2024</strong>: Eric Bailey ho torna a demanar a performance.now().</li>
-          <li><strong>2026</strong>: aquí som.</li>
+        <ol class="timeline" data-build="cumulative">
+          <li><strong>2016</strong><span class="timeline-sep">: </span>Marcy Sutton: <q lang="en">you can't optimize what you can't measure</q>. Proposa una mètrica «Accessibility Tree Ready».</li>
+          <li><strong>2020</strong><span class="timeline-sep">: </span>Scott Jehl demana a Lighthouse mètriques que incloguin la tecnologia d'assistència (issue #11049). Continua obert.</li>
+          <li><strong>2024</strong><span class="timeline-sep">: </span>Eric Bailey ho torna a demanar a performance.now().</li>
+          <li><strong>2026</strong><span class="timeline-sep">: </span>aquí som.</li>
         </ol>
         <div class="notes">
           <h3 id="diez-anos-notas">Notes</h3>
@@ -474,28 +624,28 @@ updateTabIndices() {
         <ul>
           <li>La feina d'accessibilitat creix amb la quantitat i la complexitat del DOM.</li>
           <li>Després d'un clic, amb 1000 opcions: <strong>2,6 ms</strong> amb el radio natiu davant de <strong>185–1.189 ms</strong> amb components de framework.</li>
-          <li>Aquesta feina passa al fil principal: competeix amb la resposta a la interacció.</li>
+          <li>Aquesta feina passa al fil principal: competeix amb la resposta a la interacció i amb el tracking.</li>
         </ul>
         <div class="notes">
           <h3 id="resultado-navegador-notas">Notes</h3>
-          <p>Pel que fa al navegador, la hipòtesi es confirma: la feina d'accessibilitat creix amb la mida i la complexitat del DOM, i amb els components de framework és entre setanta i quatre-centes cinquanta vegades més gran després d'un mateix clic. I passa al fil principal, el mateix que ha de respondre a la persona.</p>
+          <p>Pel que fa al navegador, la hipòtesi es confirma: la feina d'accessibilitat creix amb la mida i la complexitat del DOM, i amb els components de framework és entre setanta i quatre-centes cinquanta vegades més gran després d'un mateix clic. I passa al fil principal, el mateix que ha de respondre a la persona i el mateix en què s'executen els scripts de tracking i de tercers. Les meves proves no els inclouen, però en un producte real gairebé sempre hi són, així que la competència pel fil principal sol ser més gran.</p>
         </div>
       </section>
 
       <section class="slide" id="resultado-voiceover">
         <h2 id="resultado-voiceover-titulo">A VoiceOver: també se sent</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Temps des que es prem la fletxa fins que VoiceOver anuncia l'opció (mediana, ms). Chrome amb CPU ×4</caption>
           <thead>
             <tr><th scope="col">Implementació</th><th scope="col" class="num">10 opcions</th><th scope="col" class="num">100 opcions</th><th scope="col" class="num">1000 opcions</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Natiu</th><td class="num good">33</td><td class="num good">64</td><td class="num">436</td></tr>
-            <tr><th scope="row">Natiu amb estils</th><td class="num good">32</td><td class="num good">67</td><td class="num">437</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">47</td><td class="num">106</td><td class="num bad">1.063</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">47</td><td class="num">99</td><td class="num bad">859</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">57</td><td class="num bad">171</td><td class="num bad">1.973</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">45</td><td class="num">79</td><td class="num bad">1.068</td></tr>
+            <tr class="native"><th scope="row">Natiu</th><td class="num good" data-value="33">33</td><td class="num good" data-value="64">64</td><td class="num" data-value="436">436</td></tr>
+            <tr class="native"><th scope="row">Natiu amb estils</th><td class="num good" data-value="32">32</td><td class="num good" data-value="67">67</td><td class="num" data-value="437">437</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="47">47</td><td class="num" data-value="106">106</td><td class="num bad" data-value="1063">1.063</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="47">47</td><td class="num" data-value="99">99</td><td class="num bad" data-value="859">859</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="57">57</td><td class="num bad" data-value="171">171</td><td class="num bad" data-value="1973">1.973</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="45">45</td><td class="num" data-value="79">79</td><td class="num bad" data-value="1068">1.068</td></tr>
           </tbody>
         </table>
         <p>Amb 1000 opcions, MUI triga <strong>gairebé 2 s</strong> per opció: 4,5 vegades el natiu.</p>
@@ -509,12 +659,12 @@ updateTabIndices() {
 
       <section class="slide" id="travel-escenario">
         <h2 id="travel-escenario-titulo">Un web de veritat: A11yConf Travel</h2>
-        <table>
+        <table data-chart="bars">
           <caption>La mateixa cerca d'hotels, amb el mateix contingut i els mateixos noms accessibles</caption>
           <thead><tr><th scope="col">Versió</th><th scope="col">Construïda amb</th><th scope="col" class="num">JavaScript</th><th scope="col" class="num">Elements</th><th scope="col" class="num">Selectors CSS</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Nativa</th><td>HTML: <code>select</code>, dates, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good">10,6 KB</td><td class="num good">758</td><td class="num good">68</td></tr>
-            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad">785 KB</td><td class="num bad">2.041</td><td class="num bad">626</td></tr>
+            <tr class="native"><th scope="row">Nativa</th><td>HTML: <code>select</code>, dates, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good" data-value="10.6">10,6 KB</td><td class="num good" data-value="758">758</td><td class="num good" data-value="68">68</td></tr>
+            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad" data-value="785">785 KB</td><td class="num bad" data-value="2041">2.041</td><td class="num bad" data-value="626">626</td></tr>
           </tbody>
         </table>
         <p>La tasca: 14 passos amb teclat. Filtrar per estrelles, preu i règim, obrir un hotel, recórrer-ne les habitacions i tancar.</p>
@@ -528,38 +678,43 @@ updateTabIndices() {
 
       <section class="slide" id="travel-navegador">
         <h2 id="travel-navegador-titulo">Al navegador: l'arbre costa el mateix; el que l'envolta, no</h2>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>La tasca de 14 passos amb l'accessibilitat activada. Mediana de 5 execucions, CPU ×4</caption>
-          <thead><tr><th scope="col">Mesura</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Mesura</th><th scope="col" class="num native">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Fil principal</th><td class="num good">255 ms</td><td class="num bad">991 ms</td></tr>
-            <tr><th scope="row">JavaScript</th><td class="num good">79 ms</td><td class="num bad">464 ms</td></tr>
-            <tr><th scope="row">Feina d'accessibilitat</th><td class="num">56 ms</td><td class="num">57 ms</td></tr>
-            <tr><th scope="row">Interacció més lenta</th><td class="num good">24 ms</td><td class="num bad">72 ms</td></tr>
-            <tr><th scope="row">LCP en carregar</th><td class="num good">176 ms</td><td class="num bad">484 ms</td></tr>
+            <tr><th scope="row">Fil principal</th><td class="num good" data-value="255">255 ms</td><td class="num bad" data-value="991">991 ms</td></tr>
+            <tr><th scope="row">JavaScript</th><td class="num good" data-value="79">79 ms</td><td class="num bad" data-value="464">464 ms</td></tr>
+            <tr><th scope="row">Feina d'accessibilitat</th><td class="num" data-value="56">56 ms</td><td class="num" data-value="57">57 ms</td></tr>
+            <tr><th scope="row">Interacció més lenta</th><td class="num good" data-value="24">24 ms</td><td class="num bad" data-value="72">72 ms</td></tr>
+            <tr><th scope="row">LCP en carregar</th><td class="num good" data-value="176">176 ms</td><td class="num bad" data-value="484">484 ms</td></tr>
           </tbody>
         </table>
         <p class="source">Les traces, per obrir-les a DevTools, són al repositori: <code>bench/traces/travel/</code>.</p>
+        <div class="demo">
+          <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/VoRFo6QOSY" data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la tasca de 14 passos de la versió legacy a trace.cafe">Obre la demo: legacy</button>
+          <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/XLPHjpSGiI" data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la tasca de 14 passos de la versió nativa a trace.cafe">Obre la demo: nativa</button>
+        </div>
         <div class="notes">
           <h3 id="travel-navegador-notas">Notes</h3>
           <p>Aquí ve un matís important. Amb una pàgina realista, la feina de l'arbre d'accessibilitat és pràcticament la mateixa en les dues versions: 56 mil·lisegons davant de 57 en tota la tasca. Els nodes que arriben al lector de pantalla són gairebé els mateixos, uns 1.480 a cada versió; els més de 500 nodes de més de la legacy són nodes ignorats, que no arriben mai al lector de pantalla.</p>
           <p>El que canvia és tot el que passa al voltant de cada pulsació. La versió legacy ocupa el fil principal gairebé quatre vegades més temps, executa gairebé sis vegades més JavaScript, i la seva interacció més lenta triga 72 mil·lisegons davant de 24. I la pàgina triga gairebé el triple a pintar el contingut principal.</p>
           <p>Les traces de cada versió estan publicades al repositori. Cada pas de la tasca apareix amb el seu nom a la pista Timings del panell Performance, i el resum en text del repositori té les mateixes xifres pas a pas.</p>
+          <p>En directe obro les dues traces a trace.cafe, una execució de cada versió amb l'accessibilitat activada. Hi ha tres coses en què cal fixar-se. Primera, el pas 2, marcar «<span lang="es">4 estrellas</span>»: a la legacy, un sol gestor de clic de React ocupa 49 mil·lisegons dins d'una tasca de 54, i la interacció triga 75 mil·lisegons; a la nativa, 21. Segona, el pas 11, obrir el detall de l'hotel: 101 mil·lisegons de fil principal a la legacy davant de 21 a la nativa, gairebé tot JavaScript un altre cop. Tercera, una cosa que no apareix a l'INP: cada Tab de la legacy costa entre 30 i 44 mil·lisegons de fil principal repartits en un centenar de tasques, pels gestors de focus i l'efecte ripple, davant d'uns 5 mil·lisegons i una vintena de tasques a la nativa. Cap d'aquestes tasques no és llarga, així que cap mètrica no la marca, però es repeteix a cada pulsació. La feina d'accessibilitat, en canvi, és semblant en totes dues, i al pas 2 fins i tot una mica més gran a la nativa, perquè actualitza la llista de debò al DOM.</p>
         </div>
       </section>
 
       <section class="slide" id="travel-voiceover">
         <h2 id="travel-voiceover-titulo">A VoiceOver: més lenta en els 14 passos</h2>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>Des de la pulsació fins que VoiceOver respon. Mediana de 5 execucions, CPU ×4</caption>
-          <thead><tr><th scope="col">Pas</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Pas</th><th scope="col" class="num native">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Tab entre els filtres d'estrelles</th><td class="num good">18–21&nbsp;ms</td><td class="num">36–40&nbsp;ms</td></tr>
-            <tr><th scope="row">Marcar 4 estrelles fins a sentir «<span lang="es">6 hoteles encontrados</span>»</th><td class="num">162&nbsp;ms</td><td class="num">200&nbsp;ms</td></tr>
-            <tr><th scope="row">Canviar el règim amb les fletxes</th><td class="num good">50–52&nbsp;ms</td><td class="num">81–92&nbsp;ms</td></tr>
-            <tr><th scope="row">Obrir el detall de l'hotel</th><td class="num good">70&nbsp;ms</td><td class="num">93&nbsp;ms</td></tr>
-            <tr><th scope="row">Tancar amb Escape i tornar al botó</th><td class="num good">59&nbsp;ms</td><td class="num">88&nbsp;ms</td></tr>
-            <tr><th scope="row">La tasca completa</th><td class="num good">648&nbsp;ms</td><td class="num bad">959&nbsp;ms</td></tr>
+            <tr><th scope="row">Tab entre els filtres d'estrelles</th><td class="num good" data-value="21">18–21&nbsp;ms</td><td class="num" data-value="40">36–40&nbsp;ms</td></tr>
+            <tr><th scope="row">Marcar 4 estrelles fins a sentir «<span lang="es">6 hoteles encontrados</span>»</th><td class="num" data-value="162">162&nbsp;ms</td><td class="num" data-value="200">200&nbsp;ms</td></tr>
+            <tr><th scope="row">Canviar el règim amb les fletxes</th><td class="num good" data-value="52">50–52&nbsp;ms</td><td class="num" data-value="92">81–92&nbsp;ms</td></tr>
+            <tr><th scope="row">Obrir el detall de l'hotel</th><td class="num good" data-value="70">70&nbsp;ms</td><td class="num" data-value="93">93&nbsp;ms</td></tr>
+            <tr><th scope="row">Tancar amb Escape i tornar al botó</th><td class="num good" data-value="59">59&nbsp;ms</td><td class="num" data-value="88">88&nbsp;ms</td></tr>
+            <tr><th scope="row">La tasca completa</th><td class="num good" data-value="648">648&nbsp;ms</td><td class="num bad" data-value="959">959&nbsp;ms</td></tr>
           </tbody>
         </table>
         <p>No són els 2 segons dels 1000 radios: són desenes de mil·lisegons a <strong>cada</strong> pulsació.</p>
@@ -574,13 +729,13 @@ updateTabIndices() {
       <section class="slide" id="travel-ripple">
         <h2 id="travel-ripple-titulo">El que només es veu a la traça</h2>
         <p>Amb el focus del teclat en un control, MUI anima un «ripple» en bucle infinit, també amb <code>prefers-reduced-motion: reduce</code>.</p>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>Focus de teclat a «<span lang="es">4 estrellas</span>» i 5 segons sense tocar res. Mediana de 3 execucions, CPU ×4</caption>
-          <thead><tr><th scope="col">Mesura</th><th scope="col" class="num">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Mesura</th><th scope="col" class="num native">Nativa</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Frames generats</th><td class="num good">30</td><td class="num bad">299</td></tr>
-            <tr><th scope="row">Feina de la GPU</th><td class="num good">10&nbsp;ms</td><td class="num bad">74&nbsp;ms</td></tr>
-            <tr><th scope="row">Tasques del compositor</th><td class="num good">2</td><td class="num bad">1.719</td></tr>
+            <tr><th scope="row">Frames generats</th><td class="num good" data-value="30">30</td><td class="num bad" data-value="299">299</td></tr>
+            <tr><th scope="row">Feina de la GPU</th><td class="num good" data-value="10">10&nbsp;ms</td><td class="num bad" data-value="74">74&nbsp;ms</td></tr>
+            <tr><th scope="row">Tasques del compositor</th><td class="num good" data-value="2">2</td><td class="num bad" data-value="1719">1.719</td></tr>
           </tbody>
         </table>
         <p class="source">Traça per a DevTools: <code>bench/traces/focus-idle/</code>. A la legacy, la pista Frames és una banda contínua.</p>
@@ -595,6 +750,7 @@ updateTabIndices() {
 
       <section class="slide" id="travel-ripple-devtools">
         <h2 id="travel-ripple-devtools-titulo">La mateixa traça, a DevTools</h2>
+        <div class="demo" data-demo-url="">
         <figure class="trace-strips">
           <p class="trace-label">Legacy</p>
           <picture>
@@ -610,24 +766,54 @@ updateTabIndices() {
           </picture>
           <figcaption>Pistes Frames i Timings del panell Performance de Chrome DevTools, amb el focus de teclat a «<span lang="es">4 estrellas</span>» i 5 segons sense tocar res. Traça: <code>bench/traces/focus-idle/</code>.</figcaption>
         </figure>
+        <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/ihrNliptjB" data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la traça de la versió legacy a trace.cafe">Obre la demo: legacy</button>
+        <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/J5PZ7aWCIg" data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la traça de la versió nativa a trace.cafe">Obre la demo: nativa</button>
+        </div>
         <div class="notes">
           <h3 id="travel-ripple-devtools-notas">Notes</h3>
           <p>A les dues captures del panell Performance de DevTools es veu la diferència. A dalt, la versió legacy: a partir d'1,6 segons aproximadament, la pista Frames s'omple de frames, l'un darrere l'altre, fins al final. A baix, la versió nativa: la pista Frames és buida durant els cinc segons.</p>
           <p>Les dues traces són al repositori, a la carpeta bench/traces/focus-idle, i s'obren arrossegant-les al panell Performance de Chrome DevTools.</p>
+          <p>En directe les obro a trace.cafe. A la legacy, la pista Frames no s'atura: 309 frames en cinc segons sense tocar res. A la nativa, 34.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="demo-mui">
+        <h2 id="demo-mui-titulo">En un web real: la documentació de MUI</h2>
+        <div class="demo" data-demo-url="https://trace.cafe/t/rU5JSwqmGV">
+          <figure>
+            <picture>
+              <source srcset="../assets/mui-docs-edit-in-chat.avif" type="image/avif">
+              <img src="../assets/mui-docs-edit-in-chat.webp" width="660" height="380" loading="lazy" decoding="async"
+                   alt="Exemple «Radio group» de la documentació de MUI: un grup de radio buttons «Gender» i, a sota, la barra de l'exemple amb el botó «Edit in Chat» a l'esquerra.">
+            </picture>
+            <figcaption>mui.com/material-ui/react-radio-button: cada exemple té el seu botó «<span lang="en">Edit in Chat</span>».</figcaption>
+          </figure>
+          <button type="button" class="demo-open" hidden data-close-label="Tanca la demo" data-fullscreen-label="Pantalla completa" data-frame-title="Demo en directe: la traça de mui.com a trace.cafe">Obre la demo</button>
+        </div>
+        <ul>
+          <li>20 botons «<span lang="en">Edit in Chat</span>» amb un efecte de brillantor en bucle infinit, també amb <code>prefers-reduced-motion: reduce</code>.</li>
+          <li>5 segons sense tocar res, CPU ×4: <strong>uns 580 frames</strong>, <strong>1,3 s</strong> de fil principal i 14.840 operacions de pintat.</li>
+        </ul>
+        <p class="source">Traça per a DevTools: <code>bench/traces/demos/</code>.</p>
+        <div class="notes">
+          <h3 id="demo-mui-notas">Notes</h3>
+          <p>Això passa fora de la meva maqueta? Vaig buscar un web real fet amb React i MUI, i el més evident és la mateixa documentació de MUI. A la pàgina dels radio buttons, cada exemple té un botó «<span lang="en">Edit in Chat</span>» amb una brillantor que recorre el botó cada dos segons, sense parar. N'hi ha vint a la pàgina.</p>
+          <p>Vaig enregistrar la pàgina cinc segons sense tocar res, amb la CPU quatre vegades més lenta i amb la preferència de reduir el moviment activada. Chrome va generar uns 580 frames, el fil principal va treballar 1,3 segons i va pintar gairebé quinze mil vegades. La brillantor anima la posició del fons, que no es pot delegar al compositor, així que cada frame es torna a pintar al fil principal. I no respecta la petició de reduir el moviment.</p>
+          <p>En aquesta mateixa documentació, el ripple del focus de teclat no apareix quan es demana reduir el moviment, tot i que al meu web de viatges, amb la mateixa versió de MUI, sí que apareix: la documentació en té cura per al ripple i no per a la brillantor. En directe obro la traça al panell Performance; també és al repositori, a bench/traces/demos.</p>
         </div>
       </section>
 
       <section class="slide" id="iphone">
         <h2 id="iphone-titulo">Un iPhone 16 Pro i 1000 radio buttons</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Temps que Safari queda bloquejat, mesurat al mateix iPhone amb el benchmark al navegador</caption>
           <thead>
             <tr><th scope="col">Implementació</th><th scope="col" class="num">Clic, sense VoiceOver</th><th scope="col" class="num">Clic, amb VoiceOver</th><th scope="col" class="num">Càrrega, sense VoiceOver</th><th scope="col" class="num">Càrrega, amb VoiceOver</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">HTML natiu</th><td class="num good">0&nbsp;ms</td><td class="num good">0&nbsp;ms</td><td class="num good">43&nbsp;ms</td><td class="num good">83&nbsp;ms</td></tr>
-            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num">68–74&nbsp;ms</td><td class="num">63–68&nbsp;ms</td><td class="num">214&nbsp;ms</td><td class="num">228&nbsp;ms</td></tr>
-            <tr><th scope="row">MUI</th><td class="num bad">4,8–5,0&nbsp;s</td><td class="num bad">5,1&nbsp;s</td><td class="num">556&nbsp;ms</td><td class="num">552&nbsp;ms</td></tr>
+            <tr class="native"><th scope="row">HTML natiu</th><td class="num good" data-value="0">0&nbsp;ms</td><td class="num good" data-value="0">0&nbsp;ms</td><td class="num good" data-value="43">43&nbsp;ms</td><td class="num good" data-value="83">83&nbsp;ms</td></tr>
+            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num" data-value="74">68–74&nbsp;ms</td><td class="num" data-value="68">63–68&nbsp;ms</td><td class="num" data-value="214">214&nbsp;ms</td><td class="num" data-value="228">228&nbsp;ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad" data-value="5000">4,8–5,0&nbsp;s</td><td class="num bad" data-value="5100">5,1&nbsp;s</td><td class="num" data-value="556">556&nbsp;ms</td><td class="num" data-value="552">552&nbsp;ms</td></tr>
           </tbody>
         </table>
         <p>Amb MUI, <strong>cada clic congela Safari 5 segons</strong>, amb VoiceOver o sense. Amb HTML natiu, 0.</p>
@@ -642,7 +828,7 @@ updateTabIndices() {
 
       <section class="slide" id="limitaciones">
         <h2 id="limitaciones-titulo">El que aquestes dades no diuen</h2>
-        <ul>
+        <ul data-build="cumulative">
           <li>Només Chrome i només VoiceOver a macOS: ni NVDA, ni JAWS, ni TalkBack, ni línies braille.</li>
           <li>Un portàtil ràpid amb la CPU alentida no és un mòbil de gamma baixa.</li>
           <li>Servidor local, sense limitar la xarxa.</li>
@@ -661,12 +847,12 @@ updateTabIndices() {
 
       <section class="slide" id="el-mismo-patron">
         <h2 id="el-mismo-patron-titulo">El mateix patró, dècada rere dècada</h2>
-        <ol>
-          <li><strong>2016</strong>, Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
-          <li><strong>2024</strong>, Material Components Web: el radio que va penjar VoiceOver.</li>
-          <li><strong>2026</strong>, shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+        <ol class="timeline" data-build="cumulative">
+          <li><strong>2016</strong><span class="timeline-sep">, </span>Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
+          <li><strong>2024</strong><span class="timeline-sep">, </span>Material Components Web: el radio que va penjar VoiceOver.</li>
+          <li><strong>2026</strong><span class="timeline-sep">, </span>shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+          <li><strong>Ara</strong><span class="timeline-sep">: </span>ho escriu una IA.</li>
         </ol>
-        <p>I ara ho escriu una IA.</p>
         <div class="notes">
           <h3 id="el-mismo-patron-notas">Notes</h3>
           <p>Fixeu-vos en el patró. El 2016, l'exemple de la Marcy Sutton era un checkbox d'Angular Material, un element propi amb el rol i el tabindex posats a mà. El 2024, el radio de Material que va penjar VoiceOver. El 2026, el radio de shadcn: un botó amb rol de radio.</p>
@@ -694,12 +880,12 @@ updateTabIndices() {
 
       <section class="slide" id="carpeta-vacia">
         <h2 id="carpeta-vacia-titulo">En una carpeta buida: HTML semàntic</h2>
-        <table>
+        <table data-chart="dots" data-max="3">
           <caption>Carpeta buida, sense indicar tecnologia</caption>
           <thead><tr><th scope="col">Agent</th><th scope="col">Què va generar</th><th scope="col" class="num">Radio natiu</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Claude Code</th><td>Un únic <code>index.html</code></td><td class="num good">3 de 3</td></tr>
-            <tr><th scope="row">Antigravity</th><td>HTML, CSS i JavaScript sense framework</td><td class="num good">3 de 3</td></tr>
+            <tr><th scope="row">Claude Code</th><td>Un únic <code>index.html</code></td><td class="num good" data-value="3">3 de 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td>HTML, CSS i JavaScript sense framework</td><td class="num good" data-value="3">3 de 3</td></tr>
           </tbody>
         </table>
         <p>Amb <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, enllaç per saltar al contingut i regió <code>aria-live</code>.</p>
@@ -712,12 +898,12 @@ updateTabIndices() {
 
       <section class="slide" id="proyecto-react">
         <h2 id="proyecto-react-titulo">En un projecte React amb shadcn: el patró del projecte</h2>
-        <table>
+        <table data-chart="dots" data-max="3">
           <caption>Projecte React + shadcn/ui existent, sense el component radio-group instal·lat</caption>
           <thead><tr><th scope="col">Agent</th><th scope="col" class="num"><code>RadioGroup</code> de Radix</th><th scope="col" class="num">Radio natiu</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Claude Code</th><td class="num bad">3 de 3</td><td class="num">0 de 3</td></tr>
-            <tr><th scope="row">Antigravity</th><td class="num bad">3 de 3</td><td class="num">0 de 3</td></tr>
+            <tr><th scope="row">Claude Code</th><td class="num bad" data-value="3">3 de 3</td><td class="num" data-value="0">0 de 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td class="num bad" data-value="3">3 de 3</td><td class="num" data-value="0">0 de 3</td></tr>
           </tbody>
         </table>
         <p>El component no estava instal·lat: els agents el van <strong>escriure a mà</strong>, imitant el de shadcn.</p>
@@ -756,13 +942,13 @@ updateTabIndices() {
 
       <section class="slide" id="instalado-no-basta">
         <h2 id="instalado-no-basta-titulo">No sempre n'hi ha prou d'instal·lar-lo: l'agent l'ha de consultar</h2>
-        <table>
+        <table data-chart="dots" data-chart-by="row" data-max="3">
           <caption>Radio natiu al projecte React + shadcn (entre parèntesis, quantes vegades va consultar Modern Web Guidance)</caption>
           <thead><tr><th scope="col">Condició</th><th scope="col" class="num">Claude Code</th><th scope="col" class="num">Antigravity</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Sense Modern Web Guidance</th><td class="num">0 de 3</td><td class="num">0 de 3</td></tr>
-            <tr><th scope="row">Instal·lat</th><td class="num">1 de 3 (1)</td><td class="num good">3 de 3 (3)</td></tr>
-            <tr><th scope="row">Instal·lat + <code>AGENTS.md</code></th><td class="num good">3 de 3 (3)</td><td class="num good">3 de 3 (3)</td></tr>
+            <tr><th scope="row">Sense Modern Web Guidance</th><td class="num" data-value="0">0 de 3</td><td class="num" data-value="0">0 de 3</td></tr>
+            <tr><th scope="row">Instal·lat</th><td class="num" data-value="1">1 de 3 (1)</td><td class="num good" data-value="3">3 de 3 (3)</td></tr>
+            <tr><th scope="row">Instal·lat + <code>AGENTS.md</code></th><td class="num good" data-value="3">3 de 3 (3)</td><td class="num good" data-value="3">3 de 3 (3)</td></tr>
           </tbody>
         </table>
         <div class="notes">
@@ -785,23 +971,23 @@ updateTabIndices() {
 - L'objectiu de Baseline d'aquest projecte és Baseline Widely available.</code></pre>
         <p>El que va generar Claude, dins del projecte React amb Tailwind:</p>
 <pre><code>&lt;fieldset&gt;
-  &lt;legend&gt;Tono de llamada&lt;/legend&gt;
+  &lt;legend&gt;<span lang="es">Tono de llamada</span>&lt;/legend&gt;
   &lt;input type="radio" className="size-4 accent-primary …" /&gt;</code></pre>
         <div class="notes">
           <h3 id="agents-md-notas">Notes</h3>
           <p>Aquest és el fitxer complet. El fitxer de l'experiment estava escrit en castellà; aquí el veieu traduït. No diu "fes servir radios natius": això seria donar-li la resposta. Només diu que consulti Modern Web Guidance abans de tocar la interfície, i quin és l'objectiu de compatibilitat.</p>
-          <p>I aquest és el resultat, amb la llegenda en castellà perquè el prompt també ho era: un fieldset, un legend i un input de tipus radio amb accent-color i el color primari del tema de shadcn. Dins del mateix projecte React i amb Tailwind. És exactament la variant nativa del meu banc de proves.</p>
+          <p>I aquest és el resultat, amb la llegenda en castellà, «<span lang="es">Tono de llamada</span>», és a dir, to de trucada, perquè el prompt també ho era: un fieldset, un legend i un input de tipus radio amb accent-color i el color primari del tema de shadcn. Dins del mateix projecte React i amb Tailwind. És exactament la variant nativa del meu banc de proves.</p>
         </div>
       </section>
 
       <section class="slide" id="coste-del-agente">
         <h2 id="coste-del-agente-titulo">I quant costa?</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Cost per generació de Claude Code</caption>
           <thead><tr><th scope="col">Condició</th><th scope="col" class="num">Cost</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Sense Modern Web Guidance</th><td class="num">0,32–0,37 $</td></tr>
-            <tr><th scope="row">Amb Modern Web Guidance</th><td class="num">0,46–0,71 $</td></tr>
+            <tr><th scope="row">Sense Modern Web Guidance</th><td class="num" data-value="0.37">0,32–0,37 $</td></tr>
+            <tr><th scope="row">Amb Modern Web Guidance</th><td class="num" data-value="0.71">0,46–0,71 $</td></tr>
           </tbody>
         </table>
         <p>Uns quants cèntims més una sola vegada, davant de centenars de mil·lisegons a cada clic de cada visita.</p>
@@ -852,41 +1038,54 @@ updateTabIndices() {
               <li>Si fas servir un lector de pantalla, fes-la dues vegades: amb el lector apagat i encès.</li>
               <li>No s'envia res sense que tu ho decideixis.</li>
             </ul>
+            <p><a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil/issues/1">Un exemple de resultats: iPhone 16 Pro amb VoiceOver</a></p>
           </div>
         </div>
         <div class="notes">
           <h3 id="haz-la-prueba-notas">Notes</h3>
-          <p>Tot el que us he ensenyat surt d'un sol portàtil. I m'agradaria que sortís dels vostres dispositius. Si obriu l'adreça de la pantalla, o escanegeu el codi QR, arribareu a una versió del benchmark que funciona al navegador, també al mòbil, sense instal·lar res. L'adreça és la mateixa de les diapositives, acabada en barra benchmark: nucliweb punt github punt io, barra, el-arbol-de-accesibilidad-fragil, barra, benchmark.</p>
+          <p>Tot el que us he ensenyat surt d'un sol portàtil. I m'agradaria que sortís dels vostres dispositius. Si obriu l'adreça de la pantalla, o escanegeu el codi QR, arribareu a una versió del benchmark que funciona al navegador, també al mòbil, sense instal·lar res. L'adreça és la mateixa de les diapositives, acabada en barra benchmark: nucliweb punt github punt io, barra, <span lang="es">el árbol de accesibilidad frágil</span> amb guions entre les paraules, barra, benchmark.</p>
           <p>La prova carrega les mateixes pàgines que heu vist, el grup de mil radio buttons i el web de viatges, hi fa clic i mesura quant de temps es queda bloquejat el vostre navegador després de cada acció. Triga uns dos minuts.</p>
-          <p>Si feu servir un lector de pantalla, us demano una cosa més: feu-la dues vegades, una amb el lector apagat i una altra amb el lector encès. La pàgina compara les dues, i la diferència és el que l'arbre d'accessibilitat li costa al vostre dispositiu. Al final veureu els vostres resultats en una taula, i sou vosaltres qui decidiu si els compartiu al repositori. Amb VoiceOver al meu portàtil, un clic en mil radio buttons bloqueja el navegador 0 mil·lisegons amb HTML natiu, 86 amb shadcn i 98 amb MUI. Tinc molta curiositat per saber quant és als vostres mòbils.</p>
+          <p>Si feu servir un lector de pantalla, us demano una cosa més: feu-la dues vegades, una amb el lector apagat i una altra amb el lector encès. La pàgina compara les dues, i la diferència és el que l'arbre d'accessibilitat li costa al vostre dispositiu. Al final veureu els vostres resultats en una taula, i sou vosaltres qui decidiu si els compartiu al repositori. Amb VoiceOver al meu portàtil, un clic en mil radio buttons bloqueja el navegador 0 mil·lisegons amb HTML natiu, 86 amb shadcn i 98 amb MUI. Tinc molta curiositat per saber quant és als vostres mòbils. A la diapositiva hi ha un enllaç al primer resultat que vaig rebre, el d'un iPhone 16 Pro amb VoiceOver, perquè vegeu com queda.</p>
         </div>
       </section>
 
       <section class="slide" id="gracias">
-        <h2 id="gracias-titulo">Gràcies</h2>
-        <p>Codi, dades i referències: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a> · <a href="https://joanleon.dev">joanleon.dev</a></p>
-        <h3>Crèdits</h3>
-        <ul>
+        <h2 id="gracias-titulo" class="thanks"><span>Gràcies</span> <span lang="es">Gracias</span> <span lang="en">Thank you</span></h2>
+        <div class="columns qr-columns">
+          <figure class="qr">
+            <img src="../assets/qr-repo.svg" width="240" height="240"
+                 alt="Codi QR que obre el repositori a github.com/nucliweb/el-arbol-de-accesibilidad-fragil">
+            <figcaption>
+              <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a>
+              <p class="qr-note">Codi, dades, traces i referències, al repositori.</p>
+            </figcaption>
+          </figure>
+          <div>
+            <h3>Crèdits</h3>
+            <ul>
           <li>Eric Bailey, <cite>Accessible is Performant</cite> (2024).</li>
           <li>Marcy Sutton, <cite>Accessibility and Performance</cite> (2016).</li>
           <li>Scott Jehl, Lighthouse #11049 (2020).</li>
           <li>Marco Zehe, feina de rendiment de l'arbre d'accessibilitat de Firefox.</li>
           <li>Scott O'Hara, <cite>a11y_styled_form_controls</cite>.</li>
-        </ul>
+            </ul>
+          </div>
+        </div>
         <div class="notes">
           <h3 id="gracias-notas">Notes</h3>
-          <p>Moltes gràcies. Tot el codi del banc de proves, l'experiment amb agents, les dades i les referències són al repositori. Gràcies especialment a l'Eric Bailey, la Marcy Sutton, l'Scott Jehl, el Marco Zehe i l'Scott O'Hara, perquè aquesta xerrada està construïda sobre la seva feina. Preguntes?</p>
+          <p>Gràcies, <span lang="es">gracias</span>, <span lang="en">thank you</span>: dono les gràcies en català a totes les meves xerrades, per portar el català amb mi. Tot el codi del banc de proves, l'experiment amb agents, les dades i les referències són al repositori; el codi QR de la pantalla us hi porta. Gràcies especialment a l'Eric Bailey, la Marcy Sutton, l'Scott Jehl, el Marco Zehe i l'Scott O'Hara, perquè aquesta xerrada està construïda sobre la seva feina. Preguntes?</p>
         </div>
       </section>
 
     </main>
 
     <nav id="deck-controls" aria-label="Controls de la presentació" hidden>
-      <button type="button" id="prev-slide">Anterior</button>
-      <button type="button" id="next-slide">Següent</button>
-      <button type="button" id="toggle-notes" aria-pressed="false">Notes</button>
-      <button type="button" id="toggle-document" aria-pressed="false">Mode document</button>
-      <button type="button" id="open-help">Ajuda i configuració</button>
+      <button type="button" id="prev-slide" aria-keyshortcuts="ArrowLeft">Anterior</button>
+      <button type="button" id="next-slide" aria-keyshortcuts="ArrowRight">Següent</button>
+      <button type="button" id="toggle-notes" aria-pressed="false" aria-keyshortcuts="N">Notes</button>
+      <button type="button" id="toggle-document" aria-pressed="false" aria-keyshortcuts="D">Mode document</button>
+      <button type="button" id="toggle-view" aria-pressed="false" aria-keyshortcuts="G">Vista de text</button>
+      <button type="button" id="open-help" aria-keyshortcuts="?">Ajuda i configuració</button>
       <span id="slide-counter"></span>
     </nav>
 
@@ -904,19 +1103,31 @@ updateTabIndices() {
           <tr><td><kbd>Inici</kbd> i <kbd>Fi</kbd></td><td>Primera i última diapositiva</td></tr>
           <tr><td><kbd>N</kbd></td><td>Mostra o amaga les notes</td></tr>
           <tr><td><kbd>D</kbd></td><td>Mode document: totes les diapositives en una pàgina</td></tr>
+          <tr><td><kbd>G</kbd></td><td>Canvia entre la vista visual (gràfics i diagrames) i la de text (taules i llistes)</td></tr>
+          <tr><td><kbd>H</kbd></td><td>Amaga o mostra la barra de controls; amb Tab o el ratolí torna a aparèixer</td></tr>
           <tr><td><kbd>T</kbd></td><td>Canvia entre el tema clar i el fosc</td></tr>
           <tr><td><kbd>L</kbd></td><td>Canvia d'idioma, a la mateixa diapositiva</td></tr>
+          <tr><td><kbd>O</kbd></td><td>Obre la demo de la diapositiva</td></tr>
+          <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>A les diapositives amb dues demos, obre la primera o la segona</td></tr>
+          <tr><td><kbd>F</kbd></td><td>Posa la demo a pantalla completa, o en surt</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Tanca la demo</td></tr>
           <tr><td><kbd>?</kbd></td><td>Obre aquesta ajuda</td></tr>
+          <tr><td>Mantén premuda <kbd>Alt</kbd> (<kbd>Opció</kbd> al Mac) 2 segons</td><td>Mostra la tecla de cada botó</td></tr>
         </tbody>
       </table>
       <p>
         <label>
           <input type="checkbox" id="single-key-shortcuts" checked>
-          Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>T</kbd>, <kbd>L</kbd> i <kbd>?</kbd>)
+          Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> i <kbd>?</kbd>)
         </label>
       </p>
       <p class="muted">Si fas servir un lector de pantalla, pot ser que les fletxes no arribin a la pàgina en mode d'exploració. Fes servir els botons Anterior i Següent, o el mode document.</p>
       <h3>Configuració</h3>
+      <fieldset>
+        <legend>Vista</legend>
+        <label><input type="radio" name="view" value="visual" checked> Visual: gràfics i diagrames</label>
+        <label><input type="radio" name="view" value="text"> Text: taules i llistes</label>
+      </fieldset>
       <fieldset>
         <legend>Tema</legend>
         <label><input type="radio" name="theme" value="system" checked> El del sistema</label>

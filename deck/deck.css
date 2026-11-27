@@ -13,7 +13,13 @@
   --bad: light-dark(#b3261e, #f2b8b5);
   --good: light-dark(#146c2e, #7dd99a);
   --border: light-dark(#c9c6bd, #4a4a4a);
-  --focus: var(--accent);
+  /* PerfReviews green. --brand as is for decorative lines; --brand-strong
+     wherever a line, bar or text must reach 3:1 or 4.5:1 (#00843f on the
+     light background is 4.6:1; #00aa58 on the dark one is 6.1:1). */
+  --brand: #00aa58;
+  --brand-strong: light-dark(#00843f, #00aa58);
+  --on-brand: #121212;
+  --focus: var(--brand-strong);
   --bar: var(--accent);
   --bar-bad: var(--bad);
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -128,7 +134,7 @@ li {
 blockquote {
   margin: 1rem 0;
   padding-inline-start: 1rem;
-  border-inline-start: 4px solid var(--accent);
+  border-inline-start: 4px solid var(--brand);
   font-size: 1.15em;
 }
 
@@ -238,6 +244,12 @@ img {
     font-size: 0.75em;
     overflow-wrap: anywhere;
   }
+
+  & .qr-note {
+    margin-block: 0.4em 0;
+    font-size: 1.25em;
+    overflow-wrap: normal;
+  }
 }
 
 .steps {
@@ -263,8 +275,8 @@ img {
 }
 
 .steps .highlight {
-  border-color: var(--accent);
-  outline: 2px solid var(--accent);
+  border-color: var(--brand-strong);
+  outline: 2px solid var(--brand-strong);
 }
 
 /* Bar charts built from real tables: the numbers stay readable as text. */
@@ -309,7 +321,8 @@ img {
   inset-block-end: 0;
   inset-inline: 0;
   z-index: 10;
-  height: var(--controls-height);
+  /* Not --controls-height: deck.js sets that one from this bar's height. */
+  min-height: 3.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -318,6 +331,54 @@ img {
   background: var(--bg);
   border-block-start: 1px solid var(--border);
   font-size: 1rem;
+}
+
+/* Key hints, shown while Alt (Option) is held (deck.js). */
+.key-hint {
+  display: none;
+}
+
+html[data-hints] button:has(> .key-hint) {
+  position: relative;
+}
+
+html[data-hints] .key-hint {
+  display: block;
+  position: absolute;
+  inset-block-end: calc(100% + 0.35rem);
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  min-width: 1.8em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--on-brand);
+  border-radius: 0.3em;
+  background: var(--brand);
+  color: var(--on-brand);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The demo buttons are at the top of the demo: their hints go below. */
+html[data-hints] .demo-controls .key-hint {
+  inset-block: calc(100% + 0.35rem) auto;
+}
+
+html.js[data-hints][data-controls='hidden'] #deck-controls:not(:focus-within, :hover) {
+  opacity: 1;
+}
+
+/* Hidden with H: still in the page, shown again on focus or hover. */
+html.js[data-controls='hidden'] #deck-controls:not(:focus-within, :hover) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #deck-controls {
+    transition: opacity 150ms ease-out;
+  }
 }
 
 #deck-controls button,
@@ -408,14 +469,17 @@ html.js[data-mode='slides'] #deck {
 html.js[data-mode='slides'] .slide {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  /* "safe" keeps the top reachable when the content does not fit (zoom). */
-  justify-content: safe center;
+  /* Content starts at the top, so every title sits at the same height. */
+  justify-content: flex-start;
   height: calc(100dvh - var(--controls-height));
   overflow-y: auto;
   padding: clamp(1.5rem, 5vmin, 4rem) clamp(1.5rem, 8vw, 8rem);
+  padding-block-start: clamp(2rem, 9vmin, 6rem);
   border: 0;
-  font-size: clamp(1.1rem, 1.2rem + 1vmin, 2rem);
+  /* --fit (deck.js) shrinks a slide that would not fit, never below 1rem,
+     so zooming in still enlarges the text and the slide scrolls instead. */
+  font-size: max(1rem, calc(clamp(1.1rem, 1.2rem + 1vmin, 2rem) * var(--fit, 1)));
+  container-type: size;
 }
 
 html.js[data-mode='slides'] .slide[hidden],
@@ -449,12 +513,742 @@ html.js[data-mode='slides'] .notes {
 }
 
 html.js[data-mode='slides'] .slide img {
-  max-height: 55dvh;
+  max-height: calc(50cqh * var(--fit, 1));
   width: auto;
+}
+
+/* The title's top margin would scale with --fit and move it. */
+html.js[data-mode='slides'] .slide > h2 {
+  margin-block-start: 0;
+}
+
+/* The cover is the exception: a title slide, centred. */
+html.js[data-mode='slides'] #portada {
+  justify-content: safe center;
+}
+
+html.js[data-mode='slides'] .slide h1,
+html.js[data-mode='slides'] .slide h2 {
+  font-size: max(1.5rem, calc(var(--heading-size) * var(--fit, 1)));
+}
+
+html.js[data-mode='slides'] .slide h1 {
+  --heading-size: clamp(2.25rem, 6vw, 4.5rem);
+}
+
+html.js[data-mode='slides'] .slide h2 {
+  --heading-size: clamp(1.75rem, 4vw, 3rem);
 }
 
 html.js[data-mode='document'] #deck {
   padding-block-end: 5rem;
+}
+
+/* --- Speaker ------------------------------------------------------------------ */
+
+.speaker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 1.5rem 3rem;
+  align-items: center;
+}
+
+.speaker-photo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 70dvh;
+  border-radius: 0.75rem;
+}
+
+.speaker-info h2 {
+  margin-block: 0 0.25rem;
+}
+
+.speaker-info .subtitle {
+  margin-block: 0 1.25rem;
+}
+
+.logos,
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-block: 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.logos img {
+  display: block;
+  width: auto;
+  height: 4rem;
+}
+
+/* The logos are white cards in both themes; the focus ring goes around them. */
+.logos a {
+  display: block;
+  border-radius: 0.6rem;
+}
+
+/* As a slide: the photo bleeds to the edges at the full height of the slide
+   and everything is sized from that height (cqh), so the slide never needs
+   to scroll, with or without the notes and the controls. */
+html.js[data-mode='slides'] #sobre-mi {
+  container-type: size;
+  padding: 0;
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  height: 100%;
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker > picture,
+html.js[data-mode='slides'] #sobre-mi .speaker-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker-photo {
+  object-fit: cover;
+  object-position: 50% 40%;
+  border-radius: 0;
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker-info {
+  padding: 4cqh clamp(1.5rem, 5vw, 5rem);
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker-info h2 {
+  font-size: clamp(1.75rem, 13cqh, 6rem);
+  line-height: 1;
+}
+
+html.js[data-mode='slides'] #sobre-mi .subtitle {
+  margin-block-end: 6cqh;
+  font-size: clamp(1rem, 6cqh, 2.5rem);
+}
+
+html.js[data-mode='slides'] #sobre-mi .logos {
+  flex-wrap: nowrap;
+  gap: 1.5cqw;
+  margin-block-end: 5cqh;
+}
+
+/* Four 2:1 logos in one row: limited by the height of the slide and by the
+   width of the text column (3/5 of the slide minus its padding). */
+html.js[data-mode='slides'] #sobre-mi .logos img {
+  height: clamp(1.75rem, min(11cqh, (60cqw - 2 * clamp(1.5rem, 5vw, 5rem) - 4.5cqw) / 8), 6rem);
+}
+
+html.js[data-mode='slides'] #sobre-mi .profile-links {
+  gap: 1cqh 2rem;
+  margin: 0;
+  font-size: clamp(0.9rem, 4.5cqh, 1.75rem);
+}
+
+/* Narrow screens or 200% zoom: photo on top as a band, text below. */
+@media (max-width: 48rem) {
+  html.js[data-mode='slides'] #sobre-mi {
+    container-type: normal;
+  }
+
+  html.js[data-mode='slides'] #sobre-mi .speaker {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  html.js[data-mode='slides'] #sobre-mi .speaker > picture,
+  html.js[data-mode='slides'] #sobre-mi .speaker-photo {
+    height: 35dvh;
+  }
+
+  html.js[data-mode='slides'] #sobre-mi .speaker-info h2,
+  html.js[data-mode='slides'] #sobre-mi .subtitle,
+  html.js[data-mode='slides'] #sobre-mi .profile-links {
+    font-size: revert-layer;
+  }
+
+  html.js[data-mode='slides'] #sobre-mi .logos img {
+    height: 3rem;
+  }
+}
+
+/* --- Live demos ------------------------------------------------------------- */
+
+.demo-open,
+.demo-close,
+.demo-fullscreen {
+  font: inherit;
+  font-size: 0.8em;
+  padding: 0.35rem 0.9rem;
+  border: 2px solid var(--brand-strong);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.demo iframe {
+  display: block;
+  width: 100%;
+  height: min(62dvh, 40rem);
+  margin-block: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.demo-fullscreen[aria-pressed='true'] {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+/* Fullscreen: trace.cafe takes the whole screen, the buttons stay below. */
+.demo:fullscreen {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: var(--bg);
+}
+
+.demo:fullscreen iframe {
+  flex: 1;
+  height: auto;
+  margin: 0 0 0.5rem;
+}
+
+/* A reminder for the speaker, and a note for everyone: this part is shown
+   live outside the slides. */
+.demo-badge {
+  display: inline-block;
+  align-self: flex-start;
+  margin-block: 0 0.75rem;
+  padding: 0.2em 0.75em;
+  border: 2px solid var(--brand-strong);
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.tip {
+  margin-block: 1em 0;
+  padding: 0.5em 0.9em;
+  border-inline-start: 0.25em solid var(--brand);
+  background: var(--surface);
+  font-size: 0.85em;
+}
+
+/* Marker-style highlight for the key numbers. */
+mark {
+  padding: 0 0.15em;
+  border-radius: 0.2em;
+  background: light-dark(rgb(0 170 88 / 0.28), rgb(0 170 88 / 0.38));
+  color: inherit;
+  font-weight: 700;
+}
+
+/* Thanks in three languages, with a line between them. */
+.thanks span + span {
+  margin-inline-start: 0.35em;
+  padding-inline-start: 0.45em;
+  border-inline-start: 0.08em solid var(--brand);
+}
+
+/* The out-of-date tree explainer: four panels per step. In the text view
+   every step shows at once, two by two, each panel as a line. */
+html.js[data-view='text'] .frames {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(24em, 100%), 1fr));
+  gap: 1em 2em;
+}
+
+html.js[data-view='text'] .frames h3 {
+  font-size: 1em;
+}
+
+html.js[data-view='text'] .frame-panels {
+  display: block;
+}
+
+html.js[data-view='text'] .panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5em;
+  align-items: baseline;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+html.js[data-view='text'] .panel-title {
+  margin: 0;
+}
+
+html.js[data-view='text'] .panel pre {
+  white-space: normal;
+}
+
+html.js[data-view='text'] .panel-title::after {
+  content: ':' / '';
+}
+
+html.js[data-view='text'] .screen-button {
+  padding: 0;
+  background: none;
+  color: inherit;
+}
+
+html.js[data-view='text'] .frame-summary {
+  margin-block-start: 0.4em;
+  font-size: 0.85em;
+}
+
+/* The out-of-date tree explainer: four panels per step. */
+.frames {
+  padding: 0;
+  list-style: none;
+}
+
+.frames h3 {
+  margin-block: 0 0.6em;
+}
+
+.frame-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(9em, 100%), 1fr));
+  gap: 0.75em;
+}
+
+.panel {
+  padding: 0.6em 0.8em;
+  border: 2px solid var(--border);
+  border-radius: 0.5em;
+  background: var(--surface);
+  font-size: 0.85em;
+}
+
+.panel p {
+  margin: 0;
+}
+
+.panel pre {
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.85em;
+}
+
+.panel-title {
+  margin-block-end: 0.4em;
+  color: var(--muted);
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel.is-changed {
+  border-color: var(--brand-strong);
+}
+
+.panel.is-stale {
+  border-color: var(--bad);
+  border-style: dashed;
+}
+
+.panel-state {
+  display: inline-block;
+  margin-block-start: 0.4em;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.screen-button {
+  display: inline-block;
+  padding: 0.3em 0.8em;
+  border-radius: 0.4em;
+  background: var(--brand);
+  color: var(--on-brand);
+  font-weight: 700;
+}
+
+.screen-button.is-disabled {
+  background: var(--border);
+  color: var(--text);
+}
+
+.frame-summary {
+  margin-block: 0.75em 0;
+}
+
+/* As a slide, an open demo covers the whole slide: trace.cafe gets the
+   room, and the slide content stays in the page for screen readers. */
+html.js[data-mode='slides'] .slide {
+  position: relative;
+}
+
+html.js[data-mode='slides'] .demo.is-open {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem clamp(1rem, 3vw, 2rem);
+  background: var(--bg);
+}
+
+html.js[data-mode='slides'] .demo.is-open iframe {
+  flex: 1;
+  height: auto;
+  margin-block: 0 0.5rem;
+}
+
+.demo .demo-open + .demo-open {
+  margin-inline-start: 0.5rem;
+}
+
+/* With the demo open, the screenshot leaves the screen but keeps its text
+   alternative for screen readers, which do not get the demo itself. */
+.demo.is-open figure {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Visual view: the same content, drawn ----------------------------------- */
+
+/* Builds: items not shown yet keep their place (deck.js). */
+[data-build-hidden] {
+  visibility: hidden;
+}
+
+/* One step at a time: every step in the same cell, as tall as the tallest. */
+html.js[data-view='visual'] [data-build='replace'] {
+  display: grid;
+}
+
+html.js[data-view='visual'] [data-build='replace'] > li {
+  grid-area: 1 / 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-build] > li {
+    transition: opacity 200ms ease-out;
+  }
+
+  [data-build] > [data-build-hidden] {
+    opacity: 0;
+  }
+}
+
+/* Pictures that only repeat what the text next to them says (the table
+   stays as their text version) are left out of the text view. */
+html.js[data-view='text'] .visual-only {
+  display: none;
+}
+
+html.js[data-view='visual'] [data-visual='hidden'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+html.js[data-view='visual'][data-mode='slides'] .slide > h2,
+html.js[data-view='visual'][data-mode='slides'] .speaker-info > h2 {
+  --heading-size: clamp(2rem, 1rem + 3.5vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+html.js[data-view='visual'] .slide > h2::before {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 0.3rem;
+  margin-block-end: 0.75rem;
+  border-radius: 0.15rem;
+  background: var(--brand);
+}
+
+/* A key sentence, set apart from the title: lighter, quoted, with a rule. */
+html.js[data-view='visual'] .statement {
+  max-width: 32ch;
+  padding-inline-start: 0.75em;
+  border-inline-start: 0.2em solid var(--brand);
+  font-size: 1.5em;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+/* Charts (deck.js builds them from the tables): one panel per measure, a
+   bar per item with its label and value written next to it. */
+.chart-view {
+  display: none;
+}
+
+html.js[data-view='visual'] .chart-view {
+  display: block;
+}
+
+html.js[data-view='visual'] .chart-table {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chart-caption {
+  margin-block: 0 0.75rem;
+  font-weight: 600;
+}
+
+.chart-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15em, 100%), 1fr));
+  gap: 1em 2em;
+}
+
+.chart-panel {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  column-gap: 0.6em;
+  align-content: start;
+}
+
+.chart-panel-title {
+  grid-column: 1 / -1;
+  margin-block: 0 0.4em;
+  padding-block-end: 0.25em;
+  border-block-end: 2px solid var(--brand);
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+/* Every item shares the panel's columns: labels, bars and values line up. */
+.chart-item {
+  --bar-color: light-dark(#cfcbc1, #4d4d4d);
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  margin-block: 0.3em;
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-item.is-good {
+  --bar-color: var(--brand-strong);
+}
+
+.chart-item.is-bad {
+  --bar-color: var(--bad);
+}
+
+.chart-item.is-good .chart-value,
+.chart-item.is-bad .chart-value {
+  font-weight: 700;
+}
+
+.chart-item.is-bad .chart-value {
+  color: var(--bad);
+}
+
+.chart-track {
+  display: block;
+  height: 1.1em;
+}
+
+.chart-bar {
+  display: block;
+  height: 100%;
+  inline-size: calc(var(--share) * 100%);
+  min-inline-size: 3px;
+  border-radius: 0 0.3em 0.3em 0;
+  background: var(--bar-color);
+}
+
+.chart-value {
+  text-align: end;
+}
+
+/* Few items with a large range: vertical columns. */
+.chart-columns .chart-panels {
+  grid-template-columns: 1fr;
+}
+
+.chart-columns .chart-panel {
+  display: flex;
+  grid-template-columns: none;
+  gap: 1.5em;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chart-columns .chart-panel-title {
+  display: none;
+}
+
+.chart-columns .chart-item {
+  display: flex;
+  grid-column: auto;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 0.3em;
+  width: 7em;
+  font-size: 0.9em;
+}
+
+.chart-columns .chart-track {
+  display: flex;
+  align-items: flex-end;
+  width: 4.5em;
+  height: calc(8em * var(--fit, 1));
+}
+
+.chart-columns .chart-bar {
+  inline-size: 100%;
+  block-size: calc(var(--share) * 100%);
+  min-block-size: 3px;
+  border-radius: 0.3em 0.3em 0 0;
+}
+
+.chart-columns .chart-value {
+  order: -1;
+  text-align: center;
+}
+
+/* "n of 3": filled and empty dots. */
+.chart-dots .chart-track {
+  display: flex;
+  gap: 0.35em;
+  height: auto;
+}
+
+.chart-dot {
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid var(--bar-color);
+  border-radius: 50%;
+}
+
+.chart-dot.is-on {
+  background: var(--bar-color);
+}
+
+.chart-item:not(.is-good, .is-bad) .chart-dot {
+  --bar-color: var(--muted);
+}
+
+@media (forced-colors: active) {
+  .chart-bar,
+  .chart-dot.is-on {
+    background: CanvasText;
+  }
+
+  .chart-dot {
+    border-color: CanvasText;
+  }
+}
+
+/* The rendering steps as a pipeline of arrows. */
+html.js[data-view='visual'] .steps {
+  gap: 0.3rem;
+}
+
+html.js[data-view='visual'] .steps li {
+  padding: 0.75rem 1.5rem 0.75rem 1.75rem;
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 0.9rem) 0, 100% 50%, calc(100% - 0.9rem) 100%, 0 100%, 0.9rem 50%);
+}
+
+html.js[data-view='visual'] .steps .highlight {
+  outline: 0;
+  background: var(--brand);
+  color: var(--on-brand);
+  font-weight: 700;
+}
+
+html.js[data-view='visual'] .steps .highlight::before {
+  color: inherit;
+}
+
+/* Timelines: a line with a dot per year. */
+/* The line belongs to each item, so it only reaches the items shown. */
+html.js[data-view='visual'] .timeline {
+  margin-inline-start: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+html.js[data-view='visual'] .timeline li {
+  position: relative;
+  padding: 0.35rem 0 0.6rem 1.75rem;
+  border-inline-start: 0.3rem solid var(--brand);
+}
+
+html.js[data-view='visual'] .timeline li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -0.9rem;
+  inset-block-start: 0.55rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.3rem solid var(--brand);
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+html.js[data-view='visual'] .timeline-sep {
+  display: none;
+}
+
+html.js[data-view='visual'] .timeline strong {
+  display: block;
+  font-size: 1.35em;
+  color: var(--brand-strong);
+}
+
+/* Lists of ideas as cards. */
+html.js[data-view='visual'] .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+html.js[data-view='visual'] .cards li {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-block-start: 0.4rem solid var(--brand);
+  border-radius: 0.5rem;
+  background: var(--surface);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -477,6 +1271,11 @@ html.js[data-mode='document'] #deck {
 
   #deck-controls button[aria-pressed='true'] {
     outline: 3px solid Highlight;
+  }
+
+  /* Bars and diagram shapes lose their colors; the numbers stay. */
+  html.js[data-view='visual'] table.chart td[data-value] {
+    background-image: linear-gradient(CanvasText, CanvasText);
   }
 }
 

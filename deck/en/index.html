@@ -39,6 +39,8 @@
           <ul>
             <li><kbd>N</kbd> shows or hides the notes for each slide.</li>
             <li><kbd>D</kbd> shows all the slides on a single page.</li>
+            <li><kbd>G</kbd> switches between the visual view and the text view.</li>
+            <li><kbd>H</kbd> hides the control bar to leave more room.</li>
             <li><kbd>T</kbd> switches between the light and the dark theme.</li>
             <li><kbd>L</kbd> switches the language: <span lang="es">español</span>, English, <span lang="ca">català</span>.</li>
             <li><kbd>?</kbd> opens help and settings, where you can turn off single-key shortcuts.</li>
@@ -47,19 +49,41 @@
         </div>
         <div class="notes">
           <h3 id="sigue-la-charla-notas">Notes</h3>
-          <p>Before we start: these slides are published at the address you see on the screen, nucliweb dot github dot io, slash, <span lang="es">el árbol de accesibilidad frágil</span>, which is the Spanish title of the talk, with hyphens between the words. The English version is at the same address followed by slash en. You can also scan the QR code. Every slide has notes like these, written so you can follow the talk by reading, with a screen reader, or later, when you look back at it.</p>
-          <p>Press N to see the notes, or D to read all the slides one after another as a document. T switches between the light and the dark theme, and L switches the language: the slides and the notes are also available in Spanish and Catalan. If single-key shortcuts get in the way of your screen reader, you can turn them off in help and settings, with the question mark key.</p>
+          <p>Before we start: these slides are published at the address you see on the screen, nucliweb dot github dot io, slash, el-arbol-de-accesibilidad-fragil, with hyphens between the words, which is the Spanish title of the talk. The English version is at the same address followed by slash en. You can also scan the QR code. Every slide has notes like these, written so you can follow the talk by reading, with a screen reader, or later, when you look back at it.</p>
+          <p>Press N to see the notes, or D to read all the slides one after another as a document. G switches between the visual view, with charts and diagrams, and the text view, with the tables and lists; T switches between the light and the dark theme, and L switches the language: the slides and the notes are also available in Spanish and Catalan. If single-key shortcuts get in the way of your screen reader, you can turn them off in help and settings, with the question mark key.</p>
           <p>And thank you to the sign language interpreter for being with us today.</p>
         </div>
       </section>
 
       <section class="slide" id="sobre-mi">
-        <h2 id="sobre-mi-titulo">Joan León</h2>
-        <p>Web Performance Artisan at <a href="https://perf.reviews/">PerfReviews</a>.</p>
-        <p><a href="https://joanleon.dev">joanleon.dev</a></p>
+        <div class="speaker">
+          <picture>
+            <source type="image/avif" srcset="../assets/joan-leon-400.avif 400w, ../assets/joan-leon-800.avif 800w" sizes="(min-width: 48rem) 24rem, 80vw">
+            <img class="speaker-photo" src="../assets/joan-leon-800.webp" srcset="../assets/joan-leon-400.webp 400w, ../assets/joan-leon-800.webp 800w" sizes="(min-width: 48rem) 24rem, 80vw"
+                 width="800" height="1200" decoding="async"
+                 alt="Joan León, in black and white, with glasses and a beard, looking at a screen at the performance.now() Performance Help Desk">
+          </picture>
+          <div class="speaker-info">
+            <h2 id="sobre-mi-titulo">Joan León</h2>
+            <p class="subtitle"><span>Web Performance Artisan</span></p>
+            <ul class="logos">
+              <li><a href="https://perf.reviews/"><picture><source type="image/avif" srcset="../assets/logo-perfreviews.avif"><img src="../assets/logo-perfreviews.webp" width="240" height="120" alt="Founder of PerfReviews"></picture></a></li>
+              <li><a href="https://developers.google.com/profile/u/nucliweb"><picture><source type="image/avif" srcset="../assets/logo-gde.avif"><img src="../assets/logo-gde.webp" width="240" height="120" alt="Google Developer Expert in Web Technologies"></picture></a></li>
+              <li><a href="https://gdg.community.dev/gdg-girona/"><picture><source type="image/avif" srcset="../assets/logo-gdg-girona.avif"><img src="../assets/logo-gdg-girona.webp" width="240" height="120" alt="GDG Girona organizer"></picture></a></li>
+              <li><a href="https://geekscat.org/"><picture><source type="image/avif" srcset="../assets/logo-geekscat.avif"><img src="../assets/logo-geekscat.webp" width="240" height="120" alt="GeeksCAT partner"></picture></a></li>
+            </ul>
+            <ul class="profile-links">
+              <li><a href="https://joanleon.dev">joanleon.dev</a></li>
+              <li><a href="https://www.linkedin.com/in/joanleon/">LinkedIn</a></li>
+              <li><a href="https://x.com/nucliweb">X</a></li>
+              <li><a href="https://bsky.app/profile/nucliweb.net">Bluesky</a></li>
+            </ul>
+          </div>
+        </div>
         <div class="notes">
           <h3 id="sobre-mi-notas">Notes</h3>
-          <p>I work on web performance. At PerfReviews we help companies make their websites load and respond faster. Last year I gave a lightning talk here on this topic, and I was left wanting to say much more: this is the long version, with new data.</p>
+          <p>I'm a <span>Web Performance Artisan</span>: I work on web performance, and I like to do it with the care of a craftsman. I founded PerfReviews, where we help companies make their websites load and respond faster. I'm a Google Developer Expert in web technologies, I organize GDG Girona and I'm a partner of GeeksCAT. You'll find me at joanleon.dev, LinkedIn, X and Bluesky.</p>
+          <p>Last year I gave a lightning talk here on this topic, and I was left wanting to say much more: this is the long version, with new data.</p>
         </div>
       </section>
 
@@ -92,6 +116,7 @@
 
       <section class="slide" id="traza-renfe">
         <h2 id="traza-renfe-titulo">This is what a website that blocks the main thread looks like</h2>
+        <div class="demo" data-demo-url="https://trace.cafe/t/HJIoDNe5hJ">
         <figure>
           <picture>
             <source srcset="../assets/renfe-performance.avif" type="image/avif">
@@ -100,10 +125,13 @@
           </picture>
           <figcaption>Loading renfe.com/es/es in the Chrome DevTools Performance panel.</figcaption>
         </figure>
+        <button type="button" class="demo-open" hidden data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the renfe.com trace on trace.cafe">Open the demo</button>
+        </div>
         <div class="notes">
           <h3 id="traza-renfe-notas">Notes</h3>
           <p>This is a recording from the Chrome Performance panel while loading the website of Renfe, the Spanish railway company. At the top is the network, with lots of requests in parallel. Below it, the browser's main thread: for more than six seconds it is busy almost without a break, with yellow blocks of JavaScript and purple blocks of styles and layout.</p>
           <p>While the main thread is busy, the browser can't respond to anyone: not to someone clicking, not to someone pressing a key, and not to the assistive technology asking it what's on the screen. The largest element on the page doesn't appear until almost six seconds in.</p>
+          <p>Live, I open another trace of the same page, recorded the way a mid-range Android phone would see it: an emulated Pixel 7, with a slow 4G network and the CPU four times slower. There, the main content takes 10.7 seconds to appear, mostly because of the network, and the main thread works for about 2.5 seconds spread across the load. The trace is in the repository, in bench/traces/demos, ready to open in the DevTools Performance panel.</p>
         </div>
       </section>
 
@@ -168,7 +196,7 @@
 
       <section class="slide" id="un-bosque">
         <h2 id="un-bosque-titulo">It's not a tree: it's a forest</h2>
-        <ul>
+        <ul class="cards">
           <li>Each operating system has its own API: NSAccessibility on macOS, UI Automation and IAccessible2 on Windows, AT-SPI on Linux.</li>
           <li>The tree lives outside the page: the browser sends it to another process, and assistive technology queries it through the system.</li>
           <li>If the page changes faster than the tree is updated, what the person hears no longer matches what's on the screen.</li>
@@ -180,19 +208,133 @@
         </div>
       </section>
 
+      <section class="slide" id="arbol-desfasado">
+        <h2 id="arbol-desfasado-titulo">When the tree arrives late</h2>
+        <ol class="frames" data-build="replace">
+          <li>
+            <h3>Step 1 of 4: everything in sync</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Screen</p>
+                <p><span class="screen-button">Add to cart</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button&gt;
+  Add to cart
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Accessibility tree</p>
+                <pre><code>button "Add to cart"</code></pre>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Screen reader</p>
+                <p>“Add to cart, button”</p>
+              </div>
+            </div>
+            <p class="frame-summary">The screen, the DOM and the accessibility tree all say the same thing.</p>
+          </li>
+          <li>
+            <h3>Step 2 of 4: a click, and React re-renders</h3>
+            <div class="frame-panels">
+              <div class="panel is-changed">
+                <p class="panel-title">Screen</p>
+                <p><span class="screen-button is-disabled">Added</span></p>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Added
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Accessibility tree</p>
+                <pre><code>button "Add to cart"</code></pre>
+                <span class="panel-state">Out of date</span>
+              </div>
+              <div class="panel">
+                <p class="panel-title">Screen reader</p>
+                <p>It hasn't asked yet.</p>
+              </div>
+            </div>
+            <p class="frame-summary">The DOM has already changed, but the accessibility tree is updated in the rendering cycle, and the main thread is still busy with the JavaScript of the new render and with the tracking scripts: analytics, marketing and technical ones.</p>
+          </li>
+          <li>
+            <h3>Step 3 of 4: the screen reader asks</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Screen</p>
+                <p><span class="screen-button is-disabled">Added</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Added
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Accessibility tree</p>
+                <pre><code>button "Add to cart"</code></pre>
+                <span class="panel-state">Out of date</span>
+              </div>
+              <div class="panel is-stale">
+                <p class="panel-title">Screen reader</p>
+                <p>“Add to cart, button”</p>
+              </div>
+            </div>
+            <p class="frame-summary">The person hears a button that is no longer on the screen, and may activate it again.</p>
+          </li>
+          <li>
+            <h3>Step 4 of 4: the main thread is free</h3>
+            <div class="frame-panels">
+              <div class="panel">
+                <p class="panel-title">Screen</p>
+                <p><span class="screen-button is-disabled">Added</span></p>
+              </div>
+              <div class="panel">
+                <p class="panel-title">DOM</p>
+                <pre><code>&lt;button disabled&gt;
+  Added
+&lt;/button&gt;</code></pre>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">Accessibility tree</p>
+                <pre><code>button "Added" disabled</code></pre>
+                <span class="panel-state">Updated</span>
+              </div>
+              <div class="panel is-changed">
+                <p class="panel-title">Screen reader</p>
+                <p>“Added, button, dimmed”</p>
+              </div>
+            </div>
+            <p class="frame-summary">The information arrives, but late: the more work the main thread has, the longer the gap lasts.</p>
+          </li>
+        </ol>
+        <p class="tip"><strong>Tip:</strong> break up long tasks and give the main thread back (<span>yield to main</span>) so the browser can update the screen and the tree in between. <a href="https://web.dev/articles/optimize-long-tasks">web.dev: <span>Optimize long tasks</span></a></p>
+        <div class="notes">
+          <h3 id="arbol-desfasado-notas">Notes</h3>
+          <p>Let's look at that last idea step by step, with an “Add to cart” button built with React. In the first step everything is in sync: the screen, the DOM, the accessibility tree and what the screen reader says all match.</p>
+          <p>In the second step, the person activates the button. React re-renders the component, and the DOM already says “Added”, with the button disabled. But the accessibility tree isn't updated at that instant: Chrome updates it in its rendering cycle, after styles, and sends it to the process the screen reader talks to. As long as the main thread is busy with the JavaScript of the new render, and with the tracking scripts that almost every real website loads, for analytics, marketing and technical purposes, the tree the screen reader sees is the old one.</p>
+          <p>In the third step, the screen reader asks what's there, and it gets the old tree as the answer: “Add to cart, button”. The person hears a button that is no longer on the screen, and may press it again.</p>
+          <p>In the fourth step, the main thread is free, the tree is updated and the screen reader says “Added, button, dimmed”. The information arrives, but late. This is a simplification: the gap usually lasts milliseconds, but the more work there is on the main thread, and the more nodes change on each render, the longer it lasts. And if React replaces the node instead of updating it, focus is lost as well.</p>
+          <p>A tip: breaking up long tasks and giving the main thread back, what's known as <span>yield to main</span>, gives the browser gaps to update the screen and the accessibility tree between one task and the next. On the slide I link to the web.dev article on how to optimize long tasks.</p>
+        </div>
+      </section>
+
       <!-- ================================================= One radio button (8 min) -->
 
       <section class="slide" id="voiceover-se-cae">
         <h2 id="voiceover-se-cae-titulo">The day VoiceOver stopped talking</h2>
         <p>An audit of a medical training app built with Material Design. VoiceOver always hung on the same screen: a huge list of radio buttons.</p>
         <blockquote>
-          <p>Prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening.</p>
+          <p>Prioritizing <span>Developer Experience</span> without considering the HTML it generates can end in a very bad <span>User Experience</span>.</p>
         </blockquote>
-        <p class="source">Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
+        <p class="source">Adapted from Eric Bailey, <cite>Accessible is Performant</cite>, performance.now() 2024.</p>
         <div class="notes">
           <h3 id="voiceover-se-cae-notas">Notes</h3>
           <p>This talk was born from a story Eric Bailey told in 2024. He was auditing a medical training app built with Material Design and, on one screen, VoiceOver stopped talking. He restarted Safari, cleared the cache, restarted the computer: always the same. The culprit was a pile of Material radio buttons injected into the page. When they replaced them with native radios, VoiceOver stopped hanging.</p>
-          <p>In his words: <q>prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. I wanted to know whether that still happens today, in 2026, with the components we use now.</p>
+          <p>His original sentence is: <q>prioritizing developer ergonomics without considering the generated HTML it produces can lead to bad things happening</q>. On the slide I adapted it to set the two side by side: <span>Developer Experience</span> and <span>User Experience</span>. I wanted to know whether that still happens today, in 2026, with the components we use now.</p>
         </div>
       </section>
 
@@ -202,7 +344,7 @@
   &lt;input type="radio" name="ringtone" id="moon-0" value="moon-0" checked&gt;
   &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;
 &lt;/div&gt;</code></pre>
-        <p>131 characters. 0 bytes of JavaScript.</p>
+        <p><mark>131</mark> characters. <mark>0</mark> bytes of JavaScript.</p>
         <div class="notes">
           <h3 id="radio-nativo-notas">Notes</h3>
           <p>I built a test bench with six implementations of the same group of radio buttons: a heading, “<span lang="es">Ajustes</span>” (Settings), a group, “<span lang="es">Tono de llamada</span>” (Ringtone), and N options. All the code is in the talk's repository. Each implementation was built following its official documentation.</p>
@@ -222,7 +364,7 @@
   &lt;/button&gt;
   &lt;label data-slot="field-label" for="moon-0" class="…"&gt;Calisto&lt;/label&gt;
 &lt;/div&gt;</code></pre>
-        <p>2,475 characters (the classes are trimmed with “…”). 275 KB of JavaScript.</p>
+        <p><mark>2,475</mark> characters (the classes are trimmed with “…”). <mark>275</mark> KB of JavaScript.</p>
         <div class="notes">
           <h3 id="radio-shadcn-notas">Notes</h3>
           <p>Now shadcn/ui with Radix, probably the most widely used option in React projects today. There's no input here: there's a button that gets the radio role through ARIA, an aria-checked state kept in sync by JavaScript, and two spans to draw the circle. I've trimmed the Tailwind classes with ellipses; untrimmed, a single option takes up almost two thousand five hundred characters.</p>
@@ -243,7 +385,7 @@
   &lt;/span&gt;
   &lt;span class="MuiTypography-root … MuiFormControlLabel-label …"&gt;Calisto&lt;/span&gt;
 &lt;/label&gt;</code></pre>
-        <p>1,119 characters. 329 KB of JavaScript.</p>
+        <p><mark>1,119</mark> characters. <mark>329</mark> KB of JavaScript.</p>
         <div class="notes">
           <h3 id="radio-mui-notas">Notes</h3>
           <p>MUI does use a native input, and that's good for accessibility. But it wraps it in spans, hides it visually and draws the circle with two SVGs. And every time you click, it adds elements for the ripple effect. That's 329 kilobytes of JavaScript for the sample page.</p>
@@ -262,7 +404,7 @@
     &lt;/div&gt;
 &lt;/md-radio&gt;
 &lt;label for="moon-0"&gt;Calisto&lt;/label&gt;</code></pre>
-        <p>821 characters, including its shadow DOM. 41 KB of JavaScript.</p>
+        <p><mark>821</mark> characters, including its shadow DOM. <mark>41</mark> KB of JavaScript.</p>
         <div class="notes">
           <h3 id="radio-material-web-notas">Notes</h3>
           <p>And Material Web, Google's web components, the successors of the library Eric audited. An md-radio element with its own shadow DOM, which contains two other web components with their own shadow DOM, an SVG and several divs. It sets the radio role with JavaScript, through ElementInternals. It's the lightest in JavaScript, 41 kilobytes, but you'll see that weight isn't everything.</p>
@@ -271,7 +413,7 @@
 
       <section class="slide" id="una-opcion">
         <h2 id="una-opcion-titulo">What one option costs</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Page with 1 radio button, median of 5 runs</caption>
           <thead>
             <tr>
@@ -284,11 +426,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Native</th><td class="num">5</td><td class="num">7</td><td class="num">3</td><td class="num">5</td><td class="num">0 KB</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">9</td><td class="num">36</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">8</td><td class="num">33</td><td class="num">6</td><td class="num">304</td><td class="num">275 KB</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">12</td><td class="num">25</td><td class="num">7</td><td class="num">35</td><td class="num">329 KB</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">16</td><td class="num">36</td><td class="num">7</td><td class="num">45</td><td class="num">41 KB</td></tr>
+            <tr class="native"><th scope="row">Native</th><td class="num" data-value="5">5</td><td class="num" data-value="7">7</td><td class="num" data-value="3">3</td><td class="num" data-value="5">5</td><td class="num" data-value="0">0 KB</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="9">9</td><td class="num" data-value="36">36</td><td class="num" data-value="6">6</td><td class="num" data-value="304">304</td><td class="num" data-value="275">275 KB</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="8">8</td><td class="num" data-value="33">33</td><td class="num" data-value="6">6</td><td class="num" data-value="304">304</td><td class="num" data-value="275">275 KB</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="12">12</td><td class="num" data-value="25">25</td><td class="num" data-value="7">7</td><td class="num" data-value="35">35</td><td class="num" data-value="329">329 KB</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="16">16</td><td class="num" data-value="36">36</td><td class="num" data-value="7">7</td><td class="num" data-value="45">45</td><td class="num" data-value="41">41 KB</td></tr>
           </tbody>
         </table>
         <p class="source">Elements, attributes and depth of the measured block, including the shadow DOM. Uncompressed JavaScript for the whole page.</p>
@@ -301,7 +443,7 @@
 
       <section class="slide" id="cien-opciones">
         <h2 id="cien-opciones-titulo">With 100 options</h2>
-        <table>
+        <table data-chart="bars">
           <caption>100 radio buttons, CPU slowed down ×4, median of 5 runs</caption>
           <thead>
             <tr>
@@ -312,11 +454,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Native</th><td class="num">302</td><td class="num good">0 ms</td><td class="num good">&lt; 16 ms</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">405</td><td class="num">160 ms</td><td class="num">120 ms</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">305</td><td class="num">150 ms</td><td class="num">112 ms</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">903</td><td class="num">139 ms</td><td class="num bad">208 ms</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">1,402</td><td class="num bad">283 ms</td><td class="num">104 ms</td></tr>
+            <tr class="native"><th scope="row">Native</th><td class="num" data-value="302">302</td><td class="num good" data-value="0">0 ms</td><td class="num good" data-value="16">&lt; 16 ms</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="405">405</td><td class="num" data-value="160">160 ms</td><td class="num" data-value="120">120 ms</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="305">305</td><td class="num" data-value="150">150 ms</td><td class="num" data-value="112">112 ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="903">903</td><td class="num" data-value="139">139 ms</td><td class="num bad" data-value="208">208 ms</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="1402">1,402</td><td class="num bad" data-value="283">283 ms</td><td class="num" data-value="104">104 ms</td></tr>
           </tbody>
         </table>
         <p class="source">Click response is measured with Event Timing, which doesn't record events shorter than 16 ms. Above 200 ms, INP is no longer considered good.</p>
@@ -329,18 +471,18 @@
 
       <section class="slide" id="trabajo-de-accesibilidad">
         <h2 id="trabajo-de-accesibilidad-titulo">One click, with a screen reader listening</h2>
-        <table class="bars">
+        <table data-chart="bars">
           <caption>Accessibility work on the main thread after a click. 1,000 radio buttons, accessibility on, CPU ×4</caption>
           <thead>
-            <tr><th scope="col">Implementation</th><th scope="col" class="num">Milliseconds</th><th scope="col"><span class="visually-hidden">Proportional bar</span></th></tr>
+            <tr><th scope="col">Implementation</th><th scope="col" class="num">Milliseconds</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Native</th><td class="num">2.6</td><td class="bar-cell"><span class="bar" style="--value: 0.002"></span></td></tr>
-            <tr><th scope="row">Styled native</th><td class="num">3.2</td><td class="bar-cell"><span class="bar" style="--value: 0.003"></span></td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">185</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.156"></span></td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">446</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.375"></span></td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">453</td><td class="bar-cell"><span class="bar is-bad" style="--value: 0.381"></span></td></tr>
-            <tr><th scope="row">MUI</th><td class="num">1,189</td><td class="bar-cell"><span class="bar is-bad" style="--value: 1"></span></td></tr>
+            <tr class="native"><th scope="row">Native</th><td class="num" data-value="2.6">2.6</td></tr>
+            <tr class="native"><th scope="row">Styled native</th><td class="num" data-value="3.2">3.2</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num bad" data-value="185">185</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num bad" data-value="446">446</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num bad" data-value="453">453</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad" data-value="1189">1,189</td></tr>
           </tbody>
         </table>
         <p class="source">Chrome with <code>--force-renderer-accessibility</code>, which is what happens when a screen reader is running. With 100 options: 1 ms for native versus 36 ms for MUI.</p>
@@ -362,11 +504,11 @@ updateTabIndices() {
     if (sibling !== focusable) sibling.tabIndex = -1;
   }
 }</code></pre>
-        <table>
+        <table data-chart="columns" data-chart-by="row">
           <caption>Time until the page finishes rendering (no CPU slowdown)</caption>
           <thead><tr><th scope="col">Options</th><th scope="col" class="num">100</th><th scope="col" class="num">300</th><th scope="col" class="num">1,000</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Time</th><td class="num">0.1 s</td><td class="num">0.8 s</td><td class="num bad">24 s</td></tr>
+            <tr><th scope="row">Time</th><td class="num" data-value="0.1">0.1 s</td><td class="num" data-value="0.8">0.8 s</td><td class="num bad" data-value="24">24 s</td></tr>
           </tbody>
         </table>
         <div class="notes">
@@ -395,12 +537,12 @@ updateTabIndices() {
 
       <section class="slide" id="matiz-tamano-dom">
         <h2 id="matiz-tamano-dom-titulo">An honest caveat: DOM size matters too</h2>
-        <table>
+        <table data-chart="columns">
           <caption>Native radio with 1,000 options, CPU ×4</caption>
           <thead><tr><th scope="col">Accessibility</th><th scope="col" class="num">Blocking time on load</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Off</th><td class="num">16 ms</td></tr>
-            <tr><th scope="row">On</th><td class="num bad">479 ms</td></tr>
+            <tr><th scope="row">Off</th><td class="num" data-value="16">16 ms</td></tr>
+            <tr><th scope="row">On</th><td class="num bad" data-value="479">479 ms</td></tr>
           </tbody>
         </table>
         <p>Semantic HTML reduces the cost, but doesn't remove it: <strong>less DOM means less work for the accessibility tree</strong>.</p>
@@ -413,7 +555,15 @@ updateTabIndices() {
 
       <section class="slide" id="chrome-accessibility">
         <h2 id="chrome-accessibility-titulo">The switch you don't see</h2>
-        <table>
+        <p class="demo-badge">Live demo: <code>chrome://accessibility</code></p>
+        <figure class="visual-only">
+          <picture>
+            <source srcset="../assets/chrome-accessibility.avif" type="image/avif">
+            <img src="../assets/chrome-accessibility.webp" width="1600" height="846" loading="lazy" decoding="async"
+                 alt="Chrome's chrome://accessibility page. Under Accessibility modes, Native accessibility API support, Web accessibility, Text metrics, Extended properties and Screen reader are checked, and HTML is unchecked. Under Active assistive technology it says VoiceOver, and that it is a screen reader.">
+          </picture>
+        </figure>
+        <table data-visual="hidden">
           <caption>Accessibility modes in <code>chrome://accessibility</code></caption>
           <thead><tr><th scope="col">Mode</th><th scope="col">What Chrome adds</th></tr></thead>
           <tbody>
@@ -428,10 +578,10 @@ updateTabIndices() {
         <p>They turn on on demand: a screen reader asks for the full tree; dictation, the basic one; a password manager, the forms.</p>
         <div class="notes">
           <h3 id="chrome-accessibility-notas">Notes</h3>
-          <p>If you type chrome://accessibility in the address bar, Chrome shows you something you normally don't see: which parts of the accessibility tree it is building and why. By default everything is off. Chrome turns it on on demand, when an application on the system asks it about the page.</p>
+          <p>I show this live, in Chrome. If you type chrome://accessibility in the address bar, Chrome shows you something you normally don't see: which parts of the accessibility tree it is building and why. By default everything is off. Chrome turns it on on demand, when an application on the system asks it about the page.</p>
           <p>And it isn't all or nothing. There are modes. One connects Chrome to the system's accessibility APIs. Another builds the page's tree, with the role, name, value, state and position of every node. Others add the line breaks in the text, extended properties such as live regions or table cells, what only a screen reader needs, or every HTML attribute.</p>
           <p>According to the Chromium source code, a screen reader turns on the full mode; a dictation tool, the basic one; and a password manager, a mode that only builds the forms. In other words, the cost of the accessibility tree isn't paid only by people who use a screen reader.</p>
-          <p>I found this out by accident while preparing this talk. After the VoiceOver tests, macOS kept flagging VoiceOver as active even though it was off. This page listed VoiceOver as an active assistive technology, and Chrome was building the full tree on every page I opened. I noticed because the test bench, with accessibility turned off, started measuring accessibility work: between 30 and 50 extra milliseconds on every load of the travel website, with the CPU slowed down like a modest phone's. That's the tax that people who use assistive technology pay on every page. The lighter the page, the smaller the tax.</p>
+          <p>I found this out by accident while preparing this talk. After the VoiceOver tests, macOS kept flagging VoiceOver as active even though it was off. This page said “active assistive technology: VoiceOver”, and Chrome was building the full tree on every page I opened. I noticed because the test bench, with accessibility turned off, started measuring accessibility work: between 30 and 50 extra milliseconds on every load of the travel website, with the CPU slowed down like a modest phone's. That's the tax that people who use assistive technology pay on every page. The lighter the page, the smaller the tax.</p>
           <p>The mode descriptions come from the Chromium source code, from the file ui/accessibility/ax_mode.h, and from the page itself in Chrome 158.</p>
           <p>For the measurements, Chrome has two startup flags: force-renderer-accessibility, which turns on the tree the way a screen reader would, and disable-platform-accessibility-integration, which ignores whatever the operating system says.</p>
         </div>
@@ -441,11 +591,11 @@ updateTabIndices() {
 
       <section class="slide" id="diez-anos">
         <h2 id="diez-anos-titulo">Ten years asking the same question</h2>
-        <ol>
-          <li><strong>2016</strong>: Marcy Sutton: <q>you can't optimize what you can't measure</q>. She proposes an “Accessibility Tree Ready” metric.</li>
-          <li><strong>2020</strong>: Scott Jehl asks Lighthouse for metrics that include assistive technology (issue #11049). It's still open.</li>
-          <li><strong>2024</strong>: Eric Bailey asks for it again at performance.now().</li>
-          <li><strong>2026</strong>: here we are.</li>
+        <ol class="timeline" data-build="cumulative">
+          <li><strong>2016</strong><span class="timeline-sep">: </span>Marcy Sutton: <q>you can't optimize what you can't measure</q>. She proposes an “Accessibility Tree Ready” metric.</li>
+          <li><strong>2020</strong><span class="timeline-sep">: </span>Scott Jehl asks Lighthouse for metrics that include assistive technology (issue #11049). It's still open.</li>
+          <li><strong>2024</strong><span class="timeline-sep">: </span>Eric Bailey asks for it again at performance.now().</li>
+          <li><strong>2026</strong><span class="timeline-sep">: </span>here we are.</li>
         </ol>
         <div class="notes">
           <h3 id="diez-anos-notas">Notes</h3>
@@ -474,28 +624,28 @@ updateTabIndices() {
         <ul>
           <li>Accessibility work grows with the amount and complexity of the DOM.</li>
           <li>After a click, with 1,000 options: <strong>2.6 ms</strong> with the native radio versus <strong>185–1,189 ms</strong> with framework components.</li>
-          <li>That work happens on the main thread: it competes with the response to the interaction.</li>
+          <li>That work happens on the main thread: it competes with the response to the interaction and with tracking.</li>
         </ul>
         <div class="notes">
           <h3 id="resultado-navegador-notas">Notes</h3>
-          <p>On the browser side, the hypothesis is confirmed: accessibility work grows with the size and complexity of the DOM, and with framework components it's between seventy and four hundred and fifty times higher after the same click. And it happens on the main thread, the same one that has to respond to the person.</p>
+          <p>On the browser side, the hypothesis is confirmed: accessibility work grows with the size and complexity of the DOM, and with framework components it's between seventy and four hundred and fifty times higher after the same click. And it happens on the main thread, the same one that has to respond to the person, and the same one where tracking and third-party scripts run. My tests don't include them, but in a real product they are almost always there, so the competition for the main thread is usually even greater.</p>
         </div>
       </section>
 
       <section class="slide" id="resultado-voiceover">
         <h2 id="resultado-voiceover-titulo">In VoiceOver: you can hear it too</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Time from pressing the arrow key until VoiceOver announces the option (median, ms). Chrome with CPU ×4</caption>
           <thead>
             <tr><th scope="col">Implementation</th><th scope="col" class="num">10 options</th><th scope="col" class="num">100 options</th><th scope="col" class="num">1,000 options</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Native</th><td class="num good">33</td><td class="num good">64</td><td class="num">436</td></tr>
-            <tr><th scope="row">Styled native</th><td class="num good">32</td><td class="num good">67</td><td class="num">437</td></tr>
-            <tr><th scope="row">shadcn (Base UI)</th><td class="num">47</td><td class="num">106</td><td class="num bad">1,063</td></tr>
-            <tr><th scope="row">shadcn (Radix)</th><td class="num">47</td><td class="num">99</td><td class="num bad">859</td></tr>
-            <tr><th scope="row">MUI</th><td class="num">57</td><td class="num bad">171</td><td class="num bad">1,973</td></tr>
-            <tr><th scope="row">Material Web</th><td class="num">45</td><td class="num">79</td><td class="num bad">1,068</td></tr>
+            <tr class="native"><th scope="row">Native</th><td class="num good" data-value="33">33</td><td class="num good" data-value="64">64</td><td class="num" data-value="436">436</td></tr>
+            <tr class="native"><th scope="row">Styled native</th><td class="num good" data-value="32">32</td><td class="num good" data-value="67">67</td><td class="num" data-value="437">437</td></tr>
+            <tr><th scope="row">shadcn (Base UI)</th><td class="num" data-value="47">47</td><td class="num" data-value="106">106</td><td class="num bad" data-value="1063">1,063</td></tr>
+            <tr><th scope="row">shadcn (Radix)</th><td class="num" data-value="47">47</td><td class="num" data-value="99">99</td><td class="num bad" data-value="859">859</td></tr>
+            <tr><th scope="row">MUI</th><td class="num" data-value="57">57</td><td class="num bad" data-value="171">171</td><td class="num bad" data-value="1973">1,973</td></tr>
+            <tr><th scope="row">Material Web</th><td class="num" data-value="45">45</td><td class="num" data-value="79">79</td><td class="num bad" data-value="1068">1,068</td></tr>
           </tbody>
         </table>
         <p>With 1,000 options, MUI takes <strong>almost 2 s</strong> per option: 4.5 times as long as native.</p>
@@ -509,12 +659,12 @@ updateTabIndices() {
 
       <section class="slide" id="travel-escenario">
         <h2 id="travel-escenario-titulo">A real website: A11yConf Travel</h2>
-        <table>
+        <table data-chart="bars">
           <caption>The same hotel search, with the same content and the same accessible names</caption>
           <thead><tr><th scope="col">Version</th><th scope="col">Built with</th><th scope="col" class="num">JavaScript</th><th scope="col" class="num">Elements</th><th scope="col" class="num">CSS selectors</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Native</th><td>HTML: <code>select</code>, dates, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good">10.6 KB</td><td class="num good">758</td><td class="num good">68</td></tr>
-            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad">785 KB</td><td class="num bad">2,041</td><td class="num bad">626</td></tr>
+            <tr class="native"><th scope="row">Native</th><td>HTML: <code>select</code>, dates, <code>range</code>, checkbox, radio, <code>dialog</code></td><td class="num good" data-value="10.6">10.6 KB</td><td class="num good" data-value="758">758</td><td class="num good" data-value="68">68</td></tr>
+            <tr><th scope="row">Legacy</th><td>React, MUI, react-select, react-datepicker, react-modal</td><td class="num bad" data-value="785">785 KB</td><td class="num bad" data-value="2041">2,041</td><td class="num bad" data-value="626">626</td></tr>
           </tbody>
         </table>
         <p>The task: 14 keyboard steps. Filter by stars, price and meal plan, open a hotel, go through its rooms and close it.</p>
@@ -528,38 +678,43 @@ updateTabIndices() {
 
       <section class="slide" id="travel-navegador">
         <h2 id="travel-navegador-titulo">In the browser: the tree costs the same; what surrounds it doesn't</h2>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>The 14-step task with accessibility turned on. Median of 5 runs, CPU ×4</caption>
-          <thead><tr><th scope="col">Measure</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Measure</th><th scope="col" class="num native">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Main thread</th><td class="num good">255 ms</td><td class="num bad">991 ms</td></tr>
-            <tr><th scope="row">JavaScript</th><td class="num good">79 ms</td><td class="num bad">464 ms</td></tr>
-            <tr><th scope="row">Accessibility work</th><td class="num">56 ms</td><td class="num">57 ms</td></tr>
-            <tr><th scope="row">Slowest interaction</th><td class="num good">24 ms</td><td class="num bad">72 ms</td></tr>
-            <tr><th scope="row">LCP on load</th><td class="num good">176 ms</td><td class="num bad">484 ms</td></tr>
+            <tr><th scope="row">Main thread</th><td class="num good" data-value="255">255 ms</td><td class="num bad" data-value="991">991 ms</td></tr>
+            <tr><th scope="row">JavaScript</th><td class="num good" data-value="79">79 ms</td><td class="num bad" data-value="464">464 ms</td></tr>
+            <tr><th scope="row">Accessibility work</th><td class="num" data-value="56">56 ms</td><td class="num" data-value="57">57 ms</td></tr>
+            <tr><th scope="row">Slowest interaction</th><td class="num good" data-value="24">24 ms</td><td class="num bad" data-value="72">72 ms</td></tr>
+            <tr><th scope="row">LCP on load</th><td class="num good" data-value="176">176 ms</td><td class="num bad" data-value="484">484 ms</td></tr>
           </tbody>
         </table>
         <p class="source">The traces, ready to open in DevTools, are in the repository: <code>bench/traces/travel/</code>.</p>
+        <div class="demo">
+          <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/VoRFo6QOSY" data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the 14-step task in the legacy version on trace.cafe">Open the demo: legacy</button>
+          <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/XLPHjpSGiI" data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the 14-step task in the native version on trace.cafe">Open the demo: native</button>
+        </div>
         <div class="notes">
           <h3 id="travel-navegador-notas">Notes</h3>
           <p>Here comes an important caveat. With a realistic page, the accessibility tree work is practically the same in both versions: 56 milliseconds versus 57 across the whole task. The nodes that reach the screen reader are almost the same, about 1,480 in each version; the legacy version's more than 500 extra nodes are ignored nodes, which never reach the screen reader.</p>
           <p>What changes is everything that happens around each key press. The legacy version keeps the main thread busy almost four times as long, runs almost six times as much JavaScript, and its slowest interaction takes 72 milliseconds versus 24. And the page takes almost three times as long to paint the main content.</p>
           <p>The traces for each version are published in the repository. Each step of the task appears by name in the Timings track of the Performance panel, and the text summary in the repository has the same figures, step by step.</p>
+          <p>Live, I open both traces on trace.cafe, one run of each version with accessibility turned on. Three things to look at. First, step 2, checking “<span lang="es">4 estrellas</span>” (4 stars): in the legacy version, a single React click handler takes 49 milliseconds of a 54-millisecond task, and the interaction takes 75 milliseconds; in the native one, 21. Second, step 11, opening the hotel details: 101 milliseconds of main thread in the legacy version versus 21 in the native one, again almost all of it JavaScript. Third, something that doesn't show up in INP: every Tab in the legacy version costs between 30 and 44 milliseconds of main thread spread across about a hundred tasks, because of the focus handlers and the ripple effect, versus about 5 milliseconds and some twenty tasks in the native one. None of those tasks is long, so no metric flags them, but it happens again on every key press. The accessibility work, on the other hand, is similar in both, and in step 2 it's even a little higher in the native version, because it actually updates the list in the DOM.</p>
         </div>
       </section>
 
       <section class="slide" id="travel-voiceover">
         <h2 id="travel-voiceover-titulo">In VoiceOver: slower in all 14 steps</h2>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>From the key press until VoiceOver responds. Median of 5 runs, CPU ×4</caption>
-          <thead><tr><th scope="col">Step</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Step</th><th scope="col" class="num native">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Tab between the star filters</th><td class="num good">18–21&nbsp;ms</td><td class="num">36–40&nbsp;ms</td></tr>
-            <tr><th scope="row">Check 4 stars until you hear “<span lang="es">6 hoteles encontrados</span>” (6 hotels found)</th><td class="num">162&nbsp;ms</td><td class="num">200&nbsp;ms</td></tr>
-            <tr><th scope="row">Change the meal plan with the arrow keys</th><td class="num good">50–52&nbsp;ms</td><td class="num">81–92&nbsp;ms</td></tr>
-            <tr><th scope="row">Open the hotel details</th><td class="num good">70&nbsp;ms</td><td class="num">93&nbsp;ms</td></tr>
-            <tr><th scope="row">Close with Escape and return to the button</th><td class="num good">59&nbsp;ms</td><td class="num">88&nbsp;ms</td></tr>
-            <tr><th scope="row">The whole task</th><td class="num good">648&nbsp;ms</td><td class="num bad">959&nbsp;ms</td></tr>
+            <tr><th scope="row">Tab between the star filters</th><td class="num good" data-value="21">18–21&nbsp;ms</td><td class="num" data-value="40">36–40&nbsp;ms</td></tr>
+            <tr><th scope="row">Check 4 stars until you hear “<span lang="es">6 hoteles encontrados</span>” (6 hotels found)</th><td class="num" data-value="162">162&nbsp;ms</td><td class="num" data-value="200">200&nbsp;ms</td></tr>
+            <tr><th scope="row">Change the meal plan with the arrow keys</th><td class="num good" data-value="52">50–52&nbsp;ms</td><td class="num" data-value="92">81–92&nbsp;ms</td></tr>
+            <tr><th scope="row">Open the hotel details</th><td class="num good" data-value="70">70&nbsp;ms</td><td class="num" data-value="93">93&nbsp;ms</td></tr>
+            <tr><th scope="row">Close with Escape and return to the button</th><td class="num good" data-value="59">59&nbsp;ms</td><td class="num" data-value="88">88&nbsp;ms</td></tr>
+            <tr><th scope="row">The whole task</th><td class="num good" data-value="648">648&nbsp;ms</td><td class="num bad" data-value="959">959&nbsp;ms</td></tr>
           </tbody>
         </table>
         <p>It isn't the 2 seconds of the 1,000 radios: it's tens of milliseconds on <strong>every</strong> key press.</p>
@@ -574,13 +729,13 @@ updateTabIndices() {
       <section class="slide" id="travel-ripple">
         <h2 id="travel-ripple-titulo">What only shows up in the trace</h2>
         <p>With keyboard focus on a control, MUI animates a “ripple” in an infinite loop, even with <code>prefers-reduced-motion: reduce</code>.</p>
-        <table>
+        <table data-chart="bars" data-chart-by="row">
           <caption>Keyboard focus on “<span lang="es">4 estrellas</span>” (4 stars) and 5 seconds without touching anything. Median of 3 runs, CPU ×4</caption>
-          <thead><tr><th scope="col">Measure</th><th scope="col" class="num">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
+          <thead><tr><th scope="col">Measure</th><th scope="col" class="num native">Native</th><th scope="col" class="num">Legacy</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Frames generated</th><td class="num good">30</td><td class="num bad">299</td></tr>
-            <tr><th scope="row">GPU work</th><td class="num good">10&nbsp;ms</td><td class="num bad">74&nbsp;ms</td></tr>
-            <tr><th scope="row">Compositor tasks</th><td class="num good">2</td><td class="num bad">1,719</td></tr>
+            <tr><th scope="row">Frames generated</th><td class="num good" data-value="30">30</td><td class="num bad" data-value="299">299</td></tr>
+            <tr><th scope="row">GPU work</th><td class="num good" data-value="10">10&nbsp;ms</td><td class="num bad" data-value="74">74&nbsp;ms</td></tr>
+            <tr><th scope="row">Compositor tasks</th><td class="num good" data-value="2">2</td><td class="num bad" data-value="1719">1,719</td></tr>
           </tbody>
         </table>
         <p class="source">Trace for DevTools: <code>bench/traces/focus-idle/</code>. In the legacy version, the Frames track is one continuous band.</p>
@@ -595,6 +750,7 @@ updateTabIndices() {
 
       <section class="slide" id="travel-ripple-devtools">
         <h2 id="travel-ripple-devtools-titulo">The same trace, in DevTools</h2>
+        <div class="demo" data-demo-url="">
         <figure class="trace-strips">
           <p class="trace-label">Legacy</p>
           <picture>
@@ -610,24 +766,54 @@ updateTabIndices() {
           </picture>
           <figcaption>Frames and Timings tracks in the Chrome DevTools Performance panel, with keyboard focus on “<span lang="es">4 estrellas</span>” and 5 seconds without touching anything. Trace: <code>bench/traces/focus-idle/</code>.</figcaption>
         </figure>
+        <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/ihrNliptjB" data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the legacy version's trace on trace.cafe">Open the demo: legacy</button>
+        <button type="button" class="demo-open" hidden data-demo-url="https://trace.cafe/t/J5PZ7aWCIg" data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the native version's trace on trace.cafe">Open the demo: native</button>
+        </div>
         <div class="notes">
           <h3 id="travel-ripple-devtools-notas">Notes</h3>
           <p>The two captures from the DevTools Performance panel show the difference. At the top, the legacy version: from about 1.6 seconds on, the Frames track fills up with frames, one after another, until the end. At the bottom, the native version: the Frames track stays empty for the whole five seconds.</p>
           <p>Both traces are in the repository, in the bench/traces/focus-idle folder, and you can open them by dragging them into the Performance panel in Chrome DevTools.</p>
+          <p>Live, I open them on trace.cafe. In the legacy version, the Frames track never stops: 309 frames in five seconds without touching anything. In the native one, 34.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="demo-mui">
+        <h2 id="demo-mui-titulo">On a real website: the MUI documentation</h2>
+        <div class="demo" data-demo-url="https://trace.cafe/t/rU5JSwqmGV">
+          <figure>
+            <picture>
+              <source srcset="../assets/mui-docs-edit-in-chat.avif" type="image/avif">
+              <img src="../assets/mui-docs-edit-in-chat.webp" width="660" height="380" loading="lazy" decoding="async"
+                   alt="The “Radio group” example from the MUI documentation: a “Gender” radio group and, below it, the example toolbar with the “Edit in Chat” button on the left.">
+            </picture>
+            <figcaption>mui.com/material-ui/react-radio-button: every example has its own “<span>Edit in Chat</span>” button.</figcaption>
+          </figure>
+          <button type="button" class="demo-open" hidden data-close-label="Close the demo" data-fullscreen-label="Full screen" data-frame-title="Live demo: the mui.com trace on trace.cafe">Open the demo</button>
+        </div>
+        <ul>
+          <li>20 “<span>Edit in Chat</span>” buttons with a shimmer in an infinite loop, even with <code>prefers-reduced-motion: reduce</code>.</li>
+          <li>5 seconds without touching anything, CPU ×4: <strong>about 580 frames</strong>, <strong>1.3 s</strong> of main thread and 14,840 paints.</li>
+        </ul>
+        <p class="source">Trace for DevTools: <code>bench/traces/demos/</code>.</p>
+        <div class="notes">
+          <h3 id="demo-mui-notas">Notes</h3>
+          <p>Does this happen outside my mock-up? I looked for a real website built with React and MUI, and the most obvious one is the MUI documentation itself. On the radio buttons page, every example has an “<span>Edit in Chat</span>” button with a shimmer that sweeps across the button every two seconds, nonstop. There are twenty of them on the page.</p>
+          <p>I recorded the page for five seconds without touching anything, with the CPU four times slower and the reduced motion preference turned on. Chrome generated about 580 frames, the main thread worked for 1.3 seconds and painted almost fifteen thousand times. The shimmer animates the background position, which can't be handed off to the compositor, so every frame is repainted on the main thread. And it doesn't respect the request for reduced motion.</p>
+          <p>In that same documentation, the keyboard focus ripple doesn't appear when reduced motion is requested, even though on my travel website, with the same version of MUI, it does: the documentation takes care of it for the ripple but not for the shimmer. Live, I open the trace in the Performance panel; it's also in the repository, in bench/traces/demos.</p>
         </div>
       </section>
 
       <section class="slide" id="iphone">
         <h2 id="iphone-titulo">An iPhone 16 Pro and 1,000 radio buttons</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Time Safari stays blocked, measured on the iPhone itself with the in-browser benchmark</caption>
           <thead>
             <tr><th scope="col">Implementation</th><th scope="col" class="num">Click, without VoiceOver</th><th scope="col" class="num">Click, with VoiceOver</th><th scope="col" class="num">Load, without VoiceOver</th><th scope="col" class="num">Load, with VoiceOver</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Native HTML</th><td class="num good">0&nbsp;ms</td><td class="num good">0&nbsp;ms</td><td class="num good">43&nbsp;ms</td><td class="num good">83&nbsp;ms</td></tr>
-            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num">68–74&nbsp;ms</td><td class="num">63–68&nbsp;ms</td><td class="num">214&nbsp;ms</td><td class="num">228&nbsp;ms</td></tr>
-            <tr><th scope="row">MUI</th><td class="num bad">4.8–5.0&nbsp;s</td><td class="num bad">5.1&nbsp;s</td><td class="num">556&nbsp;ms</td><td class="num">552&nbsp;ms</td></tr>
+            <tr class="native"><th scope="row">Native HTML</th><td class="num good" data-value="0">0&nbsp;ms</td><td class="num good" data-value="0">0&nbsp;ms</td><td class="num good" data-value="43">43&nbsp;ms</td><td class="num good" data-value="83">83&nbsp;ms</td></tr>
+            <tr><th scope="row">shadcn/ui (Radix)</th><td class="num" data-value="74">68–74&nbsp;ms</td><td class="num" data-value="68">63–68&nbsp;ms</td><td class="num" data-value="214">214&nbsp;ms</td><td class="num" data-value="228">228&nbsp;ms</td></tr>
+            <tr><th scope="row">MUI</th><td class="num bad" data-value="5000">4.8–5.0&nbsp;s</td><td class="num bad" data-value="5100">5.1&nbsp;s</td><td class="num" data-value="556">556&nbsp;ms</td><td class="num" data-value="552">552&nbsp;ms</td></tr>
           </tbody>
         </table>
         <p>With MUI, <strong>every click freezes Safari for 5 seconds</strong>, with or without VoiceOver. With native HTML, 0.</p>
@@ -642,7 +828,7 @@ updateTabIndices() {
 
       <section class="slide" id="limitaciones">
         <h2 id="limitaciones-titulo">What this data doesn't tell us</h2>
-        <ul>
+        <ul data-build="cumulative">
           <li>Only Chrome and only VoiceOver on macOS: no NVDA, no JAWS, no TalkBack, no braille displays.</li>
           <li>A fast laptop with a slowed-down CPU isn't a low-end phone.</li>
           <li>Local server, with no network throttling.</li>
@@ -661,12 +847,12 @@ updateTabIndices() {
 
       <section class="slide" id="el-mismo-patron">
         <h2 id="el-mismo-patron-titulo">The same pattern, decade after decade</h2>
-        <ol>
-          <li><strong>2016</strong>, Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
-          <li><strong>2024</strong>, Material Components Web: the radio that hung VoiceOver.</li>
-          <li><strong>2026</strong>, shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+        <ol class="timeline" data-build="cumulative">
+          <li><strong>2016</strong><span class="timeline-sep">, </span>Angular Material: <code>&lt;md-checkbox role="checkbox" tabindex="0"&gt;</code></li>
+          <li><strong>2024</strong><span class="timeline-sep">, </span>Material Components Web: the radio that hung VoiceOver.</li>
+          <li><strong>2026</strong><span class="timeline-sep">, </span>shadcn/ui: <code>&lt;button role="radio"&gt;</code></li>
+          <li><strong>Now</strong><span class="timeline-sep">: </span>an AI writes it.</li>
         </ol>
-        <p>And now an AI writes it.</p>
         <div class="notes">
           <h3 id="el-mismo-patron-notas">Notes</h3>
           <p>Look at the pattern. In 2016, Marcy Sutton's example was an Angular Material checkbox, a custom element with its role and tabindex set by hand. In 2024, the Material radio that hung VoiceOver. In 2026, the shadcn radio: a button with the radio role.</p>
@@ -694,12 +880,12 @@ updateTabIndices() {
 
       <section class="slide" id="carpeta-vacia">
         <h2 id="carpeta-vacia-titulo">In an empty folder: semantic HTML</h2>
-        <table>
+        <table data-chart="dots" data-max="3">
           <caption>Empty folder, no technology specified</caption>
           <thead><tr><th scope="col">Agent</th><th scope="col">What it generated</th><th scope="col" class="num">Native radio</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Claude Code</th><td>A single <code>index.html</code></td><td class="num good">3 of 3</td></tr>
-            <tr><th scope="row">Antigravity</th><td>HTML, CSS and JavaScript without a framework</td><td class="num good">3 of 3</td></tr>
+            <tr><th scope="row">Claude Code</th><td>A single <code>index.html</code></td><td class="num good" data-value="3">3 of 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td>HTML, CSS and JavaScript without a framework</td><td class="num good" data-value="3">3 of 3</td></tr>
           </tbody>
         </table>
         <p>With <code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, <code>&lt;label&gt;</code>, a skip link and an <code>aria-live</code> region.</p>
@@ -712,12 +898,12 @@ updateTabIndices() {
 
       <section class="slide" id="proyecto-react">
         <h2 id="proyecto-react-titulo">In a React project with shadcn: the project's pattern</h2>
-        <table>
+        <table data-chart="dots" data-max="3">
           <caption>Existing React + shadcn/ui project, without the radio-group component installed</caption>
           <thead><tr><th scope="col">Agent</th><th scope="col" class="num">Radix <code>RadioGroup</code></th><th scope="col" class="num">Native radio</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Claude Code</th><td class="num bad">3 of 3</td><td class="num">0 of 3</td></tr>
-            <tr><th scope="row">Antigravity</th><td class="num bad">3 of 3</td><td class="num">0 of 3</td></tr>
+            <tr><th scope="row">Claude Code</th><td class="num bad" data-value="3">3 of 3</td><td class="num" data-value="0">0 of 3</td></tr>
+            <tr><th scope="row">Antigravity</th><td class="num bad" data-value="3">3 of 3</td><td class="num" data-value="0">0 of 3</td></tr>
           </tbody>
         </table>
         <p>The component wasn't installed: the agents <strong>wrote it by hand</strong>, imitating the shadcn one.</p>
@@ -756,13 +942,13 @@ updateTabIndices() {
 
       <section class="slide" id="instalado-no-basta">
         <h2 id="instalado-no-basta-titulo">Installing it isn't always enough: the agent has to consult it</h2>
-        <table>
+        <table data-chart="dots" data-chart-by="row" data-max="3">
           <caption>Native radio in the React + shadcn project (in parentheses, how many times it consulted Modern Web Guidance)</caption>
           <thead><tr><th scope="col">Condition</th><th scope="col" class="num">Claude Code</th><th scope="col" class="num">Antigravity</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Without Modern Web Guidance</th><td class="num">0 of 3</td><td class="num">0 of 3</td></tr>
-            <tr><th scope="row">Installed</th><td class="num">1 of 3 (1)</td><td class="num good">3 of 3 (3)</td></tr>
-            <tr><th scope="row">Installed + <code>AGENTS.md</code></th><td class="num good">3 of 3 (3)</td><td class="num good">3 of 3 (3)</td></tr>
+            <tr><th scope="row">Without Modern Web Guidance</th><td class="num" data-value="0">0 of 3</td><td class="num" data-value="0">0 of 3</td></tr>
+            <tr><th scope="row">Installed</th><td class="num" data-value="1">1 of 3 (1)</td><td class="num good" data-value="3">3 of 3 (3)</td></tr>
+            <tr><th scope="row">Installed + <code>AGENTS.md</code></th><td class="num good" data-value="3">3 of 3 (3)</td><td class="num good" data-value="3">3 of 3 (3)</td></tr>
           </tbody>
         </table>
         <div class="notes">
@@ -796,12 +982,12 @@ updateTabIndices() {
 
       <section class="slide" id="coste-del-agente">
         <h2 id="coste-del-agente-titulo">And how much does it cost?</h2>
-        <table>
+        <table data-chart="bars">
           <caption>Cost per Claude Code generation</caption>
           <thead><tr><th scope="col">Condition</th><th scope="col" class="num">Cost</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Without Modern Web Guidance</th><td class="num">$0.32–0.37</td></tr>
-            <tr><th scope="row">With Modern Web Guidance</th><td class="num">$0.46–0.71</td></tr>
+            <tr><th scope="row">Without Modern Web Guidance</th><td class="num" data-value="0.37">$0.32–0.37</td></tr>
+            <tr><th scope="row">With Modern Web Guidance</th><td class="num" data-value="0.71">$0.46–0.71</td></tr>
           </tbody>
         </table>
         <p>A few cents more, once, versus hundreds of milliseconds on every click of every visit.</p>
@@ -852,41 +1038,54 @@ updateTabIndices() {
               <li>If you use a screen reader, run it twice: with it off and with it on.</li>
               <li>Nothing is sent unless you decide to send it.</li>
             </ul>
+            <p><a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil/issues/1">An example of results: iPhone 16 Pro with VoiceOver</a></p>
           </div>
         </div>
         <div class="notes">
           <h3 id="haz-la-prueba-notas">Notes</h3>
-          <p>Everything I've shown you comes from a single laptop. And I'd like it to come from your devices. If you open the address on the screen, or scan the QR code, you'll reach a version of the benchmark that runs in the browser, on your phone too, without installing anything. The address is the same as the slides, ending in slash benchmark: nucliweb dot github dot io, slash, <span lang="es">el árbol de accesibilidad frágil</span> with hyphens between the words, slash, benchmark.</p>
+          <p>Everything I've shown you comes from a single laptop. And I'd like it to come from your devices. If you open the address on the screen, or scan the QR code, you'll reach a version of the benchmark that runs in the browser, on your phone too, without installing anything. The address is the same as the slides, ending in slash benchmark: nucliweb dot github dot io, slash, el-arbol-de-accesibilidad-fragil, with hyphens between the words, slash, benchmark.</p>
           <p>The test loads the same pages you've seen, the group of a thousand radio buttons and the travel website, clicks on them and measures how long your browser stays blocked after each action. It takes about two minutes.</p>
-          <p>If you use a screen reader, I'd ask you for something more: run it twice, once with the screen reader off and once with it on. The page compares the two, and the difference is what the accessibility tree costs your device. At the end you'll see your results in a table, and you decide whether to share them in the repository. With VoiceOver on my laptop, a click on a thousand radio buttons blocks the browser for 0 milliseconds with native HTML, 86 with shadcn and 98 with MUI. I'm really curious to find out how much it is on your phones.</p>
+          <p>If you use a screen reader, I'd ask you for something more: run it twice, once with the screen reader off and once with it on. The page compares the two, and the difference is what the accessibility tree costs your device. At the end you'll see your results in a table, and you decide whether to share them in the repository. With VoiceOver on my laptop, a click on a thousand radio buttons blocks the browser for 0 milliseconds with native HTML, 86 with shadcn and 98 with MUI. I'm really curious to find out how much it is on your phones. On the slide there's a link to the first result I received, from an iPhone 16 Pro with VoiceOver, so you can see what it looks like.</p>
         </div>
       </section>
 
       <section class="slide" id="gracias">
-        <h2 id="gracias-titulo">Thank you</h2>
-        <p>Code, data and references: <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a> · <a href="https://joanleon.dev">joanleon.dev</a></p>
-        <h3>Credits</h3>
-        <ul>
+        <h2 id="gracias-titulo" class="thanks"><span lang="ca">Gràcies</span> <span lang="es">Gracias</span> <span>Thank you</span></h2>
+        <div class="columns qr-columns">
+          <figure class="qr">
+            <img src="../assets/qr-repo.svg" width="240" height="240"
+                 alt="QR code that opens the repository at github.com/nucliweb/el-arbol-de-accesibilidad-fragil">
+            <figcaption>
+              <a href="https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil">github.com/nucliweb/el-arbol-de-accesibilidad-fragil</a>
+              <p class="qr-note">Code, data, traces and references, in the repository.</p>
+            </figcaption>
+          </figure>
+          <div>
+            <h3>Credits</h3>
+            <ul>
           <li>Eric Bailey, <cite>Accessible is Performant</cite> (2024).</li>
           <li>Marcy Sutton, <cite>Accessibility and Performance</cite> (2016).</li>
           <li>Scott Jehl, Lighthouse #11049 (2020).</li>
           <li>Marco Zehe, performance work on the Firefox accessibility tree.</li>
           <li>Scott O'Hara, <cite>a11y_styled_form_controls</cite>.</li>
-        </ul>
+            </ul>
+          </div>
+        </div>
         <div class="notes">
           <h3 id="gracias-notas">Notes</h3>
-          <p>Thank you very much. All the test bench code, the agent experiment, the data and the references are in the repository. Special thanks to Eric Bailey, Marcy Sutton, Scott Jehl, Marco Zehe and Scott O'Hara, whose work this talk is built on. Questions?</p>
+          <p><span lang="ca">Gràcies</span>, <span lang="es">gracias</span>, thank you: I say thank you in Catalan in all my talks, to bring Catalan with me wherever I go. All the test bench code, the agent experiment, the data and the references are in the repository; the QR code on the screen takes you there. Special thanks to Eric Bailey, Marcy Sutton, Scott Jehl, Marco Zehe and Scott O'Hara, whose work this talk is built on. Questions?</p>
         </div>
       </section>
 
     </main>
 
     <nav id="deck-controls" aria-label="Presentation controls" hidden>
-      <button type="button" id="prev-slide">Previous</button>
-      <button type="button" id="next-slide">Next</button>
-      <button type="button" id="toggle-notes" aria-pressed="false">Notes</button>
-      <button type="button" id="toggle-document" aria-pressed="false">Document mode</button>
-      <button type="button" id="open-help">Help and settings</button>
+      <button type="button" id="prev-slide" aria-keyshortcuts="ArrowLeft">Previous</button>
+      <button type="button" id="next-slide" aria-keyshortcuts="ArrowRight">Next</button>
+      <button type="button" id="toggle-notes" aria-pressed="false" aria-keyshortcuts="N">Notes</button>
+      <button type="button" id="toggle-document" aria-pressed="false" aria-keyshortcuts="D">Document mode</button>
+      <button type="button" id="toggle-view" aria-pressed="false" aria-keyshortcuts="G">Text view</button>
+      <button type="button" id="open-help" aria-keyshortcuts="?">Help and settings</button>
       <span id="slide-counter"></span>
     </nav>
 
@@ -904,19 +1103,31 @@ updateTabIndices() {
           <tr><td><kbd>Home</kbd> and <kbd>End</kbd></td><td>First and last slide</td></tr>
           <tr><td><kbd>N</kbd></td><td>Show or hide the notes</td></tr>
           <tr><td><kbd>D</kbd></td><td>Document mode: all the slides on one page</td></tr>
+          <tr><td><kbd>G</kbd></td><td>Switch between the visual view (charts and diagrams) and the text view (tables and lists)</td></tr>
+          <tr><td><kbd>H</kbd></td><td>Hide or show the control bar; it comes back with Tab or the mouse</td></tr>
           <tr><td><kbd>T</kbd></td><td>Switch between the light and the dark theme</td></tr>
           <tr><td><kbd>L</kbd></td><td>Switch language, staying on the same slide</td></tr>
+          <tr><td><kbd>O</kbd></td><td>Open the slide's demo</td></tr>
+          <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>On slides with two demos, open the first or the second</td></tr>
+          <tr><td><kbd>F</kbd></td><td>Show the demo full screen, or leave full screen</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Close the demo</td></tr>
           <tr><td><kbd>?</kbd></td><td>Open this help</td></tr>
+          <tr><td>Hold <kbd>Alt</kbd> (<kbd>Option</kbd> on a Mac) for 2 seconds</td><td>See each button's key</td></tr>
         </tbody>
       </table>
       <p>
         <label>
           <input type="checkbox" id="single-key-shortcuts" checked>
-          Turn on single-key shortcuts (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>T</kbd>, <kbd>L</kbd> and <kbd>?</kbd>)
+          Turn on single-key shortcuts (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> and <kbd>?</kbd>)
         </label>
       </p>
       <p class="muted">If you use a screen reader, the arrow keys may not reach the page in browse mode. Use the Previous and Next buttons, or document mode.</p>
       <h3>Settings</h3>
+      <fieldset>
+        <legend>View</legend>
+        <label><input type="radio" name="view" value="visual" checked> Visual: charts and diagrams</label>
+        <label><input type="radio" name="view" value="text"> Text: tables and lists</label>
+      </fieldset>
       <fieldset>
         <legend>Theme</legend>
         <label><input type="radio" name="theme" value="system" checked> System theme</label>

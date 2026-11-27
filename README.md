@@ -1,29 +1,57 @@
-# El árbol de accesibilidad frágil
+# The fragile accessibility tree
 
-Repositorio de la presentación de la charla **[El árbol de accesibilidad frágil: por qué el HTML semántico es clave para el rendimiento web](https://2026.a11yconf.com/agenda/el-arbol-de-accesibilidad-fragil)**, presentada en la A11y Conf 2026.
+**English** · [Español](README.es.md) · [Català](README.ca.md)
 
-## Sobre la charla
+Slides, benchmark and data for the talk **[El árbol de accesibilidad frágil: por qué el HTML semántico es clave para el rendimiento web](https://2026.a11yconf.com/agenda/el-arbol-de-accesibilidad-fragil)** ("The fragile accessibility tree: why semantic HTML is key to web performance"), given in Spanish at A11y Conf 2026.
 
-Cada vez que el navegador pinta una página construye dos árboles: el DOM y, combinado con ARIA, el árbol de accesibilidad. Este árbol es el que usan lectores de pantalla y otras tecnologías de asistencia, pero también es clave, y poco conocida, para el rendimiento web.
+- **Slides**: [English](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/en/) · [Español](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/) · [Català](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/ca/). Every slide has notes written to be read, with a keyboard shortcut to show them, and a text view with tables instead of charts.
+- **Run the benchmark on your device**: <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>. About 2 minutes, nothing to install, also on a phone and with your screen reader.
 
-Veremos cómo funciona el renderizado de un navegador y en qué momento se genera el árbol de accesibilidad. Compararemos dos implementaciones reales de un radio button: una con un design system popular basado en divs y JavaScript, y otra con HTML semántico accesible por defecto. La diferencia en elementos del DOM, atributos, CSS y JS es enorme, y se traduce en tiempo de parsing, cálculo de estilos y bloqueo del hilo principal.
+## About the talk
 
-Descubriremos la relación, no siempre visible, entre "accesible" y "rápido", y por qué el HTML semántico frente a soluciones sobrediseñadas mejora tanto la experiencia de personas usuarias de tecnología de asistencia como las métricas de Core Web Vitals. Priorizar la experiencia de desarrollo sobre la de usuario final tiene un coste real y medible.
+Every time the browser renders a page it builds two trees: the DOM and, combined with ARIA, the accessibility tree. Screen readers and other assistive technologies use that tree, and it is also a key, little-known part of web performance.
 
-Saldrás con argumentos y ejemplos concretos para defender el HTML semántico como primera línea de optimización, de accesibilidad y de rendimiento.
+The talk looks at how a browser renders a page and when the accessibility tree is built. It compares real implementations of a radio button: popular design systems built on divs and JavaScript, and semantic HTML that is accessible by default. The difference in DOM elements, attributes, CSS and JavaScript is huge, and it turns into parsing time, style calculation and a blocked main thread.
 
-## Cómo usar este repositorio
+It shows the link, not always visible, between "accessible" and "fast", and why semantic HTML, rather than over-engineered solutions, improves both the experience of people who use assistive technology and the Core Web Vitals. Putting the developer experience before the user experience has a real, measurable cost.
 
-| Carpeta | Qué contiene | Cómo empezar |
+## What the data shows
+
+Measured in Chrome with the accessibility tree on (`--force-renderer-accessibility`) and the CPU slowed down 4x, and with VoiceOver on macOS driven automatically:
+
+- After one click in a group of 1,000 radio buttons, Chrome spends **2.6 ms** on accessibility work with native radios and **185–1,189 ms** with component libraries (shadcn/ui, Material Web, MUI).
+- With 1,000 options, VoiceOver takes **436 ms** to announce the next option with native radios and up to **1,973 ms** with MUI.
+- In a realistic hotel search, A11yConf Travel, the accessibility tree costs the same in both versions (56 and 57 ms over a 14-step keyboard task). What changes is everything around it: **255 vs 991 ms** of main thread and **79 vs 464 ms** of JavaScript. Every Tab in the legacy version runs about 100 small tasks (focus handlers, ripple frames) instead of about 20: none of them is long, so no metric flags them.
+- On an iPhone 16 Pro, one click on 1,000 MUI radios freezes Safari for about **5 s**, with or without VoiceOver; with native HTML, 0 ms.
+- Native HTML lowers the cost but does not remove it: loading 1,000 native radios goes from 16 ms of blocking time with accessibility off to 479 ms with it on. Less DOM is less work for the accessibility tree.
+
+The slide "What this data does not say" lists the limits: only Chrome and VoiceOver, a fast laptop with a slowed-down CPU, a local server. All the code is here so anyone can repeat it with other browsers and screen readers.
+
+## Traces
+
+Open them in trace.cafe, or drag the file into the Performance panel of Chrome DevTools. In the task traces, each step of the task is named in the Timings track.
+
+| What | trace.cafe | File |
 | --- | --- | --- |
-| `deck/` | La presentación: HTML, CSS y un poco de JavaScript, sin build. En español (`index.html`), inglés (`en/`) y catalán (`ca/`), con tema claro y oscuro. Atajos de teclado y ajustes en el panel de ayuda (tecla <kbd>?</kbd>): <kbd>T</kbd> cambia el tema y <kbd>L</kbd> el idioma. | Publicada en <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/> ([English](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/en/), [català](https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/ca/)). En local: `cd deck && npm start` y abre <http://127.0.0.1:8000> (necesita Python 3; sin él, cualquier servidor estático sirve). |
-| `bench/` | El banco de pruebas: las apps comparadas, los scripts de medición, los resultados y las trazas para DevTools. | Requisitos, instalación, comandos y dependencias en [bench/README.md](bench/README.md). |
-| `docs/` | Referencias de la charla y tareas pendientes. | — |
+| A11yConf Travel, 14-step keyboard task, accessibility on: legacy (React, MUI and others) | [Open](https://trace.cafe/t/VoRFo6QOSY) | `bench/traces/travel/travel-legacy-a11y-on-run3-task.json.gz` |
+| The same task: native HTML | [Open](https://trace.cafe/t/XLPHjpSGiI) | `bench/traces/travel/travel-native-a11y-on-run2-task.json.gz` |
+| Keyboard focus on one control, 5 s without touching anything, reduced motion requested: legacy (the MUI focus ripple keeps animating) | [Open](https://trace.cafe/t/ihrNliptjB) | `bench/traces/focus-idle/travel-legacy.json.gz` |
+| The same: native HTML | [Open](https://trace.cafe/t/J5PZ7aWCIg) | `bench/traces/focus-idle/travel-native.json.gz` |
+| mui.com radio button docs, 5 s idle with reduced motion: 20 "Edit in Chat" buttons animate without end | [Open](https://trace.cafe/t/rU5JSwqmGV) | `bench/traces/demos/mui-docs-radio-idle-reduced-motion.json.gz` |
+| renfe.com loading on a mid-range phone (emulated Pixel 7, Slow 4G, CPU 4x) | [Open](https://trace.cafe/t/HJIoDNe5hJ) | `bench/traces/demos/renfe-mobile-slow4g-cpu4x.json.gz` |
 
-Para ejecutar los tests de la presentación (navegación, notas, atajos, tema, idiomas y auditoría axe en cada diapositiva de cada idioma, con los dos temas): `cd deck && npm ci && npm test`.
+## Using this repository
 
-## Participa en el benchmark
+| Folder | What it holds | How to start |
+| --- | --- | --- |
+| `deck/` | The slides: HTML, CSS and a little JavaScript, no build step. In Spanish (`index.html`), English (`en/`) and Catalan (`ca/`), with light and dark themes and a visual or text view. Keyboard shortcuts and settings are in the help dialog (<kbd>?</kbd>): <kbd>G</kbd> switches the view, <kbd>T</kbd> the theme, <kbd>L</kbd> the language and <kbd>H</kbd> hides the controls bar; hold <kbd>Alt</kbd> for 2 seconds to see each button's key. | Published at <https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/>. Locally: `cd deck && npm start` and open <http://127.0.0.1:8000> (needs Python 3; any static server works). |
+| `bench/` | The benchmark: the compared apps, the measurement scripts, the results and the traces for DevTools. | Requirements, setup, commands and dependencies in [bench/README.md](bench/README.md) (in Spanish). |
+| `docs/` | References for the talk and pending tasks. | — |
 
-Desde cualquier navegador, también en el móvil y con tu lector de pantalla: **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>**, en español, inglés o catalán. Tarda unos 2 minutos y no hay que instalar nada.
+To run the slide tests (navigation, notes, shortcuts, views, themes, languages, demos, no slide scrolling, and an axe audit of every slide in every language and both themes): `cd deck && npm ci && npm test`.
 
-Si sabes usar la terminal, también puedes ejecutar el banco de pruebas completo en tu equipo: en Chrome con cualquier sistema operativo y, opcionalmente, con VoiceOver en macOS. La guía está en [bench/PARTICIPA.md](bench/PARTICIPA.md) ([in English](bench/PARTICIPATE.md)).
+## Take part in the benchmark
+
+From any browser, on a phone too and with your screen reader: **<https://nucliweb.github.io/el-arbol-de-accesibilidad-fragil/benchmark/>**, in English, Spanish or Catalan. If you use a screen reader, run it twice, with it off and on: the difference is what the accessibility tree costs your device. Nothing is sent unless you decide to; at the end you can share the results as a GitHub issue, like [this iPhone 16 Pro run with VoiceOver](https://github.com/nucliweb/el-arbol-de-accesibilidad-fragil/issues/1).
+
+If you use the terminal, you can also run the full benchmark on your computer: in Chrome on any operating system and, optionally, with VoiceOver on macOS. The guide is in [bench/PARTICIPATE.md](bench/PARTICIPATE.md) ([en español](bench/PARTICIPA.md)).
