@@ -1093,53 +1093,59 @@ updateTabIndices() {
 
     <dialog id="help" aria-labelledby="help-titulo">
       <h2 id="help-titulo">Ajuda i configuració</h2>
-      <h3>Dreceres de teclat</h3>
-      <table>
-        <caption class="visually-hidden">Dreceres de teclat</caption>
-        <thead><tr><th scope="col">Tecla</th><th scope="col">Acció</th></tr></thead>
-        <tbody>
-          <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Av Pàg</kbd> o <kbd>Espai</kbd></td><td>Diapositiva següent</td></tr>
-          <tr><td><kbd>←</kbd>, <kbd>↑</kbd> o <kbd>Re Pàg</kbd></td><td>Diapositiva anterior</td></tr>
-          <tr><td><kbd>Inici</kbd> i <kbd>Fi</kbd></td><td>Primera i última diapositiva</td></tr>
-          <tr><td><kbd>N</kbd></td><td>Mostra o amaga les notes</td></tr>
-          <tr><td><kbd>D</kbd></td><td>Mode document: totes les diapositives en una pàgina</td></tr>
-          <tr><td><kbd>G</kbd></td><td>Canvia entre la vista visual (gràfics i diagrames) i la de text (taules i llistes)</td></tr>
-          <tr><td><kbd>H</kbd></td><td>Amaga o mostra la barra de controls; amb Tab o el ratolí torna a aparèixer</td></tr>
-          <tr><td><kbd>T</kbd></td><td>Canvia entre el tema clar i el fosc</td></tr>
-          <tr><td><kbd>L</kbd></td><td>Canvia d'idioma, a la mateixa diapositiva</td></tr>
-          <tr><td><kbd>O</kbd></td><td>Obre la demo de la diapositiva</td></tr>
-          <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>A les diapositives amb dues demos, obre la primera o la segona</td></tr>
-          <tr><td><kbd>F</kbd></td><td>Posa la demo a pantalla completa, o en surt</td></tr>
-          <tr><td><kbd>Esc</kbd></td><td>Tanca la demo</td></tr>
-          <tr><td><kbd>?</kbd></td><td>Obre aquesta ajuda</td></tr>
-          <tr><td>Mantén premuda <kbd>Alt</kbd> (<kbd>Opció</kbd> al Mac) 2 segons</td><td>Mostra la tecla de cada botó</td></tr>
-        </tbody>
-      </table>
-      <p>
-        <label>
-          <input type="checkbox" id="single-key-shortcuts" checked>
-          Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> i <kbd>?</kbd>)
-        </label>
-      </p>
-      <p class="muted">Si fas servir un lector de pantalla, pot ser que les fletxes no arribin a la pàgina en mode d'exploració. Fes servir els botons Anterior i Següent, o el mode document.</p>
-      <h3>Configuració</h3>
-      <fieldset>
-        <legend>Vista</legend>
-        <label><input type="radio" name="view" value="visual" checked> Visual: gràfics i diagrames</label>
-        <label><input type="radio" name="view" value="text"> Text: taules i llistes</label>
-      </fieldset>
-      <fieldset>
-        <legend>Tema</legend>
-        <label><input type="radio" name="theme" value="system" checked> El del sistema</label>
-        <label><input type="radio" name="theme" value="light"> Clar</label>
-        <label><input type="radio" name="theme" value="dark"> Fosc</label>
-      </fieldset>
-      <h3 id="languages-titulo">Idioma</h3>
-      <ul class="languages" id="languages" aria-labelledby="languages-titulo">
-        <li><a href="../" hreflang="es" lang="es">Español</a></li>
-        <li><a href="../en/" hreflang="en" lang="en">English</a></li>
-        <li><a href="./" hreflang="ca" lang="ca" aria-current="true">Català</a></li>
-      </ul>
+      <div class="help-columns">
+        <div>
+          <h3>Dreceres de teclat</h3>
+          <table>
+            <caption class="visually-hidden">Dreceres de teclat</caption>
+            <thead><tr><th scope="col">Tecla</th><th scope="col">Acció</th></tr></thead>
+            <tbody>
+              <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Av Pàg</kbd> o <kbd>Espai</kbd></td><td>Diapositiva següent</td></tr>
+              <tr><td><kbd>←</kbd>, <kbd>↑</kbd> o <kbd>Re Pàg</kbd></td><td>Diapositiva anterior</td></tr>
+              <tr><td><kbd>Inici</kbd> i <kbd>Fi</kbd></td><td>Primera i última diapositiva</td></tr>
+              <tr><td><kbd>N</kbd></td><td>Mostra o amaga les notes</td></tr>
+              <tr><td><kbd>D</kbd></td><td>Mode document: totes les diapositives en una pàgina</td></tr>
+              <tr><td><kbd>G</kbd></td><td>Canvia entre la vista visual (gràfics i diagrames) i la de text (taules i llistes)</td></tr>
+              <tr><td><kbd>H</kbd></td><td>Amaga o mostra la barra de controls; amb Tab o el ratolí torna a aparèixer</td></tr>
+              <tr><td><kbd>T</kbd></td><td>Canvia entre el tema clar i el fosc</td></tr>
+              <tr><td><kbd>L</kbd></td><td>Canvia d'idioma, a la mateixa diapositiva</td></tr>
+              <tr><td><kbd>O</kbd></td><td>Obre la demo de la diapositiva</td></tr>
+              <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>A les diapositives amb dues demos, obre la primera o la segona</td></tr>
+              <tr><td><kbd>F</kbd></td><td>Posa la demo a pantalla completa, o en surt</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Tanca la demo</td></tr>
+              <tr><td><kbd>?</kbd></td><td>Obre aquesta ajuda</td></tr>
+              <tr><td>Mantén premuda <kbd>Alt</kbd> (<kbd>Opció</kbd> al Mac) 2 segons</td><td>Mostra la tecla de cada botó</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Configuració</h3>
+          <p>
+            <label>
+              <input type="checkbox" id="single-key-shortcuts" checked>
+              Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> i <kbd>?</kbd>)
+            </label>
+          </p>
+          <p class="muted">Si fas servir un lector de pantalla, pot ser que les fletxes no arribin a la pàgina en mode d'exploració. Fes servir els botons Anterior i Següent, o el mode document.</p>
+          <fieldset>
+            <legend>Vista</legend>
+            <label><input type="radio" name="view" value="visual" checked> Visual: gràfics i diagrames</label>
+            <label><input type="radio" name="view" value="text"> Text: taules i llistes</label>
+          </fieldset>
+          <fieldset>
+            <legend>Tema</legend>
+            <label><input type="radio" name="theme" value="system" checked> El del sistema</label>
+            <label><input type="radio" name="theme" value="light"> Clar</label>
+            <label><input type="radio" name="theme" value="dark"> Fosc</label>
+          </fieldset>
+          <h3 id="languages-titulo">Idioma</h3>
+          <ul class="languages" id="languages" aria-labelledby="languages-titulo">
+            <li><a href="../" hreflang="es" lang="es">Español</a></li>
+            <li><a href="../en/" hreflang="en" lang="en">English</a></li>
+            <li><a href="./" hreflang="ca" lang="ca" aria-current="true">Català</a></li>
+          </ul>
+        </div>
+      </div>
       <form method="dialog">
         <button type="submit">Tanca</button>
       </form>

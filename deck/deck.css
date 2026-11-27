@@ -410,7 +410,8 @@ html.js[data-controls='hidden'] #deck-controls:not(:focus-within, :hover) {
 }
 
 #help {
-  max-width: min(40rem, 92vw);
+  max-width: min(72rem, 94vw);
+  font-size: 1rem;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--bg);
@@ -424,6 +425,34 @@ html.js[data-controls='hidden'] #deck-controls:not(:focus-within, :hover) {
 #help h2 {
   margin-block: 0 1rem;
   font-size: 1.75rem;
+}
+
+/* Shortcuts on the left, settings on the right; one column when narrow. */
+.help-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+  gap: 0 2.5rem;
+  align-items: start;
+}
+
+/* The shortcuts table has more to say: it gets the wider column. */
+@media (min-width: 60rem) {
+  .help-columns {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+#help table {
+  font-size: 0.95em;
+}
+
+#help th,
+#help td {
+  padding-block: 0.25rem;
+}
+
+#help fieldset + fieldset {
+  margin-block-start: 0.75rem;
 }
 
 #help h3 {

@@ -722,3 +722,21 @@ test('holding Alt for 2 seconds shows each button\'s key, hidden from screen rea
   await page.keyboard.up('Alt');
   assert.equal(await hint.isVisible(), false);
 });
+
+for (const viewport of [{ width: 1440, height: 900 }, { width: 1920, height: 1080 }]) {
+  test(`the help and settings dialog shows everything without scrolling at ${viewport.width}x${viewport.height}, in two columns`, async () => {
+    await page.setViewportSize(viewport);
+    for (const path of ['', 'en/', 'ca/']) {
+      await page.goto(`${DECK_URL}${path}`);
+      await page.keyboard.press('?');
+      const layout = await page.locator('#help').evaluate((dialog) => {
+        const [shortcuts, settings] = dialog.querySelectorAll('.help-columns > *');
+        const a = shortcuts.getBoundingClientRect();
+        const b = settings.getBoundingClientRect();
+        return { overflow: dialog.scrollHeight - dialog.clientHeight, sideBySide: b.left >= a.right - 1 && b.top < a.bottom };
+      });
+      assert.ok(layout.overflow <= 1, `${path || 'es/'} dialog scrolls by ${layout.overflow}px`);
+      assert.ok(layout.sideBySide, `${path || 'es/'} columns are not side by side`);
+    }
+  });
+}

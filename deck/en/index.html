@@ -1093,53 +1093,59 @@ updateTabIndices() {
 
     <dialog id="help" aria-labelledby="help-titulo">
       <h2 id="help-titulo">Help and settings</h2>
-      <h3>Keyboard shortcuts</h3>
-      <table>
-        <caption class="visually-hidden">Keyboard shortcuts</caption>
-        <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
-        <tbody>
-          <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Page Down</kbd> or <kbd>Space</kbd></td><td>Next slide</td></tr>
-          <tr><td><kbd>←</kbd>, <kbd>↑</kbd> or <kbd>Page Up</kbd></td><td>Previous slide</td></tr>
-          <tr><td><kbd>Home</kbd> and <kbd>End</kbd></td><td>First and last slide</td></tr>
-          <tr><td><kbd>N</kbd></td><td>Show or hide the notes</td></tr>
-          <tr><td><kbd>D</kbd></td><td>Document mode: all the slides on one page</td></tr>
-          <tr><td><kbd>G</kbd></td><td>Switch between the visual view (charts and diagrams) and the text view (tables and lists)</td></tr>
-          <tr><td><kbd>H</kbd></td><td>Hide or show the control bar; it comes back with Tab or the mouse</td></tr>
-          <tr><td><kbd>T</kbd></td><td>Switch between the light and the dark theme</td></tr>
-          <tr><td><kbd>L</kbd></td><td>Switch language, staying on the same slide</td></tr>
-          <tr><td><kbd>O</kbd></td><td>Open the slide's demo</td></tr>
-          <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>On slides with two demos, open the first or the second</td></tr>
-          <tr><td><kbd>F</kbd></td><td>Show the demo full screen, or leave full screen</td></tr>
-          <tr><td><kbd>Esc</kbd></td><td>Close the demo</td></tr>
-          <tr><td><kbd>?</kbd></td><td>Open this help</td></tr>
-          <tr><td>Hold <kbd>Alt</kbd> (<kbd>Option</kbd> on a Mac) for 2 seconds</td><td>See each button's key</td></tr>
-        </tbody>
-      </table>
-      <p>
-        <label>
-          <input type="checkbox" id="single-key-shortcuts" checked>
-          Turn on single-key shortcuts (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> and <kbd>?</kbd>)
-        </label>
-      </p>
-      <p class="muted">If you use a screen reader, the arrow keys may not reach the page in browse mode. Use the Previous and Next buttons, or document mode.</p>
-      <h3>Settings</h3>
-      <fieldset>
-        <legend>View</legend>
-        <label><input type="radio" name="view" value="visual" checked> Visual: charts and diagrams</label>
-        <label><input type="radio" name="view" value="text"> Text: tables and lists</label>
-      </fieldset>
-      <fieldset>
-        <legend>Theme</legend>
-        <label><input type="radio" name="theme" value="system" checked> System theme</label>
-        <label><input type="radio" name="theme" value="light"> Light</label>
-        <label><input type="radio" name="theme" value="dark"> Dark</label>
-      </fieldset>
-      <h3 id="languages-titulo">Language</h3>
-      <ul class="languages" id="languages" aria-labelledby="languages-titulo">
-        <li><a href="../" hreflang="es" lang="es">Español</a></li>
-        <li><a href="./" hreflang="en" lang="en" aria-current="true">English</a></li>
-        <li><a href="../ca/" hreflang="ca" lang="ca">Català</a></li>
-      </ul>
+      <div class="help-columns">
+        <div>
+          <h3>Keyboard shortcuts</h3>
+          <table>
+            <caption class="visually-hidden">Keyboard shortcuts</caption>
+            <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
+            <tbody>
+              <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Page Down</kbd> or <kbd>Space</kbd></td><td>Next slide</td></tr>
+              <tr><td><kbd>←</kbd>, <kbd>↑</kbd> or <kbd>Page Up</kbd></td><td>Previous slide</td></tr>
+              <tr><td><kbd>Home</kbd> and <kbd>End</kbd></td><td>First and last slide</td></tr>
+              <tr><td><kbd>N</kbd></td><td>Show or hide the notes</td></tr>
+              <tr><td><kbd>D</kbd></td><td>Document mode: all the slides on one page</td></tr>
+              <tr><td><kbd>G</kbd></td><td>Switch between the visual view (charts and diagrams) and the text view (tables and lists)</td></tr>
+              <tr><td><kbd>H</kbd></td><td>Hide or show the control bar; it comes back with Tab or the mouse</td></tr>
+              <tr><td><kbd>T</kbd></td><td>Switch between the light and the dark theme</td></tr>
+              <tr><td><kbd>L</kbd></td><td>Switch language, staying on the same slide</td></tr>
+              <tr><td><kbd>O</kbd></td><td>Open the slide's demo</td></tr>
+              <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>On slides with two demos, open the first or the second</td></tr>
+              <tr><td><kbd>F</kbd></td><td>Show the demo full screen, or leave full screen</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Close the demo</td></tr>
+              <tr><td><kbd>?</kbd></td><td>Open this help</td></tr>
+              <tr><td>Hold <kbd>Alt</kbd> (<kbd>Option</kbd> on a Mac) for 2 seconds</td><td>See each button's key</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Settings</h3>
+          <p>
+            <label>
+              <input type="checkbox" id="single-key-shortcuts" checked>
+              Turn on single-key shortcuts (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> and <kbd>?</kbd>)
+            </label>
+          </p>
+          <p class="muted">If you use a screen reader, the arrow keys may not reach the page in browse mode. Use the Previous and Next buttons, or document mode.</p>
+          <fieldset>
+            <legend>View</legend>
+            <label><input type="radio" name="view" value="visual" checked> Visual: charts and diagrams</label>
+            <label><input type="radio" name="view" value="text"> Text: tables and lists</label>
+          </fieldset>
+          <fieldset>
+            <legend>Theme</legend>
+            <label><input type="radio" name="theme" value="system" checked> System theme</label>
+            <label><input type="radio" name="theme" value="light"> Light</label>
+            <label><input type="radio" name="theme" value="dark"> Dark</label>
+          </fieldset>
+          <h3 id="languages-titulo">Language</h3>
+          <ul class="languages" id="languages" aria-labelledby="languages-titulo">
+            <li><a href="../" hreflang="es" lang="es">Español</a></li>
+            <li><a href="./" hreflang="en" lang="en" aria-current="true">English</a></li>
+            <li><a href="../ca/" hreflang="ca" lang="ca">Català</a></li>
+          </ul>
+        </div>
+      </div>
       <form method="dialog">
         <button type="submit">Close</button>
       </form>

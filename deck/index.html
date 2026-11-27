@@ -1093,53 +1093,59 @@ updateTabIndices() {
 
     <dialog id="help" aria-labelledby="help-titulo">
       <h2 id="help-titulo">Ayuda y ajustes</h2>
-      <h3>Atajos de teclado</h3>
-      <table>
-        <caption class="visually-hidden">Atajos de teclado</caption>
-        <thead><tr><th scope="col">Tecla</th><th scope="col">Acción</th></tr></thead>
-        <tbody>
-          <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Av Pág</kbd> o <kbd>Espacio</kbd></td><td>Diapositiva siguiente</td></tr>
-          <tr><td><kbd>←</kbd>, <kbd>↑</kbd> o <kbd>Re Pág</kbd></td><td>Diapositiva anterior</td></tr>
-          <tr><td><kbd>Inicio</kbd> y <kbd>Fin</kbd></td><td>Primera y última diapositiva</td></tr>
-          <tr><td><kbd>N</kbd></td><td>Mostrar u ocultar las notas</td></tr>
-          <tr><td><kbd>D</kbd></td><td>Modo documento: todas las diapositivas en una página</td></tr>
-          <tr><td><kbd>G</kbd></td><td>Cambiar entre la vista visual (gráficos y diagramas) y la de texto (tablas y listas)</td></tr>
-          <tr><td><kbd>H</kbd></td><td>Ocultar o mostrar la barra de controles; con Tab o el ratón vuelve a aparecer</td></tr>
-          <tr><td><kbd>T</kbd></td><td>Cambiar entre el tema claro y el oscuro</td></tr>
-          <tr><td><kbd>L</kbd></td><td>Cambiar de idioma, en la misma diapositiva</td></tr>
-          <tr><td><kbd>O</kbd></td><td>Abrir la demo de la diapositiva</td></tr>
-          <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>En las diapositivas con dos demos, abrir la primera o la segunda</td></tr>
-          <tr><td><kbd>F</kbd></td><td>Demo a pantalla completa, o salir de ella</td></tr>
-          <tr><td><kbd>Esc</kbd></td><td>Cerrar la demo</td></tr>
-          <tr><td><kbd>?</kbd></td><td>Abrir esta ayuda</td></tr>
-          <tr><td>Mantener <kbd>Alt</kbd> (<kbd>Option</kbd> en Mac) 2 segundos</td><td>Ver la tecla de cada botón</td></tr>
-        </tbody>
-      </table>
-      <p>
-        <label>
-          <input type="checkbox" id="single-key-shortcuts" checked>
-          Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> y <kbd>?</kbd>)
-        </label>
-      </p>
-      <p class="muted">Si usas un lector de pantalla, puede que las flechas no lleguen a la página en modo exploración. Usa los botones Anterior y Siguiente, o el modo documento.</p>
-      <h3>Ajustes</h3>
-      <fieldset>
-        <legend>Vista</legend>
-        <label><input type="radio" name="view" value="visual" checked> Visual: gráficos y diagramas</label>
-        <label><input type="radio" name="view" value="text"> Texto: tablas y listas</label>
-      </fieldset>
-      <fieldset>
-        <legend>Tema</legend>
-        <label><input type="radio" name="theme" value="system" checked> El del sistema</label>
-        <label><input type="radio" name="theme" value="light"> Claro</label>
-        <label><input type="radio" name="theme" value="dark"> Oscuro</label>
-      </fieldset>
-      <h3 id="languages-titulo">Idioma</h3>
-      <ul class="languages" id="languages" aria-labelledby="languages-titulo">
-        <li><a href="./" hreflang="es" lang="es" aria-current="true">Español</a></li>
-        <li><a href="en/" hreflang="en" lang="en">English</a></li>
-        <li><a href="ca/" hreflang="ca" lang="ca">Català</a></li>
-      </ul>
+      <div class="help-columns">
+        <div>
+          <h3>Atajos de teclado</h3>
+          <table>
+            <caption class="visually-hidden">Atajos de teclado</caption>
+            <thead><tr><th scope="col">Tecla</th><th scope="col">Acción</th></tr></thead>
+            <tbody>
+              <tr><td><kbd>→</kbd>, <kbd>↓</kbd>, <kbd>Av Pág</kbd> o <kbd>Espacio</kbd></td><td>Diapositiva siguiente</td></tr>
+              <tr><td><kbd>←</kbd>, <kbd>↑</kbd> o <kbd>Re Pág</kbd></td><td>Diapositiva anterior</td></tr>
+              <tr><td><kbd>Inicio</kbd> y <kbd>Fin</kbd></td><td>Primera y última diapositiva</td></tr>
+              <tr><td><kbd>N</kbd></td><td>Mostrar u ocultar las notas</td></tr>
+              <tr><td><kbd>D</kbd></td><td>Modo documento: todas las diapositivas en una página</td></tr>
+              <tr><td><kbd>G</kbd></td><td>Cambiar entre la vista visual (gráficos y diagramas) y la de texto (tablas y listas)</td></tr>
+              <tr><td><kbd>H</kbd></td><td>Ocultar o mostrar la barra de controles; con Tab o el ratón vuelve a aparecer</td></tr>
+              <tr><td><kbd>T</kbd></td><td>Cambiar entre el tema claro y el oscuro</td></tr>
+              <tr><td><kbd>L</kbd></td><td>Cambiar de idioma, en la misma diapositiva</td></tr>
+              <tr><td><kbd>O</kbd></td><td>Abrir la demo de la diapositiva</td></tr>
+              <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>En las diapositivas con dos demos, abrir la primera o la segunda</td></tr>
+              <tr><td><kbd>F</kbd></td><td>Demo a pantalla completa, o salir de ella</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Cerrar la demo</td></tr>
+              <tr><td><kbd>?</kbd></td><td>Abrir esta ayuda</td></tr>
+              <tr><td>Mantener <kbd>Alt</kbd> (<kbd>Option</kbd> en Mac) 2 segundos</td><td>Ver la tecla de cada botón</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Ajustes</h3>
+          <p>
+            <label>
+              <input type="checkbox" id="single-key-shortcuts" checked>
+              Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> y <kbd>?</kbd>)
+            </label>
+          </p>
+          <p class="muted">Si usas un lector de pantalla, puede que las flechas no lleguen a la página en modo exploración. Usa los botones Anterior y Siguiente, o el modo documento.</p>
+          <fieldset>
+            <legend>Vista</legend>
+            <label><input type="radio" name="view" value="visual" checked> Visual: gráficos y diagramas</label>
+            <label><input type="radio" name="view" value="text"> Texto: tablas y listas</label>
+          </fieldset>
+          <fieldset>
+            <legend>Tema</legend>
+            <label><input type="radio" name="theme" value="system" checked> El del sistema</label>
+            <label><input type="radio" name="theme" value="light"> Claro</label>
+            <label><input type="radio" name="theme" value="dark"> Oscuro</label>
+          </fieldset>
+          <h3 id="languages-titulo">Idioma</h3>
+          <ul class="languages" id="languages" aria-labelledby="languages-titulo">
+            <li><a href="./" hreflang="es" lang="es" aria-current="true">Español</a></li>
+            <li><a href="en/" hreflang="en" lang="en">English</a></li>
+            <li><a href="ca/" hreflang="ca" lang="ca">Català</a></li>
+          </ul>
+        </div>
+      </div>
       <form method="dialog">
         <button type="submit">Cerrar</button>
       </form>
