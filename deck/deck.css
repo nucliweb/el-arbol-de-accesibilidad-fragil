@@ -710,6 +710,49 @@ html.js[data-mode='slides'] #sobre-mi .profile-links {
   }
 }
 
+/* --- Alt text on screen ------------------------------------------------------ */
+
+/* The alt of an image, shown with A as the code that holds it. Dark in both
+   themes, like the black and white photo it sits on. */
+.alt-reveal {
+  margin: 0.5rem 0 0;
+  padding: 0.75em 1em;
+  border-radius: 0.5rem;
+  background: #121212;
+  color: #ececec;
+  font-family: var(--mono);
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.alt-reveal::before {
+  content: 'alt="';
+  color: var(--brand);
+}
+
+.alt-reveal::after {
+  content: '"';
+  color: var(--brand);
+}
+
+/* Over the bottom of the photo: the copy shares the photo's grid cell. Both
+   are placed explicitly, or the photo would move to the next free cell. */
+.speaker > picture,
+.speaker > .alt-reveal {
+  grid-area: 1 / 1;
+}
+
+.speaker > .alt-reveal {
+  align-self: end;
+  z-index: 1;
+  margin: 1rem;
+  background: rgb(18 18 18 / 0.92);
+}
+
+html.js[data-mode='slides'] #sobre-mi .speaker > .alt-reveal {
+  font-size: clamp(1rem, 3.6cqh, 1.75rem);
+}
+
 /* --- Live demos ------------------------------------------------------------- */
 
 .demo-open,

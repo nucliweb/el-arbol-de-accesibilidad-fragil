@@ -61,7 +61,8 @@
             <source type="image/avif" srcset="../assets/joan-leon-400.avif 400w, ../assets/joan-leon-800.avif 800w" sizes="(min-width: 48rem) 24rem, 80vw">
             <img class="speaker-photo" src="../assets/joan-leon-800.webp" srcset="../assets/joan-leon-400.webp 400w, ../assets/joan-leon-800.webp 800w" sizes="(min-width: 48rem) 24rem, 80vw"
                  width="800" height="1200" decoding="async"
-                 alt="Joan León, en blanc i negre, amb ulleres i barba, mirant una pantalla al Performance Help Desk de performance.now()">
+                 data-reveal-alt
+                 alt="Joan León, en blanc i negre, amb ulleres i barba, mirant una pantalla al Performance Help Desk de performance.now(). En Dani Herrera diu que té la mirada trista.">
           </picture>
           <div class="speaker-info">
             <h2 id="sobre-mi-titulo">Joan León</h2>
@@ -1113,6 +1114,7 @@ updateTabIndices() {
               <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>A les diapositives amb dues demos, obre la primera o la segona</td></tr>
               <tr><td><kbd>F</kbd></td><td>Posa la demo a pantalla completa, o en surt</td></tr>
               <tr><td><kbd>Esc</kbd></td><td>Tanca la demo</td></tr>
+              <tr><td><kbd>A</kbd></td><td>Mostra o amaga a la pantalla el text alternatiu de la foto, a la diapositiva sobre mi</td></tr>
               <tr><td><kbd>?</kbd></td><td>Obre aquesta ajuda</td></tr>
               <tr><td>Mantén premuda <kbd>Alt</kbd> (<kbd>Opció</kbd> al Mac) 2 segons</td><td>Mostra la tecla de cada botó</td></tr>
             </tbody>
@@ -1123,7 +1125,7 @@ updateTabIndices() {
           <p>
             <label>
               <input type="checkbox" id="single-key-shortcuts" checked>
-              Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> i <kbd>?</kbd>)
+              Activa les dreceres d'una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd>, <kbd>A</kbd> i <kbd>?</kbd>)
             </label>
           </p>
           <p class="muted">Si fas servir un lector de pantalla, pot ser que les fletxes no arribin a la pàgina en mode d'exploració. Fes servir els botons Anterior i Següent, o el mode document.</p>

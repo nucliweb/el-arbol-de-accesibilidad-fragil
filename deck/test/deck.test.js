@@ -252,6 +252,45 @@ test('T does nothing when single-key shortcuts are off', async () => {
   assert.equal(await background(), LIGHT_BG);
 });
 
+// --- Alt text on screen ------------------------------------------------------
+
+const speakerPhoto = () => page.locator('#sobre-mi .speaker-photo');
+const shownAlt = () => page.locator('#sobre-mi .alt-reveal');
+
+test('A shows the alt text of the photo on screen, announces it, and hides it again', async () => {
+  await page.goto(`${DECK_URL}#sobre-mi`);
+  assert.equal(await shownAlt().isVisible(), false);
+
+  await page.keyboard.press('a');
+  assert.equal(await shownAlt().isVisible(), true);
+  assert.equal((await shownAlt().textContent()).trim(), await speakerPhoto().getAttribute('alt'));
+  // Screen readers already read the alt of the image; the copy is only visual.
+  assert.equal(await shownAlt().getAttribute('aria-hidden'), 'true');
+  await page.waitForFunction(() => document.querySelector('#announcer').textContent !== '');
+  assert.equal(await announcement(), 'Texto alternativo visible');
+
+  await page.keyboard.press('A');
+  assert.equal(await shownAlt().isVisible(), false);
+});
+
+test('the alt text on screen hides when moving to another slide', async () => {
+  await page.goto(`${DECK_URL}#sobre-mi`);
+  await page.keyboard.press('a');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowLeft');
+  assert.equal(await shownAlt().isVisible(), false);
+});
+
+test('A does nothing when single-key shortcuts are off', async () => {
+  await page.goto(`${DECK_URL}#sobre-mi`);
+  await page.keyboard.press('?');
+  await page.getByRole('checkbox', { name: /atajos de una tecla/i }).uncheck();
+  await page.keyboard.press('Escape');
+
+  await page.keyboard.press('a');
+  assert.equal(await shownAlt().isVisible(), false);
+});
+
 // --- Languages ---------------------------------------------------------------
 
 const LANGUAGES = [

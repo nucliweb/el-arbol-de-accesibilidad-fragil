@@ -61,7 +61,8 @@
             <source type="image/avif" srcset="assets/joan-leon-400.avif 400w, assets/joan-leon-800.avif 800w" sizes="(min-width: 48rem) 24rem, 80vw">
             <img class="speaker-photo" src="assets/joan-leon-800.webp" srcset="assets/joan-leon-400.webp 400w, assets/joan-leon-800.webp 800w" sizes="(min-width: 48rem) 24rem, 80vw"
                  width="800" height="1200" decoding="async"
-                 alt="Joan León, en blanco y negro, con gafas y barba, mirando una pantalla en el Performance Help Desk de performance.now()">
+                 data-reveal-alt
+                 alt="Joan León, en blanco y negro, con gafas y barba, mirando una pantalla en el Performance Help Desk de performance.now(). Dani Herrera dice que tiene la mirada triste.">
           </picture>
           <div class="speaker-info">
             <h2 id="sobre-mi-titulo">Joan León</h2>
@@ -1113,6 +1114,7 @@ updateTabIndices() {
               <tr><td><kbd>1</kbd>, <kbd>2</kbd></td><td>En las diapositivas con dos demos, abrir la primera o la segunda</td></tr>
               <tr><td><kbd>F</kbd></td><td>Demo a pantalla completa, o salir de ella</td></tr>
               <tr><td><kbd>Esc</kbd></td><td>Cerrar la demo</td></tr>
+              <tr><td><kbd>A</kbd></td><td>Mostrar u ocultar en pantalla el texto alternativo de la foto, en la diapositiva sobre mí</td></tr>
               <tr><td><kbd>?</kbd></td><td>Abrir esta ayuda</td></tr>
               <tr><td>Mantener <kbd>Alt</kbd> (<kbd>Option</kbd> en Mac) 2 segundos</td><td>Ver la tecla de cada botón</td></tr>
             </tbody>
@@ -1123,7 +1125,7 @@ updateTabIndices() {
           <p>
             <label>
               <input type="checkbox" id="single-key-shortcuts" checked>
-              Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd> y <kbd>?</kbd>)
+              Activar los atajos de una tecla (<kbd>N</kbd>, <kbd>D</kbd>, <kbd>G</kbd>, <kbd>H</kbd>, <kbd>T</kbd>, <kbd>L</kbd>, <kbd>O</kbd>, <kbd>1</kbd>, <kbd>2</kbd>, <kbd>F</kbd>, <kbd>A</kbd> y <kbd>?</kbd>)
             </label>
           </p>
           <p class="muted">Si usas un lector de pantalla, puede que las flechas no lleguen a la página en modo exploración. Usa los botones Anterior y Siguiente, o el modo documento.</p>

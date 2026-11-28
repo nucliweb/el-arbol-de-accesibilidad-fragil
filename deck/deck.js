@@ -34,6 +34,8 @@
       controlsHidden: 'Barra de controles oculta. Pulsa H para mostrarla.',
       controlsShown: 'Barra de controles visible',
       language: 'Español.',
+      altShown: 'Texto alternativo visible',
+      altHidden: 'Texto alternativo oculto',
     },
     en: {
       slide: (n, total, title) => `Slide ${n} of ${total}: ${title}`,
@@ -47,6 +49,8 @@
       controlsHidden: 'Controls bar hidden. Press H to show it.',
       controlsShown: 'Controls bar shown',
       language: 'English.',
+      altShown: 'Alt text shown',
+      altHidden: 'Alt text hidden',
     },
     ca: {
       slide: (n, total, title) => `Diapositiva ${n} de ${total}: ${title}`,
@@ -60,6 +64,8 @@
       controlsHidden: 'Barra de controls amagada. Prem H per mostrar-la.',
       controlsShown: 'Barra de controls visible',
       language: 'Català.',
+      altShown: 'Text alternatiu visible',
+      altHidden: 'Text alternatiu amagat',
     },
   };
   const t = MESSAGES[root.lang] ?? MESSAGES.es;
@@ -199,6 +205,7 @@
     const list = buildOf(slides[target]);
     step = list ? (entry === 'start' ? firstStep(list) : list.children.length) : 0;
     if (openDemo && target !== current) closeDemo();
+    if (target !== current) hideAltText();
     const focusWasInSlide = slides[current].contains(document.activeElement);
     current = target;
     render();
@@ -463,6 +470,30 @@
     }
   });
 
+  // Alt text on screen: A shows, over each image marked data-reveal-alt in
+  // the current slide, the text a screen reader reads for it. The copy is
+  // taken from the alt, so it never drifts, and it is hidden from assistive
+  // technology, which already reads the alt of the image.
+  const altCopies = [...document.querySelectorAll('img[data-reveal-alt]')].map((img) => {
+    const copy = element('p', 'alt-reveal', img.alt);
+    copy.setAttribute('aria-hidden', 'true');
+    copy.hidden = true;
+    (img.closest('picture') ?? img).after(copy);
+    return copy;
+  });
+  const altCopiesOf = (slide) => altCopies.filter((copy) => slide.contains(copy));
+  const hideAltText = () => {
+    for (const copy of altCopies) copy.hidden = true;
+  };
+  const toggleAltText = () => {
+    const copies = altCopiesOf(slides[current]);
+    if (!copies.length) return;
+    const show = copies.every((copy) => copy.hidden);
+    for (const copy of copies) copy.hidden = !show;
+    fitSlide();
+    announce(show ? t.altShown : t.altHidden);
+  };
+
   // The language links in the settings, in their order, are the languages
   // of the deck; L opens the next one at the same slide. The flag lets the
   // new page announce where the person landed.
@@ -539,6 +570,8 @@
       ...Object.fromEntries([1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => [String(n), () => openDemoNumber(n)])),
       f: toggleDemoFullscreen,
       F: toggleDemoFullscreen,
+      a: toggleAltText,
+      A: toggleAltText,
       '?': openHelp,
     };
     if (shortcuts[event.key]) {
